@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="St Peter's RC Club Championship dashboard, race manager and results." />
+  <title>St Peter's RC Club Championship</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">ST PETER'S RC CLUB • 2026</div>
+        <h1>8 ROUNDS. 8 CHALLENGES. <span>ONE CHAMPION.</span></h1>
+        <p>Speed. Control. Consistency. Nerves. Who will be crowned RC Club Champion?</p>
+      </div>
+      <div class="hero-actions">
+        <div id="connectionBadge" class="status-badge">Loading…</div>
+        <button id="adminButton" class="btn btn-light">🔒 Teacher Admin</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="RC Club sections">
+    <button class="tab active" data-tab="championship">🏆 Championship</button>
+    <button class="tab" data-tab="race-day">🏁 Race Day</button>
+    <button class="tab" data-tab="calendar">🗓️ Calendar</button>
+    <button class="tab" data-tab="results">📊 Results</button>
+    <button id="adminTabButton" class="tab admin-only hidden" data-tab="admin">⚙️ Admin</button>
+  </nav>
+
+  <main class="page-shell">
+    <section id="championship" class="panel tab-panel active">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">LIVE STANDINGS</p>
+          <h2>Championship Table</h2>
+        </div>
+        <div id="leaderCard" class="leader-card"></div>
+      </div>
+      <div class="table-wrap">
+        <table class="standings-table">
+          <thead id="standingsHead"></thead>
+          <tbody id="standingsBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyStandings" class="empty-state hidden">No drivers have been added yet.</div>
+    </section>
+
+    <section id="race-day" class="panel tab-panel">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">RACE CONTROL</p>
+          <h2>Today's Races</h2>
+        </div>
+        <div id="raceMeta" class="muted"></div>
+      </div>
+
+      <div id="adminRaceControls" class="admin-only hidden admin-card">
+        <div class="admin-card-title">Generate today's races</div>
+        <p class="muted small">Tick the students who are here, choose a format, then generate the draw.</p>
+        <div class="race-control-grid">
+          <div>
+            <label class="label">Students present</label>
+            <div id="attendanceList" class="attendance-list"></div>
+          </div>
+          <div class="control-stack">
+            <label class="label" for="raceFormat">Race format</label>
+            <select id="raceFormat" class="input">
+              <option value="knockout-random">Head-to-head knockout — random</option>
+              <option value="knockout-seeded">Head-to-head knockout — seeded</option>
+              <option value="heats-random">Heats — random</option>
+              <option value="heats-balanced">Heats — balanced</option>
+              <option value="teams">Team relay — teams of 3</option>
+            </select>
+
+            <div id="heatSizeWrap">
+              <label class="label" for="heatSize">Drivers per heat</label>
+              <select id="heatSize" class="input">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+              </select>
+            </div>
+
+            <label class="label" for="raceWeek">Championship round</label>
+            <select id="raceWeek" class="input"></select>
+
+            <button id="generateRaceButton" class="btn btn-primary">🎲 Generate Today's Races</button>
+            <button id="clearRaceButton" class="btn btn-ghost">Clear current draw</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="raceDisplay" class="race-display"></div>
+      <div id="emptyRace" class="empty-state">No race draw has been generated yet.</div>
+    </section>
+
+    <section id="calendar" class="panel tab-panel">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">THE ROAD TO THE TITLE</p>
+          <h2>8-Week Championship Calendar</h2>
+        </div>
+      </div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </section>
+
+    <section id="results" class="panel tab-panel">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">ROUND BY ROUND</p>
+          <h2>Results</h2>
+        </div>
+      </div>
+      <div id="resultsGrid" class="results-grid"></div>
+    </section>
+
+    <section id="admin" class="panel tab-panel">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">TEACHER ONLY</p>
+          <h2>Championship Admin</h2>
+        </div>
+        <button id="signOutButton" class="btn btn-ghost">Sign out</button>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-card">
+          <div class="admin-card-title">Drivers</div>
+          <form id="addStudentForm" class="inline-form">
+            <input id="studentName" class="input" type="text" maxlength="50" placeholder="Student name" required />
+            <button class="btn btn-primary" type="submit">Add driver</button>
+          </form>
+          <div id="studentAdminList" class="student-admin-list"></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-title">Enter round results</div>
+          <label class="label" for="resultWeek">Select round</label>
+          <select id="resultWeek" class="input"></select>
+          <p id="scoringText" class="muted small"></p>
+          <div id="resultEntryList" class="result-entry-list"></div>
+          <button id="saveResultsButton" class="btn btn-primary full-width">Save Championship Points</button>
+        </div>
+      </div>
+
+      <div class="admin-card danger-zone">
+        <div>
+          <div class="admin-card-title">Race data</div>
+          <p class="muted small">Use this only if you need to remove the current race draw.</p>
+        </div>
+        <button id="adminClearRaceButton" class="btn btn-danger">Clear race draw</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="loginModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal-card">
+      <button id="closeLoginModal" class="modal-close" aria-label="Close">×</button>
+      <div class="modal-icon">🔒</div>
+      <h2 id="loginTitle">Teacher Admin</h2>
+      <p id="loginMessage" class="muted">Sign in with the authorised teacher Google account to manage the championship.</p>
+      <button id="googleSignInButton" class="btn btn-primary full-width">Sign in with Google</button>
+      <div id="setupNotice" class="setup-notice hidden"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <footer>
+    <strong>St Peter's RC Club Championship</strong>
+    <span>🏁 Who will take the chequered flag?</span>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
