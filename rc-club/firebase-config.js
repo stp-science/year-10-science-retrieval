@@ -1,15 +1,14 @@
-// Firebase setup for the RC Club site.
-// Replace the placeholder values below after creating the Firebase project.
-// The public site still loads from data.json until Firebase is configured.
+// Firebase configuration for the St Peter's RC Club Winter Championship.
+// Firebase web configuration is safe to include in the client app; access is protected by Firestore Security Rules.
 
 export const firebaseConfig = {
-  apiKey: "PASTE_FIREBASE_API_KEY",
-  authDomain: "PASTE_PROJECT.firebaseapp.com",
-  projectId: "PASTE_PROJECT_ID",
-  storageBucket: "PASTE_PROJECT.firebasestorage.app",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyBGjVp_-8yLTBvjxEhorQsejAHQIYUi7Z4",
+  authDomain: "rc-club-championship.firebaseapp.com",
+  projectId: "rc-club-championship",
+  storageBucket: "rc-club-championship.firebasestorage.app",
+  messagingSenderId: "64748347984",
+  appId: "1:64748347984:web:e39b7fa5db8e90c4aee755"
 };
 
-// This must exactly match the Google account that is allowed to administer RC Club.
+// Replace this with the exact Google email address Gary will use for Teacher Admin.
 export const adminEmail = "PASTE_TEACHER_GOOGLE_EMAIL";
