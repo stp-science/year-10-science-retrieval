@@ -1,5 +1,5 @@
 {
-  "title": "St Peter's RC Club Championship 2026",
+  "title": "St Peter's RC Club Winter Championship 2026",
   "scoring": [10, 8, 6, 5, 4, 3, 2, 1],
   "students": [],
   "weeks": [
@@ -10,7 +10,7 @@
     {"number":5,"date":"4 September 2026","event":"Buggy Team Relay","tagline":"Three drivers. One team. One goal.","details":"Teams of three race buggies across on-road and off-road tracks.","points":{},"places":{}},
     {"number":6,"date":"11 September 2026","event":"Driving Skills Challenge","tagline":"Think you can drive? Prove it.","details":"Cones, ball challenge, reversing and precision driving.","points":{},"places":{}},
     {"number":7,"date":"18 September 2026","event":"Rallycross","tagline":"Two surfaces. One race. Maximum chaos.","details":"1/18 rally cars race across carpet and gym floor.","points":{},"places":{}},
-    {"number":8,"date":"25 September 2026","event":"Championship Finale","tagline":"One final race. One final chance.","details":"A longer final race to decide the RC Club Champion.","points":{},"places":{}}
+    {"number":8,"date":"25 September 2026","event":"Championship Finale","tagline":"One final race. One final chance.","details":"A longer final race to decide the RC Club Winter Champion.","points":{},"places":{}}
   ],
   "currentRace": null,
   "updatedAt": null
