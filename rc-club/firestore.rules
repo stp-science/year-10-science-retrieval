@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // RC Club championship data is public to read so students can view the site.
+    // Only the authorised, verified teacher Google account can change it.
+    match /rcClub/data {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.email_verified == true
+                   && request.auth.token.email == "PASTE_TEACHER_GOOGLE_EMAIL";
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
