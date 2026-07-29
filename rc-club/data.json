@@ -1,0 +1,17 @@
+{
+  "title": "St Peter's RC Club Championship 2026",
+  "scoring": [10, 8, 6, 5, 4, 3, 2, 1],
+  "students": [],
+  "weeks": [
+    {"number":1,"date":"31 July 2026","event":"Time Trial","tagline":"How fast are you really?","details":"Timing gear. Two classes: cheap on-road cars and buggies. Fastest lap wins.","points":{},"places":{}},
+    {"number":2,"date":"7 August 2026","event":"Cheap Car Grand Prix","tagline":"Wheel-to-wheel racing begins!","details":"Head-to-head heats followed by a final. Race by number of laps.","points":{},"places":{}},
+    {"number":3,"date":"14 August 2026","event":"Driving Trial / Obstacle Rally","tagline":"Speed is nothing without control.","details":"Chicanes and obstacles. Penalties for mistakes. Fastest clean run wins.","points":{},"places":{}},
+    {"number":4,"date":"28 August 2026","event":"Large Outdoor Cars","tagline":"Bring out the big machines!","details":"One-against-one outdoor racing with jumps and other challenges.","points":{},"places":{}},
+    {"number":5,"date":"4 September 2026","event":"Buggy Team Relay","tagline":"Three drivers. One team. One goal.","details":"Teams of three race buggies across on-road and off-road tracks.","points":{},"places":{}},
+    {"number":6,"date":"11 September 2026","event":"Driving Skills Challenge","tagline":"Think you can drive? Prove it.","details":"Cones, ball challenge, reversing and precision driving.","points":{},"places":{}},
+    {"number":7,"date":"18 September 2026","event":"Rallycross","tagline":"Two surfaces. One race. Maximum chaos.","details":"1/18 rally cars race across carpet and gym floor.","points":{},"places":{}},
+    {"number":8,"date":"25 September 2026","event":"Championship Finale","tagline":"One final race. One final chance.","details":"A longer final race to decide the RC Club Champion.","points":{},"places":{}}
+  ],
+  "currentRace": null,
+  "updatedAt": null
+}
