@@ -43,8 +43,21 @@ function studentName(id) {
 }
 
 function chunkFour(ids) {
+  const ordered = [...ids];
+  if (!ordered.length) return [];
+  if (ordered.length < 2) return [ordered];
+
+  const groupCount = Math.ceil(ordered.length / 4);
+  const baseSize = Math.floor(ordered.length / groupCount);
+  const remainder = ordered.length % groupCount;
   const groups = [];
-  for (let index = 0; index < ids.length; index += 4) groups.push(ids.slice(index, index + 4));
+  let cursor = 0;
+
+  for (let index = 0; index < groupCount; index += 1) {
+    const size = baseSize + (index < remainder ? 1 : 0);
+    groups.push(ordered.slice(cursor, cursor + size));
+    cursor += size;
+  }
   return groups;
 }
 
@@ -276,8 +289,8 @@ async function startTimeTrial(event) {
   event.stopImmediatePropagation();
 
   const present = [...document.querySelectorAll('[data-attendance]:checked')].map((checkbox) => checkbox.dataset.attendance);
-  if (!present.length) {
-    showMessage('Tick the students who are present first.', true);
+  if (present.length < 2) {
+    showMessage('Tick at least two students who are present first.', true);
     return;
   }
   if (!currentUser) {
