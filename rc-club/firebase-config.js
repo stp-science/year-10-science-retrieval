@@ -10,5 +10,5 @@ export const firebaseConfig = {
   appId: "1:64748347984:web:e39b7fa5db8e90c4aee755"
 };
 
-// Replace this with the exact Google email address Gary will use for Teacher Admin.
-export const adminEmail = "PASTE_TEACHER_GOOGLE_EMAIL";
+// The only Google account authorised for Teacher Admin.
+export const adminEmail = "talbot.g85@gmail.com";
