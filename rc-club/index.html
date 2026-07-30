@@ -168,11 +168,18 @@
       </div>
 
       <div class="admin-card danger-zone">
-        <div>
-          <div class="admin-card-title">Race data</div>
-          <p class="muted small">Use this only if you need to remove the current race draw.</p>
+        <div style="flex: 1; min-width: 260px;">
+          <div class="admin-card-title">Delete a week's race data</div>
+          <p class="muted small">This removes that week's saved finishing positions and championship points. If its live draw or time-trial laps are still open, those will also be deleted.</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; align-items: end; margin-top: 12px;">
+            <div>
+              <label class="label" for="deleteWeek">Week to delete</label>
+              <select id="deleteWeek" class="input"></select>
+            </div>
+            <button id="deleteWeekDataButton" class="btn btn-danger" type="button">Delete selected week's data</button>
+          </div>
         </div>
-        <button id="adminClearRaceButton" class="btn btn-danger">Clear race draw</button>
+        <button id="adminClearRaceButton" class="btn btn-ghost" type="button">Clear current race draw only</button>
       </div>
     </section>
   </main>
@@ -196,6 +203,7 @@
   </footer>
 
   <script type="module" src="./app.js"></script>
+  <script type="module" src="./week-delete.js"></script>
   <script type="module" src="./leader-status.js"></script>
   <script type="module">
     const loadTimeTrialManager = () => {
