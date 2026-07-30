@@ -68,6 +68,7 @@
           <div class="control-stack">
             <label class="label" for="raceFormat">Race format</label>
             <select id="raceFormat" class="input">
+              <option value="heats-random" data-time-trial-four="true">⏱️ Week 1 Time Trial — 4 cars on track</option>
               <option value="knockout-random">Head-to-head knockout — random</option>
               <option value="knockout-seeded">Head-to-head knockout — seeded</option>
               <option value="heats-random">Heats — random</option>
@@ -175,5 +176,23 @@
   </footer>
 
   <script type="module" src="./app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const raceFormat = document.getElementById('raceFormat');
+      const heatSize = document.getElementById('heatSize');
+      const raceWeek = document.getElementById('raceWeek');
+
+      const applyTimeTrialPreset = () => {
+        const option = raceFormat?.selectedOptions?.[0];
+        const isTimeTrial = option?.dataset?.timeTrialFour === 'true';
+        if (!isTimeTrial) return;
+        if (heatSize) heatSize.value = '4';
+        if (raceWeek) raceWeek.value = '1';
+      };
+
+      raceFormat?.addEventListener('change', applyTimeTrialPreset);
+      setTimeout(applyTimeTrialPreset, 0);
+    });
+  </script>
 </body>
 </html>
