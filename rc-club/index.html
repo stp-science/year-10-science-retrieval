@@ -177,6 +177,16 @@
   </footer>
 
   <script type="module" src="./app.js"></script>
-  <script type="module" src="./time-trial.js"></script>
+  <script type="module">
+    const loadTimeTrialManager = () => {
+      const badge = document.getElementById('connectionBadge');
+      if (badge?.textContent?.includes('Live championship')) {
+        import('./time-trial.js');
+        return;
+      }
+      window.setTimeout(loadTimeTrialManager, 100);
+    };
+    loadTimeTrialManager();
+  </script>
 </body>
 </html>
