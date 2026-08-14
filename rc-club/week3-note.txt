@@ -1,0 +1,1 @@
+Week 3 uses a one-car-at-a-time running order. Ollie P first, Vinsen second, then the remaining selected drivers. Each driver completes 3 laps and receives one total elapsed time.
