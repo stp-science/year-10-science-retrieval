@@ -1,4 +1,4 @@
-import './week3-trial.js';
+import './week3-trial.js?v=20260814-1246';
 
 const leaderCard = document.getElementById('leaderCard');
 const standingsBody = document.getElementById('standingsBody');
