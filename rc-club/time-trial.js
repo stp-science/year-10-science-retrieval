@@ -42,6 +42,40 @@ function studentName(id) {
   return latestDocData?.students?.find((student) => student.id === id)?.name || 'Unknown driver';
 }
 
+function weekInfo(number) {
+  return latestDocData?.weeks?.find((week) => Number(week.number) === Number(number)) || null;
+}
+
+function selectedTimeTrialWeek() {
+  if (raceFormat?.value === 'time-trial') return 1;
+  if (raceFormat?.value === 'time-trial-week3') return 3;
+  return null;
+}
+
+function trialTerms(race) {
+  const week = Number(race?.week || 1);
+  if (week === 3) {
+    return {
+      event: 'Driving Trial / Obstacle Rally',
+      heading: 'Week 3 Driving Trial / Obstacle Rally',
+      subtitle: 'Several attempts allowed • fastest completed run wins',
+      bestLabel: 'Fastest time',
+      addLabel: 'Add time',
+      leaderboardLabel: 'Live fastest-time leaderboard',
+      attemptNoun: 'time'
+    };
+  }
+  return {
+    event: 'Time Trial',
+    heading: 'Week 1 Time Trial',
+    subtitle: 'Several attempts allowed • fastest single lap wins',
+    bestLabel: 'Fastest lap',
+    addLabel: 'Add lap',
+    leaderboardLabel: 'Live fastest-lap leaderboard',
+    attemptNoun: 'lap'
+  };
+}
+
 function chunkFour(ids) {
   const ordered = [...ids];
   if (!ordered.length) return [];
@@ -126,6 +160,7 @@ async function saveRace(race, message) {
 }
 
 function renderGroups(race) {
+  const terms = trialTerms(race);
   return `<div class="time-trial-section">
     <div class="time-trial-section-title">🚦 Track groups — maximum 4 cars at once</div>
     <div class="time-trial-groups">
@@ -135,17 +170,19 @@ function renderGroups(race) {
           ${group.map((id) => `<span>${esc(studentName(id))}</span>`).join('')}
         </div>`).join('')}
     </div>
-    <p class="muted small time-trial-note">These are only track groups. Students can have several attempts during the session and their single fastest lap counts.</p>
+    <p class="muted small time-trial-note">These are only track groups. Students can have several attempts during the session and their single fastest ${terms.attemptNoun} counts.</p>
   </div>`;
 }
 
 function renderLeaderboard(race) {
   const ranking = rankingFor(race);
+  const terms = trialTerms(race);
+  const weekNumber = Number(race.week || 1);
   return `<div class="time-trial-section">
-    <div class="time-trial-section-title">⏱️ Live fastest-lap leaderboard</div>
+    <div class="time-trial-section-title">⏱️ ${terms.leaderboardLabel}</div>
     <div class="time-trial-table-wrap">
       <table class="time-trial-table">
-        <thead><tr><th>Pos</th><th>Driver</th><th>Fastest lap</th><th>Attempts</th>${currentUser ? '<th>Add lap</th>' : ''}</tr></thead>
+        <thead><tr><th>Pos</th><th>Driver</th><th>${terms.bestLabel}</th><th>Attempts</th>${currentUser ? `<th>${terms.addLabel}</th>` : ''}</tr></thead>
         <tbody>
           ${ranking.map((entry, index) => {
             const attempts = race.laps?.[entry.id] || [];
@@ -158,9 +195,9 @@ function renderLeaderboard(race) {
               <td class="time-trial-attempts">${esc(attemptText)}</td>
               ${currentUser ? `<td>
                 <div class="time-trial-entry">
-                  <input class="input time-trial-lap-input" data-lap-input="${esc(entry.id)}" inputmode="decimal" placeholder="e.g. 12.345" aria-label="New lap time for ${esc(studentName(entry.id))}" />
+                  <input class="input time-trial-lap-input" data-lap-input="${esc(entry.id)}" inputmode="decimal" placeholder="e.g. 12.345" aria-label="New time for ${esc(studentName(entry.id))}" />
                   <button class="btn btn-primary" data-add-lap="${esc(entry.id)}">Add</button>
-                  ${attempts.length ? `<button class="btn btn-ghost" data-undo-lap="${esc(entry.id)}" title="Remove the most recent lap">Undo</button>` : ''}
+                  ${attempts.length ? `<button class="btn btn-ghost" data-undo-lap="${esc(entry.id)}" title="Remove the most recent time">Undo</button>` : ''}
                 </div>
               </td>` : ''}
             </tr>`;
@@ -168,24 +205,25 @@ function renderLeaderboard(race) {
         </tbody>
       </table>
     </div>
-    ${currentUser ? '<div class="time-trial-actions"><button id="finalizeTimeTrial" class="btn btn-primary">🏁 Finish Week 1 & award championship points</button></div>' : ''}
+    ${currentUser ? `<div class="time-trial-actions"><button id="finalizeTimeTrial" class="btn btn-primary">🏁 Finish Week ${weekNumber} & award championship points</button></div>` : ''}
   </div>`;
 }
 
 function bindTimeTrialControls(race) {
+  const terms = trialTerms(race);
   document.querySelectorAll('[data-add-lap]').forEach((button) => {
     button.addEventListener('click', async () => {
       const id = button.dataset.addLap;
       const input = document.querySelector(`[data-lap-input="${CSS.escape(id)}"]`);
       const seconds = parseLapInput(input?.value);
       if (seconds === null || seconds <= 0) {
-        showMessage('Enter a valid lap time, for example 12.345 or 1:02.345.', true);
+        showMessage('Enter a valid time, for example 12.345 or 1:02.345.', true);
         return;
       }
       race.laps = race.laps || {};
       race.laps[id] = race.laps[id] || [];
       race.laps[id].push(Number(seconds.toFixed(3)));
-      await saveRace(race, `${studentName(id)} lap added — ${formatLap(seconds)}.`);
+      await saveRace(race, `${studentName(id)} ${terms.attemptNoun} added — ${formatLap(seconds)}.`);
     });
   });
 
@@ -195,12 +233,12 @@ function bindTimeTrialControls(race) {
       const attempts = race.laps?.[id] || [];
       if (!attempts.length) return;
       attempts.pop();
-      await saveRace(race, `${studentName(id)}'s most recent lap was removed.`);
+      await saveRace(race, `${studentName(id)}'s most recent time was removed.`);
     });
   });
 
   const finalizeButton = $('finalizeTimeTrial');
-  if (finalizeButton) finalizeButton.addEventListener('click', () => finalizeWeekOne(race));
+  if (finalizeButton) finalizeButton.addEventListener('click', () => finalizeTimeTrial(race));
 }
 
 function renderTimeTrial(data = latestDocData) {
@@ -208,9 +246,12 @@ function renderTimeTrial(data = latestDocData) {
   const race = parseRace(latestDocData);
   if (!race || race.type !== 'time-trial') return false;
 
+  const weekNumber = Number(race.week || 1);
+  const terms = trialTerms(race);
+  const week = weekInfo(weekNumber);
   emptyRace?.classList.add('hidden');
   const raceMeta = $('raceMeta');
-  if (raceMeta) raceMeta.textContent = 'Week 1 • Time Trial • Fastest lap overall';
+  if (raceMeta) raceMeta.textContent = `Week ${weekNumber} • ${week?.event || terms.event} • Fastest time overall`;
 
   const renderedKey = JSON.stringify(race) + `|admin:${Boolean(currentUser)}` + `|students:${latestDocData?.students?.length || 0}`;
   if (lastRenderedRaceJson === renderedKey && raceDisplay?.querySelector('.time-trial-manager')) return true;
@@ -218,7 +259,7 @@ function renderTimeTrial(data = latestDocData) {
 
   raceDisplay.innerHTML = `<div class="time-trial-manager">
     <div class="race-title">
-      <div><h3>⏱️ Week 1 Time Trial</h3><div class="muted small">Several attempts allowed • fastest single lap wins</div></div>
+      <div><h3>⏱️ ${terms.heading}</h3><div class="muted small">${terms.subtitle}</div></div>
       <span class="time-trial-count">${race.present?.length || 0} drivers</span>
     </div>
     ${renderGroups(race)}
@@ -229,32 +270,33 @@ function renderTimeTrial(data = latestDocData) {
   return true;
 }
 
-async function finalizeWeekOne(race) {
+async function finalizeTimeTrial(race) {
+  const weekNumber = Number(race.week || 1);
   const ranked = rankingFor(race).filter((entry) => entry.best !== null);
   const missing = (race.present || []).filter((id) => bestLap(race, id) === null);
   if (!ranked.length) {
-    showMessage('Add at least one lap time before finishing Week 1.', true);
+    showMessage(`Add at least one time before finishing Week ${weekNumber}.`, true);
     return;
   }
   if (missing.length) {
     const names = missing.map(studentName).join(', ');
-    if (!window.confirm(`${names} do not have a lap time yet. Finish Week 1 without them?`)) return;
+    if (!window.confirm(`${names} do not have a time yet. Finish Week ${weekNumber} without them?`)) return;
   }
-  if (!window.confirm('Use the current fastest-lap order as the official Week 1 result and award championship points?')) return;
+  if (!window.confirm(`Use the current fastest-time order as the official Week ${weekNumber} result and award championship points?`)) return;
 
   try {
     const snapshot = await firestoreModule.getDoc(championshipRef);
     const stored = snapshot.data() || {};
     const weeks = JSON.parse(JSON.stringify(stored.weeks || []));
-    const weekOne = weeks.find((week) => Number(week.number) === 1);
-    if (!weekOne) throw new Error('Week 1 could not be found.');
-    weekOne.places = {};
-    weekOne.points = {};
+    const targetWeek = weeks.find((week) => Number(week.number) === weekNumber);
+    if (!targetWeek) throw new Error(`Week ${weekNumber} could not be found.`);
+    targetWeek.places = {};
+    targetWeek.points = {};
     const scoring = stored.scoring || [10, 8, 6, 5, 4, 3, 2, 1];
     ranked.forEach((entry, index) => {
       const place = index + 1;
-      weekOne.places[entry.id] = place;
-      weekOne.points[entry.id] = Number(scoring[index] ?? 0);
+      targetWeek.places[entry.id] = place;
+      targetWeek.points[entry.id] = Number(scoring[index] ?? 0);
     });
     race.finalizedAt = new Date().toISOString();
     await firestoreModule.setDoc(championshipRef, {
@@ -262,21 +304,21 @@ async function finalizeWeekOne(race) {
       currentRaceJson: JSON.stringify(race),
       updatedAt: new Date().toISOString()
     }, { merge: true });
-    showMessage('Week 1 results and championship points saved.');
+    showMessage(`Week ${weekNumber} results and championship points saved.`);
   } catch (error) {
-    console.error('Could not finalize Week 1:', error);
-    showMessage('Could not save the Week 1 results.', true);
+    console.error(`Could not finalize Week ${weekNumber}:`, error);
+    showMessage(`Could not save the Week ${weekNumber} results.`, true);
   }
 }
 
 function applyFormatUi() {
   if (!raceFormat || !raceWeek || !generateButton) return;
-  const isTimeTrial = raceFormat.value === 'time-trial';
-  if (isTimeTrial) {
-    raceWeek.value = '1';
+  const timeTrialWeek = selectedTimeTrialWeek();
+  if (timeTrialWeek) {
+    raceWeek.value = String(timeTrialWeek);
     raceWeek.disabled = true;
     heatSizeWrap?.classList.add('hidden');
-    generateButton.textContent = '⏱️ Start / Update Time Trial';
+    generateButton.textContent = `⏱️ Start / Update Week ${timeTrialWeek} Time Trial`;
   } else {
     raceWeek.disabled = false;
     generateButton.textContent = "🎲 Generate Today's Races";
@@ -284,7 +326,8 @@ function applyFormatUi() {
 }
 
 async function startTimeTrial(event) {
-  if (raceFormat?.value !== 'time-trial') return;
+  const weekNumber = selectedTimeTrialWeek();
+  if (!weekNumber) return;
   event.preventDefault();
   event.stopImmediatePropagation();
 
@@ -302,25 +345,27 @@ async function startTimeTrial(event) {
     const snapshot = await firestoreModule.getDoc(championshipRef);
     const stored = snapshot.data() || {};
     const existingRace = parseRace(stored);
-    const existingLaps = existingRace?.type === 'time-trial' ? existingRace.laps || {} : {};
+    const sameTrial = existingRace?.type === 'time-trial' && Number(existingRace.week) === weekNumber;
+    const existingLaps = sameTrial ? existingRace.laps || {} : {};
     const laps = {};
     present.forEach((id) => { laps[id] = existingLaps[id] || []; });
 
+    const terms = trialTerms({ week: weekNumber });
     const race = {
       type: 'time-trial',
-      label: 'Week 1 Time Trial — Fastest Lap',
-      week: 1,
+      label: weekNumber === 3 ? 'Week 3 Driving Trial / Obstacle Rally — Fastest Time' : 'Week 1 Time Trial — Fastest Lap',
+      week: weekNumber,
       present,
       groups: chunkFour(present),
       laps,
-      createdAt: existingRace?.type === 'time-trial' ? existingRace.createdAt : new Date().toISOString(),
+      createdAt: sameTrial ? existingRace.createdAt : new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    await saveRace(race, 'Week 1 time trial ready. Add lap times as students complete attempts.');
+    await saveRace(race, `Week ${weekNumber} ${terms.event.toLowerCase()} ready. Add times as students complete attempts.`);
     document.querySelector('[data-tab="race-day"]')?.click();
   } catch (error) {
-    console.error('Could not start time trial:', error);
-    showMessage('Could not start the Week 1 time trial.', true);
+    console.error(`Could not start Week ${weekNumber} time trial:`, error);
+    showMessage(`Could not start the Week ${weekNumber} time trial.`, true);
   }
 }
 
