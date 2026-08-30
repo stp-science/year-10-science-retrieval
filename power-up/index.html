@@ -282,7 +282,7 @@
       height:0;
       background:linear-gradient(to top,#2d7df6 0%,#4fd1ff 56%,#ffe77a 88%,#f6c945 100%);
       box-shadow:0 0 22px rgba(79,209,255,.48);
-      transition:height .95s cubic-bezier(.2,.75,.2,1)
+      transition:height 2.25s cubic-bezier(.2,.75,.2,1)
     }
     .gauge-glow{
       position:absolute;
@@ -703,6 +703,8 @@
       var soundOn = true;
       var audioCtx = null;
       var gameAnimation = null;
+      var musicTimer = null;
+      var musicStep = 0;
       var score = 0;
 
       var switchGrid = document.getElementById("switchGrid");
@@ -781,10 +783,11 @@
 
       function playCharge(level){
         var ratio = level / MAX_POWER;
-        sweep(90,170 + ratio*360,.88,.032);
-        tone(150 + ratio*160,.12,"square",.028,.2);
-        tone(190 + ratio*190,.12,"square",.025,.48);
-        tone(230 + ratio*220,.16,"square",.023,.72);
+        sweep(85,180 + ratio*420,2.15,.028);
+        tone(145 + ratio*150,.14,"square",.022,.35);
+        tone(175 + ratio*175,.14,"square",.022,.82);
+        tone(210 + ratio*205,.14,"square",.022,1.28);
+        tone(245 + ratio*235,.18,"square",.022,1.78);
       }
 
       function playMiss(level){
@@ -801,6 +804,30 @@
         tone(523.25,.48,"sine",.03,.41);
       }
 
+      function stopGameMusic(){
+        if(musicTimer){
+          clearInterval(musicTimer);
+          musicTimer = null;
+        }
+        musicStep = 0;
+      }
+
+      function startGameMusic(){
+        stopGameMusic();
+        if(!soundOn) return;
+        var melody = [523.25,659.25,783.99,659.25,587.33,698.46,880,698.46];
+        var bass = [130.81,130.81,146.83,146.83,164.81,164.81,146.83,146.83];
+        function playBeat(){
+          if(!won || !soundOn){ stopGameMusic(); return; }
+          var i = musicStep % melody.length;
+          tone(melody[i],.16,"square",.025,0);
+          if(i%2===0) tone(bass[i],.28,"triangle",.018,0);
+          musicStep++;
+        }
+        playBeat();
+        musicTimer = setInterval(playBeat,220);
+      }
+
       function setGauge(level,instant){
         var pct = Math.max(0,Math.min(100,(level/MAX_POWER)*100));
         if(instant){
@@ -812,7 +839,7 @@
         }else{
           gaugeFill.style.height = pct+"%";
         }
-        animateReadout(level, instant ? 0 : 900);
+        animateReadout(level, instant ? 0 : 2250);
       }
 
       function animateReadout(target,duration){
@@ -889,7 +916,7 @@
             miss(btn,level);
           }
           busy = false;
-        },1120);
+        },2450);
       }
 
       function miss(btn,level){
@@ -927,6 +954,7 @@
         switches.forEach(function(b){b.disabled=true;});
         playSuccess();
         startArcade();
+        setTimeout(startGameMusic,520);
         burstConfetti();
 
         resultPanel.className = "result-panel winner";
@@ -1056,6 +1084,7 @@
           cancelAnimationFrame(gameAnimation);
           gameAnimation = null;
         }
+        stopGameMusic();
         ctx.clearRect(0,0,canvas.width,canvas.height);
       }
 
@@ -1067,6 +1096,9 @@
           ensureAudio();
           tone(440,.08,"sine",.035,0);
           tone(660,.1,"sine",.03,.08);
+          if(won) setTimeout(startGameMusic,180);
+        }else{
+          stopGameMusic();
         }
       });
 
