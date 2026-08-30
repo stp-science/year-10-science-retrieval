@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10233f">
+  <title>Power Up! Electrical Power Game</title>
+  <style>
+    :root{
+      --ink:#132238;
+      --muted:#6a7587;
+      --navy:#10233f;
+      --blue:#2d7df6;
+      --blue-dark:#1459bd;
+      --cyan:#4fd1ff;
+      --yellow:#f6c945;
+      --yellow-bright:#ffe77a;
+      --green:#2bb673;
+      --red:#ef6262;
+      --orange:#f59e42;
+      --paper:#f7f5ef;
+      --line:#d8dee8;
+      --screen:#07111f;
+    }
+    *{box-sizing:border-box}
+    html{min-width:320px;background:var(--navy)}
+    body{
+      min-height:100vh;
+      margin:0;
+      color:var(--ink);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%,rgba(45,125,246,.08) 0 2px,transparent 3px) 0 0/30px 30px,
+        linear-gradient(145deg,#fbfaf6,#eef2f7);
+    }
+    button{font:inherit}
+    .shell{min-height:100vh;overflow:hidden}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:18px clamp(18px,4vw,58px);
+      border-bottom:1px solid rgba(16,35,63,.1);
+      background:rgba(255,255,255,.82);
+      backdrop-filter:blur(16px);
+    }
+    .brand{display:flex;align-items:center;gap:13px}
+    .brand-mark{
+      display:grid;
+      width:46px;height:46px;
+      place-items:center;
+      border-radius:14px;
+      background:var(--yellow);
+      box-shadow:0 8px 20px rgba(178,139,23,.22);
+      font-size:24px
+    }
+    .eyebrow{
+      margin:0;
+      color:var(--blue-dark);
+      font-size:.7rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase
+    }
+    .brand h1{margin:1px 0 0;font-size:clamp(1.25rem,2.5vw,1.65rem);letter-spacing:-.035em}
+    .actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+    .action-btn{
+      min-height:42px;
+      padding:0 14px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
+      color:var(--ink);
+      cursor:pointer;
+      font-size:.82rem;
+      font-weight:850;
+      box-shadow:0 4px 12px rgba(16,35,63,.07);
+      transition:transform .16s ease,box-shadow .16s ease
+    }
+    .action-btn:hover{transform:translateY(-2px);box-shadow:0 7px 16px rgba(16,35,63,.11)}
+    .new-round{border-color:var(--navy);background:var(--navy);color:#fff}
+    .game-card{
+      width:min(1240px,calc(100% - 32px));
+      margin:28px auto 20px;
+      padding:clamp(22px,3.5vw,42px);
+      border:1px solid rgba(16,35,63,.12);
+      border-radius:30px;
+      background:rgba(255,255,255,.95);
+      box-shadow:0 25px 70px rgba(37,51,74,.14)
+    }
+    .heading{text-align:center}
+    .kicker{
+      margin:0;
+      color:var(--blue-dark);
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase
+    }
+    .heading h2{
+      margin:7px 0 8px;
+      font-size:clamp(2.2rem,5.2vw,4.6rem);
+      line-height:.95;
+      letter-spacing:-.06em
+    }
+    .heading p{
+      max-width:760px;
+      margin:0 auto;
+      color:var(--muted);
+      font-size:clamp(.95rem,1.5vw,1.08rem);
+      font-weight:650
+    }
+    .formula-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:14px;
+      padding:8px 13px;
+      border:1px solid #cfe0fb;
+      border-radius:999px;
+      background:#edf5ff;
+      color:#174f9b;
+      font-size:.82rem;
+      font-weight:900
+    }
+    .stage{
+      display:grid;
+      grid-template-columns:minmax(390px,1.15fr) 220px minmax(340px,.95fr);
+      gap:24px;
+      align-items:stretch;
+      margin-top:30px
+    }
+    .panel{
+      position:relative;
+      min-width:0;
+      border:1px solid #d8e0ea;
+      border-radius:24px;
+      background:#f8fafc;
+      box-shadow:inset 0 1px 0 #fff,0 9px 24px rgba(31,49,73,.08)
+    }
+    .switch-panel{padding:22px}
+    .panel-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:17px
+    }
+    .panel-title h3{margin:0;font-size:1rem;letter-spacing:-.02em}
+    .small-badge{
+      padding:7px 10px;
+      border-radius:999px;
+      background:#eaf2ff;
+      color:var(--blue-dark);
+      font-size:.72rem;
+      font-weight:900
+    }
+    .switch-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px
+    }
+    .power-switch{
+      position:relative;
+      display:flex;
+      min-height:142px;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:9px;
+      padding:13px 8px;
+      overflow:hidden;
+      border:2px solid #cfd9e6;
+      border-radius:18px;
+      background:#fff;
+      color:var(--ink);
+      cursor:pointer;
+      box-shadow:0 7px 0 #dce4ed,0 11px 22px rgba(39,60,87,.09);
+      transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease
+    }
+    .power-switch:not(:disabled):hover{
+      z-index:2;
+      border-color:var(--blue);
+      box-shadow:0 7px 0 #b9cff1,0 15px 26px rgba(45,125,246,.16);
+      transform:translateY(-3px)
+    }
+    .power-switch:not(:disabled):active{box-shadow:0 2px 0 #b9cff1;transform:translateY(4px)}
+    .power-switch:focus-visible{outline:4px solid rgba(45,125,246,.24);outline-offset:3px}
+    .switch-number{
+      position:absolute;
+      top:9px;left:10px;
+      display:grid;
+      width:27px;height:27px;
+      place-items:center;
+      border-radius:8px;
+      background:#eaf2ff;
+      color:var(--blue-dark);
+      font-size:.78rem;
+      font-weight:950
+    }
+    .switch-hardware{
+      position:relative;
+      display:grid;
+      width:54px;height:72px;
+      place-items:center;
+      border:3px solid #233d60;
+      border-radius:26px;
+      background:linear-gradient(#e4ebf2,#cbd6e1);
+      box-shadow:inset 0 3px 8px rgba(16,35,63,.2)
+    }
+    .slot{width:15px;height:47px;border-radius:999px;background:#0e213b}
+    .lever{
+      position:absolute;
+      top:3px;left:50%;
+      width:31px;height:31px;
+      border:3px solid #132238;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 3px 6px rgba(16,35,63,.24);
+      transform:translateX(-50%);
+      transition:transform .18s cubic-bezier(.2,.8,.2,1),background .18s ease
+    }
+    .power-switch.is-chosen .lever{transform:translate(-50%,32px);background:var(--orange)}
+    .power-switch.is-miss{
+      border-color:#e7c3b7;
+      background:#fff9f5;
+      box-shadow:0 5px 0 #ecd7cf;
+      opacity:.78;
+      cursor:default
+    }
+    .power-switch.is-miss .switch-number{background:#f8e1d8;color:#aa563e}
+    .power-switch.is-winner{
+      border-color:#e0ae0d;
+      background:#fff9d6;
+      box-shadow:0 7px 0 #e5b831,0 0 32px rgba(246,201,69,.5)
+    }
+    .power-switch.is-winner .lever{background:var(--yellow-bright)}
+    .switch-label{font-size:.67rem;font-weight:950;letter-spacing:.1em;color:#65748a}
+    .switch-status{min-height:18px;font-size:.72rem;font-weight:900;color:#96a0ae}
+    .is-miss .switch-status{color:#aa563e}
+    .is-winner .switch-status{color:#846300}
+
+    .gauge-panel{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      flex-direction:column;
+      padding:20px 16px 18px;
+      background:linear-gradient(180deg,#10233f,#172e4d);
+      color:#fff
+    }
+    .gauge-panel h3{margin:0;font-size:.95rem}
+    .required{
+      margin:5px 0 12px;
+      color:#b8c7db;
+      font-size:.72rem;
+      font-weight:800
+    }
+    .gauge-wrap{
+      position:relative;
+      width:112px;
+      height:350px;
+      margin:4px auto 13px;
+      padding:13px 27px;
+      border:2px solid #355170;
+      border-radius:28px;
+      background:#091829;
+      box-shadow:inset 0 0 24px rgba(0,0,0,.45),0 8px 18px rgba(0,0,0,.2)
+    }
+    .gauge-track{
+      position:relative;
+      width:56px;height:320px;
+      overflow:hidden;
+      border:3px solid #b9c8db;
+      border-radius:20px;
+      background:linear-gradient(to top,#101b29,#14263c)
+    }
+    .gauge-fill{
+      position:absolute;
+      right:0;bottom:0;left:0;
+      height:0;
+      background:linear-gradient(to top,#2d7df6 0%,#4fd1ff 56%,#ffe77a 88%,#f6c945 100%);
+      box-shadow:0 0 22px rgba(79,209,255,.48);
+      transition:height .95s cubic-bezier(.2,.75,.2,1)
+    }
+    .gauge-glow{
+      position:absolute;
+      right:6px;bottom:6px;left:6px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.85);
+      filter:blur(2px);
+      opacity:.65
+    }
+    .ticks{
+      position:absolute;
+      top:16px;right:-55px;
+      height:316px;
+      color:#b9c8db;
+      font-size:.66rem;
+      font-weight:900
+    }
+    .tick{position:absolute;right:0;white-space:nowrap}
+    .t300{top:-4px;color:var(--yellow-bright)}
+    .t225{top:75px}.t150{top:154px}.t75{top:233px}.t0{bottom:-4px}
+    .power-readout{text-align:center}
+    .power-number{
+      display:block;
+      color:#fff;
+      font-size:2rem;
+      font-weight:950;
+      letter-spacing:-.05em
+    }
+    .power-caption{color:#9eb1ca;font-size:.68rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+    .gauge-panel.full .power-number{color:var(--yellow-bright);text-shadow:0 0 18px rgba(246,201,69,.55)}
+
+    .entertainment{padding:20px;overflow:hidden}
+    .room{
+      position:relative;
+      min-height:482px;
+      padding:10px 8px 0;
+      overflow:hidden;
+      border-radius:18px;
+      background:
+        linear-gradient(#edf1f6 0 69%,#c7b293 69% 72%,#a97e58 72% 100%)
+    }
+    .wall-shadow{
+      position:absolute;
+      top:30px;left:50%;
+      width:310px;height:260px;
+      border-radius:30px;
+      background:radial-gradient(circle,rgba(45,125,246,.09),transparent 68%);
+      transform:translateX(-50%)
+    }
+    .tv{
+      position:relative;
+      width:min(340px,88%);
+      margin:28px auto 0;
+      padding:12px 12px 24px;
+      border:5px solid #1a2534;
+      border-radius:17px;
+      background:linear-gradient(145deg,#3d4c5d,#202c3b);
+      box-shadow:0 17px 28px rgba(20,31,45,.25)
+    }
+    .screen{
+      position:relative;
+      aspect-ratio:16/9;
+      overflow:hidden;
+      border:4px solid #101722;
+      border-radius:8px;
+      background:
+        radial-gradient(circle at 50% 48%,rgba(57,81,108,.12),transparent 48%),
+        #07111f;
+      box-shadow:inset 0 0 28px #000
+    }
+    .screen:after{
+      position:absolute;inset:0;
+      content:"";
+      pointer-events:none;
+      background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(255,255,255,.025) 4px);
+      opacity:.6
+    }
+    .screen-off{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;
+      color:#53657a;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.12em
+    }
+    .off-dot{width:8px;height:8px;border-radius:50%;background:#38485b}
+    .screen-flash{
+      position:absolute;inset:0;
+      background:#d6ebff;
+      opacity:0;
+      pointer-events:none
+    }
+    .tv.flicker .screen-flash{animation:screen-flicker .7s ease}
+    #gameCanvas{display:none;width:100%;height:100%;background:#07111f}
+    .tv.is-on #gameCanvas{display:block}
+    .tv.is-on .screen-off{display:none}
+    .tv-logo{
+      position:absolute;
+      bottom:7px;left:50%;
+      color:#aeb8c4;
+      font-size:.6rem;
+      font-weight:950;
+      letter-spacing:.18em;
+      transform:translateX(-50%)
+    }
+    .tv-led{
+      position:absolute;
+      right:17px;bottom:8px;
+      width:7px;height:7px;
+      border-radius:50%;
+      background:#8b3540;
+      box-shadow:0 0 6px rgba(239,98,98,.4)
+    }
+    .tv.is-on .tv-led{background:#2ee98a;box-shadow:0 0 9px rgba(46,233,138,.9)}
+    .stand{
+      width:110px;height:18px;
+      margin:0 auto;
+      border-radius:0 0 9px 9px;
+      background:#202c3b;
+      box-shadow:0 5px 8px rgba(25,35,49,.2)
+    }
+    .console-table{
+      position:relative;
+      display:flex;
+      width:min(330px,90%);
+      align-items:flex-end;
+      justify-content:center;
+      gap:17px;
+      margin:26px auto 0;
+      padding-bottom:5px
+    }
+    .console{
+      position:relative;
+      width:138px;height:62px;
+      border:4px solid #172335;
+      border-radius:12px;
+      background:linear-gradient(155deg,#34455a,#1a2635);
+      box-shadow:0 10px 18px rgba(18,29,42,.24)
+    }
+    .console:before{
+      position:absolute;
+      top:12px;left:14px;
+      width:70px;height:5px;
+      border-radius:99px;
+      background:#0e1723;
+      content:""
+    }
+    .console-led{
+      position:absolute;
+      top:15px;right:15px;
+      width:8px;height:8px;
+      border-radius:50%;
+      background:#713a42;
+      transition:background .2s ease,box-shadow .2s ease
+    }
+    .console.is-on .console-led{background:#2ee98a;box-shadow:0 0 10px rgba(46,233,138,.9)}
+    .console.flicker .console-led{animation:console-flicker .72s ease}
+    .controller{
+      position:relative;
+      width:90px;height:48px;
+      border:4px solid #182536;
+      border-radius:23px 23px 18px 18px;
+      background:#d5dde7;
+      box-shadow:0 8px 13px rgba(18,29,42,.18)
+    }
+    .dpad:before,.dpad:after{
+      position:absolute;
+      content:"";
+      background:#25384e;
+      border-radius:2px
+    }
+    .dpad:before{left:17px;top:12px;width:22px;height:8px}
+    .dpad:after{left:24px;top:5px;width:8px;height:22px}
+    .buttons:before,.buttons:after{
+      position:absolute;
+      top:12px;
+      width:9px;height:9px;
+      border-radius:50%;
+      background:#ef6262;
+      content:""
+    }
+    .buttons:before{right:23px}.buttons:after{right:10px;top:20px;background:#2d7df6}
+    .cable{
+      position:absolute;
+      top:-25px;right:55px;
+      width:48px;height:28px;
+      border-top:3px solid #263b52;
+      border-right:3px solid #263b52;
+      border-radius:0 18px 0 0
+    }
+    .power-status{
+      position:absolute;
+      right:18px;bottom:15px;left:18px;
+      min-height:56px;
+      padding:11px 13px;
+      border:1px solid rgba(16,35,63,.1);
+      border-radius:13px;
+      background:rgba(255,255,255,.86);
+      text-align:center;
+      backdrop-filter:blur(7px)
+    }
+    .power-status strong{display:block;font-size:.86rem}
+    .power-status span{display:block;margin-top:3px;color:#6e7a89;font-size:.7rem;font-weight:750}
+    .power-status.success{border-color:#b7e7cd;background:rgba(239,255,246,.92)}
+    .power-status.success strong{color:#117044}
+    .power-status.miss{border-color:#f0d0c3;background:rgba(255,248,244,.92)}
+    .power-status.miss strong{color:#9c4b34}
+
+    .result-panel{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      gap:14px;
+      min-height:82px;
+      margin-top:24px;
+      padding:15px 18px;
+      border:1px solid #d7e0ec;
+      border-radius:18px;
+      background:#f5f8fc
+    }
+    .result-icon{
+      display:grid;
+      width:48px;height:48px;
+      place-items:center;
+      border-radius:14px;
+      background:#e5edf7;
+      color:#5c6d83;
+      font-size:1.45rem;
+      font-weight:950
+    }
+    .result-label{
+      margin:0;
+      color:var(--blue-dark);
+      font-size:.67rem;
+      font-weight:900;
+      letter-spacing:.13em;
+      text-transform:uppercase
+    }
+    .result-panel h3{margin:3px 0 0;font-size:clamp(.98rem,2vw,1.2rem)}
+    .tries{color:#718096;font-size:.78rem;font-weight:850;white-space:nowrap}
+    .result-panel.miss{border-color:#eccfc4;background:#fff8f5}
+    .result-panel.miss .result-icon{background:#f8e2d9;color:#a9533b}
+    .result-panel.winner{
+      border-color:#e6c452;
+      background:#fff9dc;
+      box-shadow:0 10px 30px rgba(182,137,0,.13)
+    }
+    .result-panel.winner .result-icon{background:var(--yellow);color:#5d4700}
+    footer{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      padding:0 20px 28px;
+      color:#627086;
+      font-size:.76rem;
+      font-weight:820;
+      text-align:center
+    }
+    .confetti{position:fixed;z-index:30;inset:0;overflow:hidden;pointer-events:none}
+    .confetti span{
+      position:absolute;
+      top:-20px;
+      width:10px;height:18px;
+      border-radius:2px;
+      animation:confetti-fall ease-in forwards
+    }
+    @keyframes confetti-fall{from{transform:translateY(-20px) rotate(0)}to{transform:translateY(110vh) rotate(780deg)}}
+    @keyframes screen-flicker{0%,100%{opacity:0}18%{opacity:.82}30%{opacity:.06}42%{opacity:.52}55%{opacity:.02}}
+    @keyframes console-flicker{0%,100%{background:#713a42;box-shadow:none}20%{background:#f59e42;box-shadow:0 0 10px rgba(245,158,66,.8)}45%{background:#713a42}60%{background:#f59e42}}
+    @media(max-width:1050px){
+      .stage{grid-template-columns:minmax(390px,1fr) 190px}
+      .entertainment{grid-column:1/-1}
+      .room{min-height:440px}
+    }
+    @media(max-width:720px){
+      .topbar{padding:13px 14px}
+      .eyebrow{display:none}
+      .brand-mark{width:39px;height:39px;border-radius:11px}
+      .action-btn{padding:0 11px}
+      .game-card{width:calc(100% - 18px);margin-top:12px;padding:20px 12px;border-radius:23px}
+      .stage{display:block}
+      .gauge-panel,.entertainment{margin-top:15px}
+      .switch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .power-switch{min-height:126px}
+      .gauge-wrap{height:285px}
+      .gauge-track{height:255px}
+      .ticks{height:251px}
+      .t225{top:58px}.t150{top:120px}.t75{top:182px}
+      .room{min-height:445px}
+      .result-panel{grid-template-columns:auto 1fr}
+      .tries{grid-column:1/-1;text-align:center}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⚡</span>
+        <div>
+          <p class="eyebrow">Year 10 Electricity</p>
+          <h1>Power Up!</h1>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn" id="soundBtn" type="button" aria-pressed="true">🔊 Sound on</button>
+        <button class="action-btn" id="fullBtn" type="button">⛶ Full screen</button>
+        <button class="action-btn new-round" id="newRoundBtn" type="button">↻ New round</button>
+      </div>
+    </header>
+
+    <section class="game-card">
+      <div class="heading">
+        <p class="kicker">Electrical Power Challenge</p>
+        <h2>Find the full-power switch.</h2>
+        <p>Get a question right, then choose one of the six switches. Only one delivers enough electrical power to turn on the console and TV.</p>
+        <div class="formula-chip">Power = Current × Voltage &nbsp; • &nbsp; P = I × V</div>
+      </div>
+
+      <div class="stage">
+        <section class="panel switch-panel" aria-label="Power switches">
+          <div class="panel-title">
+            <h3>Power switches</h3>
+            <span class="small-badge">Choose one after a correct answer</span>
+          </div>
+          <div class="switch-grid" id="switchGrid"></div>
+        </section>
+
+        <section class="panel gauge-panel" id="gaugePanel" aria-label="Power output gauge">
+          <h3>POWER OUTPUT</h3>
+          <p class="required">300 W needed</p>
+          <div class="gauge-wrap">
+            <div class="gauge-track">
+              <div class="gauge-fill" id="gaugeFill"><span class="gauge-glow"></span></div>
+            </div>
+            <div class="ticks" aria-hidden="true">
+              <span class="tick t300">300 W</span>
+              <span class="tick t225">225</span>
+              <span class="tick t150">150</span>
+              <span class="tick t75">75</span>
+              <span class="tick t0">0</span>
+            </div>
+          </div>
+          <div class="power-readout" aria-live="polite">
+            <span class="power-number" id="powerNumber">0 W</span>
+            <span class="power-caption">Electrical power</span>
+          </div>
+        </section>
+
+        <section class="panel entertainment" aria-label="Games console and television">
+          <div class="room">
+            <div class="wall-shadow"></div>
+            <div class="tv" id="tv">
+              <div class="screen">
+                <div class="screen-off" id="screenOff">
+                  <span class="off-dot"></span>
+                  <span>NO POWER</span>
+                </div>
+                <div class="screen-flash"></div>
+                <canvas id="gameCanvas" width="640" height="360" aria-label="Animated arcade game"></canvas>
+              </div>
+              <span class="tv-logo">TNT ARCADE</span>
+              <span class="tv-led"></span>
+            </div>
+            <div class="stand"></div>
+
+            <div class="console-table">
+              <div class="console" id="console">
+                <span class="console-led"></span>
+              </div>
+              <div class="controller">
+                <span class="dpad"></span>
+                <span class="buttons"></span>
+                <span class="cable"></span>
+              </div>
+            </div>
+
+            <div class="power-status" id="deviceStatus">
+              <strong>Console OFF • TV OFF</strong>
+              <span>Find the switch that reaches 300 W.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="result-panel" id="resultPanel" aria-live="polite">
+        <div class="result-icon" id="resultIcon">?</div>
+        <div>
+          <p class="result-label" id="resultLabel">Ready</p>
+          <h3 id="resultText">Get a question right, then choose a switch.</h3>
+        </div>
+        <div class="tries" id="tries">0 / 6 tested</div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Correct answer → choose a switch → watch the power gauge → find 300 W → GAME ON!</span>
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+
+      var MAX_POWER = 300;
+      var wrongLevels = [60,100,150,200,250];
+      var switches = [];
+      var tested = 0;
+      var busy = false;
+      var won = false;
+      var soundOn = true;
+      var audioCtx = null;
+      var gameAnimation = null;
+      var score = 0;
+
+      var switchGrid = document.getElementById("switchGrid");
+      var gaugeFill = document.getElementById("gaugeFill");
+      var powerNumber = document.getElementById("powerNumber");
+      var gaugePanel = document.getElementById("gaugePanel");
+      var tv = document.getElementById("tv");
+      var consoleBox = document.getElementById("console");
+      var deviceStatus = document.getElementById("deviceStatus");
+      var resultPanel = document.getElementById("resultPanel");
+      var resultIcon = document.getElementById("resultIcon");
+      var resultLabel = document.getElementById("resultLabel");
+      var resultText = document.getElementById("resultText");
+      var tries = document.getElementById("tries");
+      var soundBtn = document.getElementById("soundBtn");
+      var fullBtn = document.getElementById("fullBtn");
+      var newRoundBtn = document.getElementById("newRoundBtn");
+      var confetti = document.getElementById("confetti");
+      var canvas = document.getElementById("gameCanvas");
+      var ctx = canvas.getContext("2d");
+
+      function shuffle(list){
+        var a = list.slice();
+        for(var i=a.length-1;i>0;i--){
+          var j = Math.floor(Math.random()*(i+1));
+          var t=a[i]; a[i]=a[j]; a[j]=t;
+        }
+        return a;
+      }
+
+      function ensureAudio(){
+        if(!soundOn) return null;
+        if(!audioCtx){
+          var AC = window.AudioContext || window.webkitAudioContext;
+          if(!AC) return null;
+          audioCtx = new AC();
+        }
+        if(audioCtx.state === "suspended") audioCtx.resume();
+        return audioCtx;
+      }
+
+      function tone(freq,duration,type,volume,delay){
+        var ac = ensureAudio();
+        if(!ac) return;
+        var start = ac.currentTime + (delay || 0);
+        var osc = ac.createOscillator();
+        var gain = ac.createGain();
+        osc.type = type || "sine";
+        osc.frequency.setValueAtTime(freq,start);
+        gain.gain.setValueAtTime(0.0001,start);
+        gain.gain.exponentialRampToValueAtTime(volume || 0.05,start+0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001,start+duration);
+        osc.connect(gain);
+        gain.connect(ac.destination);
+        osc.start(start);
+        osc.stop(start+duration+0.03);
+      }
+
+      function sweep(startFreq,endFreq,duration,volume){
+        var ac = ensureAudio();
+        if(!ac) return;
+        var start = ac.currentTime;
+        var osc = ac.createOscillator();
+        var gain = ac.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(startFreq,start);
+        osc.frequency.exponentialRampToValueAtTime(endFreq,start+duration);
+        gain.gain.setValueAtTime(0.0001,start);
+        gain.gain.exponentialRampToValueAtTime(volume || 0.035,start+0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001,start+duration);
+        osc.connect(gain);
+        gain.connect(ac.destination);
+        osc.start(start);
+        osc.stop(start+duration+0.03);
+      }
+
+      function playCharge(level){
+        var ratio = level / MAX_POWER;
+        sweep(90,170 + ratio*360,.88,.032);
+        tone(150 + ratio*160,.12,"square",.028,.2);
+        tone(190 + ratio*190,.12,"square",.025,.48);
+        tone(230 + ratio*220,.16,"square",.023,.72);
+      }
+
+      function playMiss(level){
+        var ratio = level / MAX_POWER;
+        tone(210 + ratio*110,.18,"triangle",.045,0);
+        tone(155,.24,"sine",.038,.17);
+      }
+
+      function playSuccess(){
+        tone(392,.18,"square",.05,0);
+        tone(523.25,.18,"square",.05,.13);
+        tone(659.25,.2,"square",.05,.26);
+        tone(783.99,.35,"triangle",.06,.39);
+        tone(523.25,.48,"sine",.03,.41);
+      }
+
+      function setGauge(level,instant){
+        var pct = Math.max(0,Math.min(100,(level/MAX_POWER)*100));
+        if(instant){
+          var old = gaugeFill.style.transition;
+          gaugeFill.style.transition = "none";
+          gaugeFill.style.height = pct+"%";
+          gaugeFill.offsetHeight;
+          gaugeFill.style.transition = old || "";
+        }else{
+          gaugeFill.style.height = pct+"%";
+        }
+        animateReadout(level, instant ? 0 : 900);
+      }
+
+      function animateReadout(target,duration){
+        var startValue = parseInt(powerNumber.textContent,10) || 0;
+        if(!duration){
+          powerNumber.textContent = target+" W";
+          return;
+        }
+        var start = performance.now();
+        function step(now){
+          var p = Math.min(1,(now-start)/duration);
+          var eased = 1-Math.pow(1-p,3);
+          var value = Math.round(startValue + (target-startValue)*eased);
+          powerNumber.textContent = value+" W";
+          if(p<1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      function buildSwitches(){
+        switchGrid.innerHTML = "";
+        var levels = shuffle(wrongLevels.concat([MAX_POWER]));
+        switches = levels.map(function(level,index){
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "power-switch";
+          btn.dataset.level = String(level);
+          btn.setAttribute("aria-label","Power switch "+(index+1));
+          btn.innerHTML =
+            '<span class="switch-number">'+(index+1)+'</span>'+
+            '<span class="switch-hardware"><span class="slot"></span><span class="lever"></span></span>'+
+            '<span class="switch-label">POWER SWITCH</span>'+
+            '<span class="switch-status">READY</span>';
+          btn.addEventListener("click",function(){chooseSwitch(btn);});
+          switchGrid.appendChild(btn);
+          return btn;
+        });
+      }
+
+      function chooseSwitch(btn){
+        if(busy || won || btn.disabled) return;
+        busy = true;
+        ensureAudio();
+        tested += 1;
+        updateTries();
+
+        var level = Number(btn.dataset.level);
+        btn.disabled = true;
+        btn.classList.add("is-chosen");
+        btn.querySelector(".switch-status").textContent = "TESTING";
+
+        resultPanel.className = "result-panel";
+        resultIcon.textContent = "⚡";
+        resultLabel.textContent = "Powering up";
+        resultText.textContent = "Electrical power is building...";
+        deviceStatus.className = "power-status";
+        deviceStatus.innerHTML = "<strong>Testing power supply...</strong><span>Watch the gauge.</span>";
+
+        gaugePanel.classList.remove("full");
+        tv.classList.remove("is-on");
+        consoleBox.classList.remove("is-on");
+        stopArcade();
+
+        setGauge(0,true);
+        setTimeout(function(){
+          setGauge(level,false);
+          playCharge(level);
+        },90);
+
+        setTimeout(function(){
+          if(level === MAX_POWER){
+            win(btn);
+          }else{
+            miss(btn,level);
+          }
+          busy = false;
+        },1120);
+      }
+
+      function miss(btn,level){
+        btn.classList.add("is-miss");
+        btn.querySelector(".switch-status").textContent = level+" W";
+        playMiss(level);
+
+        tv.classList.remove("flicker");
+        consoleBox.classList.remove("flicker");
+        void tv.offsetWidth;
+        tv.classList.add("flicker");
+        consoleBox.classList.add("flicker");
+
+        resultPanel.className = "result-panel miss";
+        resultIcon.textContent = "↯";
+        resultLabel.textContent = "Not enough power";
+        resultText.textContent = level+" W is not enough. Get another question right and try a different switch.";
+
+        deviceStatus.className = "power-status miss";
+        deviceStatus.innerHTML = "<strong>"+level+" W — not enough power</strong><span>The console tried to start, but the supply dropped out.</span>";
+
+        setTimeout(function(){
+          tv.classList.remove("flicker");
+          consoleBox.classList.remove("flicker");
+        },760);
+      }
+
+      function win(btn){
+        won = true;
+        btn.classList.add("is-winner");
+        btn.querySelector(".switch-status").textContent = "300 W";
+        gaugePanel.classList.add("full");
+        tv.classList.add("is-on");
+        consoleBox.classList.add("is-on");
+        switches.forEach(function(b){b.disabled=true;});
+        playSuccess();
+        startArcade();
+        burstConfetti();
+
+        resultPanel.className = "result-panel winner";
+        resultIcon.textContent = "★";
+        resultLabel.textContent = "Full power";
+        resultText.textContent = "300 W reached — console online, TV online... GAME ON!";
+
+        deviceStatus.className = "power-status success";
+        deviceStatus.innerHTML = "<strong>300 W — FULL POWER</strong><span>Console ON • TV ON • Game running</span>";
+      }
+
+      function updateTries(){
+        tries.textContent = tested+" / 6 tested";
+      }
+
+      function resetRound(){
+        won = false;
+        busy = false;
+        tested = 0;
+        updateTries();
+        stopArcade();
+        buildSwitches();
+        setGauge(0,true);
+        gaugePanel.classList.remove("full");
+        tv.className = "tv";
+        consoleBox.className = "console";
+        deviceStatus.className = "power-status";
+        deviceStatus.innerHTML = "<strong>Console OFF • TV OFF</strong><span>Find the switch that reaches 300 W.</span>";
+        resultPanel.className = "result-panel";
+        resultIcon.textContent = "?";
+        resultLabel.textContent = "Ready";
+        resultText.textContent = "Get a question right, then choose a switch.";
+        confetti.innerHTML = "";
+      }
+
+      function burstConfetti(){
+        confetti.innerHTML = "";
+        var colours = ["#2d7df6","#f6c945","#ef6262","#2bb673","#4fd1ff","#7c5ce0"];
+        for(var i=0;i<72;i++){
+          var piece = document.createElement("span");
+          piece.style.left = (Math.random()*100)+"vw";
+          piece.style.background = colours[Math.floor(Math.random()*colours.length)];
+          piece.style.animationDuration = (2.2+Math.random()*2)+"s";
+          piece.style.animationDelay = (Math.random()*.4)+"s";
+          piece.style.transform = "rotate("+(Math.random()*180)+"deg)";
+          confetti.appendChild(piece);
+        }
+        setTimeout(function(){confetti.innerHTML="";},4700);
+      }
+
+      function startArcade(){
+        stopArcade();
+        score = 0;
+        var stars = [];
+        for(var i=0;i<42;i++){
+          stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,s:1+Math.random()*2,v:1+Math.random()*2.4});
+        }
+        var obstacles = [
+          {x:690,y:90,w:34,h:34},
+          {x:900,y:235,w:42,h:42},
+          {x:1120,y:145,w:28,h:28}
+        ];
+        var t0 = performance.now();
+
+        function draw(now){
+          var t = (now-t0)/1000;
+          ctx.fillStyle = "#06111f";
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+
+          stars.forEach(function(st){
+            st.x -= st.v*2.2;
+            if(st.x < -4){st.x=canvas.width+4;st.y=Math.random()*canvas.height;}
+            ctx.fillStyle = st.s>2.2 ? "#a8e7ff" : "#4a6f91";
+            ctx.fillRect(st.x,st.y,st.s,st.s);
+          });
+
+          ctx.fillStyle = "#143557";
+          ctx.fillRect(0,292,canvas.width,68);
+          ctx.fillStyle = "#1d4d76";
+          for(var lx=0;lx<canvas.width;lx+=62){
+            ctx.fillRect((lx - (t*90)%62),320,34,5);
+          }
+
+          var shipY = 210 + Math.sin(t*3.2)*28;
+          ctx.save();
+          ctx.translate(110,shipY);
+          ctx.fillStyle = "#f6c945";
+          ctx.beginPath();
+          ctx.moveTo(34,0);ctx.lineTo(-18,-17);ctx.lineTo(-7,0);ctx.lineTo(-18,17);ctx.closePath();ctx.fill();
+          ctx.fillStyle = "#4fd1ff";
+          ctx.fillRect(-22,-5,16,10);
+          ctx.fillStyle = "#ff8b4d";
+          ctx.fillRect(-34,-3,13,6);
+          ctx.restore();
+
+          obstacles.forEach(function(o,idx){
+            o.x -= 2.4 + idx*.18;
+            if(o.x < -60){
+              o.x = canvas.width + 180 + Math.random()*260;
+              o.y = 80 + Math.random()*175;
+              score += 100;
+            }
+            ctx.fillStyle = idx%2 ? "#ef6262" : "#7c5ce0";
+            ctx.fillRect(o.x,o.y,o.w,o.h);
+            ctx.fillStyle = "rgba(255,255,255,.26)";
+            ctx.fillRect(o.x+5,o.y+5,o.w*.35,5);
+          });
+
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "900 24px system-ui";
+          ctx.fillText("POWER QUEST",24,38);
+          ctx.fillStyle = "#4fd1ff";
+          ctx.font = "800 16px ui-monospace,monospace";
+          ctx.fillText("SCORE "+String(score+Math.floor(t*13)).padStart(5,"0"),455,37);
+
+          ctx.fillStyle = "#f6c945";
+          ctx.font = "900 13px system-ui";
+          ctx.fillText("300 W • FULL POWER",24,65);
+
+          gameAnimation = requestAnimationFrame(draw);
+        }
+        gameAnimation = requestAnimationFrame(draw);
+      }
+
+      function stopArcade(){
+        if(gameAnimation){
+          cancelAnimationFrame(gameAnimation);
+          gameAnimation = null;
+        }
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+      }
+
+      soundBtn.addEventListener("click",function(){
+        soundOn = !soundOn;
+        soundBtn.setAttribute("aria-pressed",String(soundOn));
+        soundBtn.textContent = soundOn ? "🔊 Sound on" : "🔇 Sound off";
+        if(soundOn){
+          ensureAudio();
+          tone(440,.08,"sine",.035,0);
+          tone(660,.1,"sine",.03,.08);
+        }
+      });
+
+      fullBtn.addEventListener("click",function(){
+        if(!document.fullscreenElement){
+          document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+        }else{
+          document.exitFullscreen && document.exitFullscreen();
+        }
+      });
+
+      document.addEventListener("fullscreenchange",function(){
+        fullBtn.textContent = document.fullscreenElement ? "↙ Exit full screen" : "⛶ Full screen";
+      });
+
+      newRoundBtn.addEventListener("click",function(){
+        resetRound();
+        if(soundOn){
+          tone(330,.08,"sine",.025,0);
+          tone(440,.09,"sine",.025,.08);
+        }
+      });
+
+      resetRound();
+    })();
+  </script>
+</body>
+</html>
