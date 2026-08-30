@@ -282,7 +282,7 @@
       height:0;
       background:linear-gradient(to top,#2d7df6 0%,#4fd1ff 56%,#ffe77a 88%,#f6c945 100%);
       box-shadow:0 0 22px rgba(79,209,255,.48);
-      transition:height 2.25s cubic-bezier(.2,.75,.2,1)
+      transition:height 4.6s cubic-bezier(.12,.72,.18,1)
     }
     .gauge-glow{
       position:absolute;
@@ -783,11 +783,13 @@
 
       function playCharge(level){
         var ratio = level / MAX_POWER;
-        sweep(85,180 + ratio*420,2.15,.028);
-        tone(145 + ratio*150,.14,"square",.022,.35);
-        tone(175 + ratio*175,.14,"square",.022,.82);
-        tone(210 + ratio*205,.14,"square",.022,1.28);
-        tone(245 + ratio*235,.18,"square",.022,1.78);
+        sweep(75,165 + ratio*470,4.35,.026);
+        tone(130 + ratio*130,.12,"square",.018,.55);
+        tone(155 + ratio*155,.12,"square",.019,1.20);
+        tone(185 + ratio*185,.12,"square",.020,1.90);
+        tone(220 + ratio*220,.13,"square",.021,2.65);
+        tone(265 + ratio*255,.14,"square",.022,3.35);
+        tone(320 + ratio*300,.18,"square",.023,4.00);
       }
 
       function playMiss(level){
@@ -815,17 +817,41 @@
       function startGameMusic(){
         stopGameMusic();
         if(!soundOn) return;
-        var melody = [523.25,659.25,783.99,659.25,587.33,698.46,880,698.46];
-        var bass = [130.81,130.81,146.83,146.83,164.81,164.81,146.83,146.83];
+
+        // Original chiptune-style loop generated in-browser with Web Audio.
+        // It starts only when the correct switch reaches full power.
+        var melody = [
+          659.25,783.99,987.77,783.99,
+          698.46,880.00,1046.50,880.00,
+          587.33,739.99,880.00,739.99,
+          523.25,659.25,783.99,987.77
+        ];
+        var bass = [
+          130.81,130.81,164.81,164.81,
+          146.83,146.83,174.61,174.61,
+          123.47,123.47,146.83,146.83,
+          130.81,130.81,164.81,196.00
+        ];
+
         function playBeat(){
           if(!won || !soundOn){ stopGameMusic(); return; }
           var i = musicStep % melody.length;
-          tone(melody[i],.16,"square",.025,0);
-          if(i%2===0) tone(bass[i],.28,"triangle",.018,0);
+
+          tone(melody[i],.12,"square",.024,0);
+          tone(melody[i]*2,.06,"square",.008,.035);
+
+          if(i%2===0){
+            tone(bass[i],.30,"triangle",.020,0);
+          }
+          if(i%4===3){
+            tone(110,.055,"square",.012,.02);
+          }
+
           musicStep++;
         }
+
         playBeat();
-        musicTimer = setInterval(playBeat,220);
+        musicTimer = setInterval(playBeat,165);
       }
 
       function setGauge(level,instant){
@@ -839,7 +865,7 @@
         }else{
           gaugeFill.style.height = pct+"%";
         }
-        animateReadout(level, instant ? 0 : 2250);
+        animateReadout(level, instant ? 0 : 4600);
       }
 
       function animateReadout(target,duration){
@@ -916,7 +942,7 @@
             miss(btn,level);
           }
           busy = false;
-        },2450);
+        },4850);
       }
 
       function miss(btn,level){
@@ -954,7 +980,7 @@
         switches.forEach(function(b){b.disabled=true;});
         playSuccess();
         startArcade();
-        setTimeout(startGameMusic,520);
+        setTimeout(startGameMusic,650);
         burstConfetti();
 
         resultPanel.className = "result-panel winner";
