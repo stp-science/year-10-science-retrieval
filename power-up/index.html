@@ -792,6 +792,14 @@
         tone(320 + ratio*300,.18,"square",.023,4.00);
       }
 
+      function playDrop(level){
+        var ratio = level / MAX_POWER;
+        sweep(620,170 + ratio*120,2.0,.032);
+        tone(330,.12,"square",.022,.35);
+        tone(250,.12,"square",.022,.85);
+        tone(185,.18,"triangle",.026,1.45);
+      }
+
       function playMiss(level){
         var ratio = level / MAX_POWER;
         tone(210 + ratio*110,.18,"triangle",.045,0);
@@ -854,18 +862,18 @@
         musicTimer = setInterval(playBeat,165);
       }
 
-      function setGauge(level,instant){
+      function setGauge(level,instant,duration){
         var pct = Math.max(0,Math.min(100,(level/MAX_POWER)*100));
+        var ms = typeof duration === "number" ? duration : 4600;
         if(instant){
-          var old = gaugeFill.style.transition;
           gaugeFill.style.transition = "none";
           gaugeFill.style.height = pct+"%";
           gaugeFill.offsetHeight;
-          gaugeFill.style.transition = old || "";
         }else{
+          gaugeFill.style.transition = "height "+(ms/1000)+"s cubic-bezier(.12,.72,.18,1)";
           gaugeFill.style.height = pct+"%";
         }
-        animateReadout(level, instant ? 0 : 4600);
+        animateReadout(level, instant ? 0 : ms);
       }
 
       function animateReadout(target,duration){
@@ -931,17 +939,53 @@
 
         setGauge(0,true);
         setTimeout(function(){
-          setGauge(level,false);
-          playCharge(level);
+          // Every switch appears to reach full power first.
+          // Wrong switches then lose power after a short cliff-hanger pause.
+          setGauge(MAX_POWER,false,4600);
+          playCharge(MAX_POWER);
         },90);
 
         setTimeout(function(){
+          gaugePanel.classList.add("full");
+          btn.querySelector(".switch-status").textContent = "300 W?";
+          resultIcon.textContent = "⚡";
+          resultLabel.textContent = "Full power?";
+          resultText.textContent = "300 W reached... will it hold?";
+          deviceStatus.className = "power-status";
+          deviceStatus.innerHTML = "<strong>300 W reached...</strong><span>Will the console stay powered?</span>";
+
+          tv.classList.remove("flicker");
+          consoleBox.classList.remove("flicker");
+          void tv.offsetWidth;
+          tv.classList.add("flicker");
+          consoleBox.classList.add("flicker");
+
           if(level === MAX_POWER){
-            win(btn);
+            setTimeout(function(){
+              tv.classList.remove("flicker");
+              consoleBox.classList.remove("flicker");
+              win(btn);
+              busy = false;
+            },1050);
           }else{
-            miss(btn,level);
+            setTimeout(function(){
+              gaugePanel.classList.remove("full");
+              btn.querySelector(".switch-status").textContent = "DROPPING";
+              resultLabel.textContent = "Power dropping!";
+              resultText.textContent = "Oh no — the power will not hold.";
+              deviceStatus.className = "power-status miss";
+              deviceStatus.innerHTML = "<strong>Power supply unstable</strong><span>The voltage is collapsing...</span>";
+              playDrop(level);
+              setGauge(level,false,2200);
+
+              setTimeout(function(){
+                tv.classList.remove("flicker");
+                consoleBox.classList.remove("flicker");
+                miss(btn,level);
+                busy = false;
+              },2350);
+            },1050);
           }
-          busy = false;
         },4850);
       }
 
