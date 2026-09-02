@@ -159,6 +159,7 @@ const liveWeek4 = data.currentRace?.type === 'week4-seeded-head-to-head' && Numb
 ? data.currentRace
 : null;
 const week4Ids = [...new Set([
+...(week.participants || []),
 ...(liveWeek4?.present || []),
 ...pointOnly.map((entry) => entry.id)
 ])];
