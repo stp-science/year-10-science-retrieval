@@ -15,6 +15,8 @@ const FASTEST_LAP_BONUS = 4;
 const RACE_DURATION_SECONDS = 570;
 const DRIVE_STINT_SECONDS = 150;
 const PIT_STOP_SECONDS = 60;
+const TEACHER_ID = 'teacher-mr-lea';
+const TEACHER_NAME = 'Mr Lea';
 
 let latestData = null;
 let auth = null;
@@ -55,7 +57,36 @@ function parseRace(source = latestData) {
 }
 
 function studentName(id) {
+  if (id === TEACHER_ID) return TEACHER_NAME;
   return latestData?.students?.find((student) => student.id === id)?.name || 'Unknown driver';
+}
+
+function isChampionshipDriver(id) {
+  return id !== TEACHER_ID;
+}
+
+function ensureTeacherOption() {
+  const attendanceList = $('attendanceList');
+  if (!attendanceList) return;
+
+  const existing = $('week5TeacherFillWrap');
+  if (formatSelect?.value !== FORMAT) {
+    existing?.remove();
+    return;
+  }
+  if (existing) return;
+
+  const wrap = document.createElement('div');
+  wrap.id = 'week5TeacherFillWrap';
+  wrap.style.marginTop = '10px';
+  wrap.innerHTML = `
+    <label class="attendance-item" style="border-top:1px solid rgba(255,255,255,.12);padding-top:10px;">
+      <input id="week5TeacherFill" type="checkbox" />
+      <span><strong>${TEACHER_NAME}</strong> <span class="muted small">(teacher fill-in — no championship points)</span></span>
+    </label>
+    <div class="muted small" style="margin-top:6px;">Tick Mr Lea when an odd number of students are racing. He will be used to balance one relay team but is excluded from all championship points.</div>
+  `;
+  attendanceList.appendChild(wrap);
 }
 
 function injectOption() {
@@ -75,11 +106,13 @@ function applyUi() {
     raceWeek.disabled = true;
     heatSizeWrap?.classList.add('hidden');
     generateButton.textContent = '🏁 Generate Week 5 Relay Teams';
+    ensureTeacherOption();
   } else {
     if (raceWeek.disabled && raceWeek.value === String(WEEK)) raceWeek.disabled = false;
     if (generateButton.textContent === '🏁 Generate Week 5 Relay Teams') {
       generateButton.textContent = "🎲 Generate Today's Races";
     }
+    ensureTeacherOption();
   }
 }
 
@@ -202,8 +235,8 @@ function rankSpreadPenalty(teams, seedOrder) {
   return penalty;
 }
 
-function generateBalancedTeams(seedOrder, raceIndex, avoidPairs = new Set()) {
-  const teamCount = teamCountFor(seedOrder.length);
+function generateBalancedTeams(seedOrder, raceIndex, avoidPairs = new Set(), participantCount = seedOrder.length) {
+  const teamCount = teamCountFor(participantCount);
   if (teamCount < 2) return [];
 
   let best = null;
@@ -224,6 +257,24 @@ function generateBalancedTeams(seedOrder, raceIndex, avoidPairs = new Set()) {
   }
 
   return best || [];
+}
+
+function addTeacherToTeam(teams, previousTeacherMates = new Set()) {
+  if (!teams.length) return teams;
+  const minSize = Math.min(...teams.map((team) => team.members.length));
+  const candidates = teams.filter((team) => team.members.length === minSize);
+  candidates.sort((a, b) => {
+    const repeatA = a.members.filter((id) => previousTeacherMates.has(id)).length;
+    const repeatB = b.members.filter((id) => previousTeacherMates.has(id)).length;
+    return repeatA - repeatB;
+  });
+  candidates[0].members.push(TEACHER_ID);
+  return teams;
+}
+
+function teacherMates(teams) {
+  const team = teams.find((item) => item.members.includes(TEACHER_ID));
+  return new Set((team?.members || []).filter((id) => id !== TEACHER_ID));
 }
 
 function parseTime(raw) {
@@ -293,14 +344,14 @@ function resultPointsForRace(relayRace, scoring) {
   ranking.forEach((entry, index) => {
     if (entry.laps === null) return;
     const points = Number(scoring[index] ?? 0);
-    entry.team.members.forEach((studentId) => {
+    entry.team.members.filter(isChampionshipDriver).forEach((studentId) => {
       byStudent[studentId] = Number(byStudent[studentId] || 0) + points;
     });
   });
 
   const fastest = fastestTeam(relayRace);
   if (fastest) {
-    fastest.team.members.forEach((studentId) => {
+    fastest.team.members.filter(isChampionshipDriver).forEach((studentId) => {
       byStudent[studentId] = Number(byStudent[studentId] || 0) + FASTEST_LAP_BONUS;
     });
   }
@@ -338,7 +389,9 @@ function teamCard(team, seedOrder) {
   const rank = new Map(seedOrder.map((id, index) => [id, index + 1]));
   return `<div class="race-card">
     <h4>${esc(team.name)}</h4>
-    ${team.members.map((id) => `<div class="driver-slot"><strong>#${rank.get(id)}</strong> ${esc(studentName(id))}</div>`).join('')}
+    ${team.members.map((id) => id === TEACHER_ID
+      ? `<div class="driver-slot"><strong>Teacher</strong> ${esc(studentName(id))} <span class="muted small">• no points</span></div>`
+      : `<div class="driver-slot"><strong>#${rank.get(id)}</strong> ${esc(studentName(id))}</div>`).join('')}
   </div>`;
 }
 
@@ -351,7 +404,8 @@ function pointsSummaryForRelay(relayRace, scoring) {
     if (entry.laps === null) return '';
     const placePoints = Number(scoring[index] ?? 0);
     const bonus = fastest?.team.id === entry.team.id ? FASTEST_LAP_BONUS : 0;
-    return `<span class="podium-chip">${index + 1}. ${esc(entry.team.name)} • ${entry.laps} laps • ${placePoints} pts each${bonus ? ' + 4 fastest-lap bonus' : ''}</span>`;
+    const teacherNote = entry.team.members.includes(TEACHER_ID) ? ' per student (Mr Lea excluded)' : ' each';
+    return `<span class="podium-chip">${index + 1}. ${esc(entry.team.name)} • ${entry.laps} laps • ${placePoints} pts${teacherNote}${bonus ? ' + 4 fastest-lap bonus to student members' : ''}</span>`;
   }).join('');
 }
 
@@ -421,13 +475,13 @@ function renderWeek5(race = parseRace()) {
           <h3>🏁 Week 5 Team Relay</h3>
           <div class="muted small">Two different seeded team races • teams mixed from the top, middle and bottom of the championship standings • Race 2 remixed to minimise repeat teammates</div>
         </div>
-        <span class="time-trial-count">${race.present?.length || 0} drivers • 2 relay races</span>
+        <span class="time-trial-count">${race.present?.length || 0} students${race.teacherFillIn ? ' + Mr Lea' : ''} • 2 relay races</span>
       </div>
 
       <div class="time-trial-section">
         <div class="time-trial-section-title">🌱 Seeding used</div>
         <p class="muted small time-trial-note">${(race.seedOrder || []).map((id, index) => `#${index + 1} ${esc(studentName(id))}`).join(' • ')}</p>
-        <p class="muted small time-trial-note">Team sizes are kept between 2 and 4. Three-person teams receive one driver from each broad part of the standings wherever the attendance numbers allow; 2- and 4-person teams are the balanced exception.</p>
+        <p class="muted small time-trial-note">Team sizes are kept between 2 and 4. Three-person teams receive one driver from each broad part of the standings wherever the attendance numbers allow; 2- and 4-person teams are the balanced exception. ${race.teacherFillIn ? 'Mr Lea has been added as a teacher fill-in to balance the odd student attendance and cannot earn championship points.' : ''}</p>
       </div>
 
       ${relayInstructions()}
@@ -530,6 +584,13 @@ async function generateWeek5(event) {
   }
 
   const present = [...document.querySelectorAll('[data-attendance]:checked')].map((checkbox) => checkbox.dataset.attendance);
+  const teacherSelected = Boolean($('week5TeacherFill')?.checked);
+
+  if (teacherSelected && present.length % 2 === 0) {
+    showMessage('Mr Lea is only needed as the teacher fill-in when an odd number of students are present.', true);
+    return;
+  }
+
   if (present.length < 4) {
     showMessage('Week 5 needs at least four students so there can be at least two relay teams.', true);
     return;
@@ -543,7 +604,8 @@ async function generateWeek5(event) {
 
     const existing = parseRace(stored);
     const sameDrivers = existing?.type === FORMAT &&
-      [...(existing.present || [])].sort().join('|') === [...present].sort().join('|');
+      [...(existing.present || [])].sort().join('|') === [...present].sort().join('|') &&
+      Boolean(existing.teacherFillIn) === teacherSelected;
 
     if (sameDrivers) {
       showMessage('The Week 5 relay teams already exist. Continuing with the saved races.');
@@ -557,9 +619,15 @@ async function generateWeek5(event) {
     if (hasWeek5Points && !window.confirm('Week 5 already has championship points saved. Generate new teams and reset those Week 5 points?')) return;
 
     const seedOrder = championshipSeedOrder(present, stored);
-    const teams1 = generateBalancedTeams(seedOrder, 0);
+    const participantCount = present.length + (teacherSelected ? 1 : 0);
+
+    const teams1 = generateBalancedTeams(seedOrder, 0, new Set(), participantCount);
+    if (teacherSelected) addTeacherToTeam(teams1);
+
     const avoidPairs = teammatePairs(teams1);
-    const teams2 = generateBalancedTeams(seedOrder, 1, avoidPairs);
+    const previousTeacherMates = teacherSelected ? teacherMates(teams1) : new Set();
+    const teams2 = generateBalancedTeams(seedOrder, 1, avoidPairs, participantCount);
+    if (teacherSelected) addTeacherToTeam(teams2, previousTeacherMates);
 
     if (teams1.length < 2 || teams2.length < 2) {
       throw new Error('Could not create at least two balanced relay teams.');
@@ -575,6 +643,7 @@ async function generateWeek5(event) {
       label: 'Week 5 Team Relay — Two Seeded Races',
       week: WEEK,
       present,
+      teacherFillIn: teacherSelected,
       seedOrder,
       relayRaces: [
         { number: 1, teams: teams1, results: {}, finalized: false },
@@ -600,7 +669,7 @@ async function generateWeek5(event) {
       updatedAt: new Date().toISOString()
     }, { merge: true });
 
-    showMessage('Week 5 teams created for both relay races.');
+    showMessage('Week 5 teams created for both relay races.' + (teacherSelected ? ' Mr Lea has been added as the no-points teacher fill-in.' : ''));
     document.querySelector('[data-tab="race-day"]')?.click();
   } catch (error) {
     console.error('Could not generate Week 5 relay teams:', error);
@@ -652,7 +721,14 @@ async function initialise() {
     }, 0);
   });
 
+  const attendanceList = $('attendanceList');
+  if (attendanceList) {
+    const attendanceObserver = new MutationObserver(() => ensureTeacherOption());
+    attendanceObserver.observe(attendanceList, { childList: true });
+  }
+
   const observer = new MutationObserver(() => {
+    ensureTeacherOption();
     const race = parseRace();
     if (race?.type === FORMAT && !raceDisplay?.querySelector('.week5-relay-manager')) {
       window.setTimeout(() => renderWeek5(race), 0);
