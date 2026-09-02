@@ -148,10 +148,23 @@ const placed = Object.entries(week.places || {})
 .map(([id, place]) => ({ id, place: Number(place), points: Number(week.points?.[id] || 0) }))
 .filter((entry) => Number.isFinite(entry.place))
 .sort((a, b) => a.place - b.place);
-const chips = placed.length
-? placed.map((entry) => `<span class="podium-chip">${medalFor(entry.place)} ${esc(driverName(entry.id))} • ${entry.points} pts</span>`).join('')
-: '<span class="muted small">Results not entered yet.</span>';
-return `<article class="result-round"><div class="result-round-head"><div><h3>Week ${week.number} — ${esc(week.event)}</h3><div class="muted small">${esc(week.date)}</div></div></div><div class="result-podium">${chips}</div></article>`;
+
+const pointOnly = Object.entries(week.points || {})
+.map(([id, points]) => ({ id, points: Number(points || 0) }))
+.filter((entry) => Number.isFinite(entry.points))
+.sort((a, b) => b.points - a.points || driverName(a.id).localeCompare(driverName(b.id)));
+
+let chips = '<span class="muted small">Results not entered yet.</span>';
+let note = '';
+
+if (placed.length) {
+chips = placed.map((entry) => `<span class="podium-chip">${medalFor(entry.place)} ${esc(driverName(entry.id))} • ${entry.points} pts</span>`).join('');
+} else if (pointOnly.length) {
+chips = pointOnly.map((entry) => `<span class="podium-chip">🏁 ${esc(driverName(entry.id))} • ${entry.points} pts</span>`).join('');
+note = '<div class="muted small" style="margin-top:8px;">Points earned during this round are shown directly because this event did not use one overall finishing position.</div>';
+}
+
+return `<article class="result-round"><div class="result-round-head"><div><h3>Week ${week.number} — ${esc(week.event)}</h3><div class="muted small">${esc(week.date)}</div></div></div><div class="result-podium">${chips}</div>${note}</article>`;
 }).join('');
 }
 function renderStudentAdmin() {
