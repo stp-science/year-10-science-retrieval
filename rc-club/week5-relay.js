@@ -134,12 +134,14 @@ function championshipSeedOrder(ids, stored) {
   );
 }
 
-function teamCountFor(studentCount) {
-  if (studentCount < 4) return 1;
-  return Math.min(
-    Math.floor(studentCount / 2),
-    Math.max(2, Math.round(studentCount / 3))
-  );
+function relayTeamPlan(participantCount) {
+  const preferredTeamSizes = [3, 4, 2];
+  for (const teamSize of preferredTeamSizes) {
+    if (participantCount % teamSize !== 0) continue;
+    const teamCount = participantCount / teamSize;
+    if (teamCount >= 2) return { teamSize, teamCount };
+  }
+  return null;
 }
 
 function shuffle(items) {
@@ -235,16 +237,29 @@ function rankSpreadPenalty(teams, seedOrder) {
   return penalty;
 }
 
-function generateBalancedTeams(seedOrder, raceIndex, avoidPairs = new Set(), participantCount = seedOrder.length) {
-  const teamCount = teamCountFor(participantCount);
-  if (teamCount < 2) return [];
+function equalTeamPenalty(teams, teamSize, teacherFill) {
+  const sizes = teams.map((team) => team.members.length).sort((a, b) => a - b);
+  if (!teacherFill) {
+    return sizes.every((size) => size === teamSize) ? 0 : 100000;
+  }
 
+  const shortTeams = sizes.filter((size) => size === teamSize - 1).length;
+  const fullTeams = sizes.filter((size) => size === teamSize).length;
+  return shortTeams === 1 && fullTeams === teams.length - 1 ? 0 : 100000;
+}
+
+function generateBalancedTeams(seedOrder, raceIndex, avoidPairs = new Set(), participantCount = seedOrder.length, teacherFill = false) {
+  const plan = relayTeamPlan(participantCount);
+  if (!plan) return [];
+
+  const { teamCount, teamSize } = plan;
   let best = null;
   let bestScore = Infinity;
 
-  for (let attempt = 0; attempt < 500; attempt += 1) {
+  for (let attempt = 0; attempt < 800; attempt += 1) {
     const candidate = makeCandidateTeams(seedOrder, teamCount, raceIndex);
     const score =
+      equalTeamPenalty(candidate, teamSize, teacherFill) +
       teamBalancePenalty(candidate) +
       repeatedTeammatePenalty(candidate, avoidPairs) +
       rankSpreadPenalty(candidate, seedOrder);
@@ -252,7 +267,6 @@ function generateBalancedTeams(seedOrder, raceIndex, avoidPairs = new Set(), par
     if (score < bestScore) {
       bestScore = score;
       best = candidate;
-      if (score < -seedOrder.length) break;
     }
   }
 
@@ -475,13 +489,13 @@ function renderWeek5(race = parseRace()) {
           <h3>🏁 Week 5 Team Relay</h3>
           <div class="muted small">Two different seeded team races • teams mixed from the top, middle and bottom of the championship standings • Race 2 remixed to minimise repeat teammates</div>
         </div>
-        <span class="time-trial-count">${race.present?.length || 0} students${race.teacherFillIn ? ' + Mr Lea' : ''} • 2 relay races</span>
+        <span class="time-trial-count">${race.present?.length || 0} students${race.teacherFillIn ? ' + Mr Lea' : ''} • ${race.teamCount || ''} equal teams of ${race.teamSize || ''} • 2 relay races</span>
       </div>
 
       <div class="time-trial-section">
         <div class="time-trial-section-title">🌱 Seeding used</div>
         <p class="muted small time-trial-note">${(race.seedOrder || []).map((id, index) => `#${index + 1} ${esc(studentName(id))}`).join(' • ')}</p>
-        <p class="muted small time-trial-note">Team sizes are kept between 2 and 4. Three-person teams receive one driver from each broad part of the standings wherever the attendance numbers allow; 2- and 4-person teams are the balanced exception. ${race.teacherFillIn ? 'Mr Lea has been added as a teacher fill-in to balance the odd student attendance and cannot earn championship points.' : ''}</p>
+        <p class="muted small time-trial-note">Every relay team has exactly the same number of people. The generator chooses equal teams of 2, 3 or 4 and balances them using the championship ranking. ${race.teacherFillIn ? 'Mr Lea has been added as a teacher fill-in to make the numbers divide evenly and cannot earn championship points.' : ''}</p>
       </div>
 
       ${relayInstructions()}
@@ -591,6 +605,11 @@ async function generateWeek5(event) {
     return;
   }
 
+  if (!teacherSelected && present.length % 2 === 1) {
+    showMessage('There is an odd number of students. Tick Mr Lea so the relay teams can all be the same size.', true);
+    return;
+  }
+
   if (present.length < 4) {
     showMessage('Week 5 needs at least four students so there can be at least two relay teams.', true);
     return;
@@ -620,22 +639,26 @@ async function generateWeek5(event) {
 
     const seedOrder = championshipSeedOrder(present, stored);
     const participantCount = present.length + (teacherSelected ? 1 : 0);
+    const teamPlan = relayTeamPlan(participantCount);
+    if (!teamPlan) {
+      throw new Error('Could not split this attendance into equal relay teams of 2, 3 or 4.');
+    }
 
-    const teams1 = generateBalancedTeams(seedOrder, 0, new Set(), participantCount);
+    const teams1 = generateBalancedTeams(seedOrder, 0, new Set(), participantCount, teacherSelected);
     if (teacherSelected) addTeacherToTeam(teams1);
 
     const avoidPairs = teammatePairs(teams1);
     const previousTeacherMates = teacherSelected ? teacherMates(teams1) : new Set();
-    const teams2 = generateBalancedTeams(seedOrder, 1, avoidPairs, participantCount);
+    const teams2 = generateBalancedTeams(seedOrder, 1, avoidPairs, participantCount, teacherSelected);
     if (teacherSelected) addTeacherToTeam(teams2, previousTeacherMates);
 
     if (teams1.length < 2 || teams2.length < 2) {
       throw new Error('Could not create at least two balanced relay teams.');
     }
 
-    const allSizesValid = [...teams1, ...teams2].every((team) => team.members.length >= 2 && team.members.length <= 4);
-    if (!allSizesValid) {
-      throw new Error('Could not keep every team between 2 and 4 students.');
+    const allTeamsEqual = [...teams1, ...teams2].every((team) => team.members.length === teamPlan.teamSize);
+    if (!allTeamsEqual) {
+      throw new Error('Could not create equal-sized relay teams. Please regenerate the draw.');
     }
 
     const race = {
@@ -644,6 +667,8 @@ async function generateWeek5(event) {
       week: WEEK,
       present,
       teacherFillIn: teacherSelected,
+      teamSize: teamPlan.teamSize,
+      teamCount: teamPlan.teamCount,
       seedOrder,
       relayRaces: [
         { number: 1, teams: teams1, results: {}, finalized: false },
@@ -669,7 +694,7 @@ async function generateWeek5(event) {
       updatedAt: new Date().toISOString()
     }, { merge: true });
 
-    showMessage('Week 5 teams created for both relay races.' + (teacherSelected ? ' Mr Lea has been added as the no-points teacher fill-in.' : ''));
+    showMessage('Week 5 teams created: ' + teamPlan.teamCount + ' equal teams of ' + teamPlan.teamSize + ' for each relay race.' + (teacherSelected ? ' Mr Lea has been added as the no-points teacher fill-in.' : ''));
     document.querySelector('[data-tab="race-day"]')?.click();
   } catch (error) {
     console.error('Could not generate Week 5 relay teams:', error);
