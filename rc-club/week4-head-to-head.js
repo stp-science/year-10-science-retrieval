@@ -306,6 +306,11 @@ async function saveRaceAndPoints(race) {
 
   week4.points = {};
   week4.places = {};
+  week4.participants = [...(race.present || [])];
+
+  (race.present || []).forEach((studentId) => {
+    week4.points[studentId] = 0;
+  });
 
   (race.matches || []).forEach((match) => {
     if (!match.winner) return;
