@@ -154,6 +154,28 @@ const pointOnly = Object.entries(week.points || {})
 .filter((entry) => Number.isFinite(entry.points))
 .sort((a, b) => b.points - a.points || driverName(a.id).localeCompare(driverName(b.id)));
 
+if (Number(week.number) === 4) {
+const liveWeek4 = data.currentRace?.type === 'week4-seeded-head-to-head' && Number(data.currentRace?.week) === 4
+? data.currentRace
+: null;
+const week4Ids = [...new Set([
+...(liveWeek4?.present || []),
+...pointOnly.map((entry) => entry.id)
+])];
+const week4Rows = week4Ids
+.map((id) => {
+const points = Number(week.points?.[id] || 0);
+return { id, points, wins: points / 2 };
+})
+.sort((a, b) => b.wins - a.wins || b.points - a.points || driverName(a.id).localeCompare(driverName(b.id)));
+
+const table = week4Rows.length
+? `<div class="table-wrap" style="margin-top:12px;"><table class="standings-table"><thead><tr><th>Driver</th><th>Head-to-head wins</th><th>Week 4 points</th></tr></thead><tbody>${week4Rows.map((entry) => `<tr><td class="driver-name">${esc(driverName(entry.id))}</td><td><strong>${entry.wins}</strong></td><td class="total-points"><strong>${entry.points}</strong></td></tr>`).join('')}</tbody></table></div>`
+: '<span class="muted small">Results not entered yet.</span>';
+
+return `<article class="result-round"><div class="result-round-head"><div><h3>Week ${week.number} — ${esc(week.event)}</h3><div class="muted small">${esc(week.date)}</div></div></div>${table}<div class="muted small" style="margin-top:8px;">Each Week 4 head-to-head win was worth 2 championship points.</div></article>`;
+}
+
 let chips = '<span class="muted small">Results not entered yet.</span>';
 let note = '';
 
