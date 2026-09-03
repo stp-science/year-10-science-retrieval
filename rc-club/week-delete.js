@@ -1,4 +1,4 @@
-import './week5-relay.js?v=20260903-0755';
+import './week5-relay.js?v=20260903-1527';
 import './week4-head-to-head.js?v=20260903-0755';
 import { adminEmail } from './firebase-config.js';
 
