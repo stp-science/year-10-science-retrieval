@@ -84,7 +84,7 @@ function ensureTeacherOption() {
       <input id="week5TeacherFill" type="checkbox" />
       <span><strong>${TEACHER_NAME}</strong> <span class="muted small">(teacher fill-in — no championship points)</span></span>
     </label>
-    <div class="muted small" style="margin-top:6px;">Tick Mr Lea when an odd number of students are racing. He will be used to balance one relay team but is excluded from all championship points.</div>
+    <div class="muted small" style="margin-top:6px;">Tick Mr Lea when the attendance needs one extra person to complete teams of 3. He is excluded from all championship points.</div>
   `;
   attendanceList.appendChild(wrap);
 }
