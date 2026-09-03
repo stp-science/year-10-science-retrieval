@@ -601,16 +601,6 @@ async function generateWeek5(event) {
   const present = [...document.querySelectorAll('[data-attendance]:checked')].map((checkbox) => checkbox.dataset.attendance);
   const teacherSelected = Boolean($('week5TeacherFill')?.checked);
 
-  if (teacherSelected && present.length % 2 === 0) {
-    showMessage('Mr Lea is only needed as the teacher fill-in when an odd number of students are present.', true);
-    return;
-  }
-
-  if (!teacherSelected && present.length % 2 === 1) {
-    showMessage('There is an odd number of students. Tick Mr Lea so the relay teams can all be the same size.', true);
-    return;
-  }
-
   if (present.length < 4) {
     showMessage('Week 5 needs at least four students so there can be at least two relay teams.', true);
     return;
@@ -648,8 +638,19 @@ async function generateWeek5(event) {
     if (hasWeek5Points && !window.confirm('Week 5 already has championship points saved. Generate new teams and reset those Week 5 points?')) return;
 
     const seedOrder = championshipSeedOrder(present, stored);
+    const basePlan = relayTeamPlan(present.length);
+    const teacherPlan = relayTeamPlan(present.length + 1);
+
+    if (!teacherSelected && !basePlan && teacherPlan) {
+      throw new Error('Tick Mr Lea to make this attendance divide into equal relay teams. He will not receive championship points.');
+    }
+
+    if (teacherSelected && !teacherPlan) {
+      throw new Error('Mr Lea is not needed for this attendance because adding him would not create a valid equal-team draw.');
+    }
+
     const participantCount = present.length + (teacherSelected ? 1 : 0);
-    const teamPlan = relayTeamPlan(participantCount);
+    const teamPlan = teacherSelected ? teacherPlan : basePlan;
     if (!teamPlan) {
       throw new Error('This attendance cannot be split into equal teams of 2 or 3 using no more than the 4 available cars.');
     }
