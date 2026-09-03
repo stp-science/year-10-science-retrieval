@@ -135,7 +135,7 @@ function championshipSeedOrder(ids, stored) {
 }
 
 function relayTeamPlan(participantCount) {
-  const preferredTeamSizes = [3, 4, 2];
+  const preferredTeamSizes = [3, 2];
   for (const teamSize of preferredTeamSizes) {
     if (participantCount % teamSize !== 0) continue;
     const teamCount = participantCount / teamSize;
@@ -208,7 +208,7 @@ function teamBalancePenalty(teams) {
   const max = Math.max(...sizes);
   let penalty = (max - min) * 100;
   sizes.forEach((size) => {
-    if (size < 2 || size > 4) penalty += 10000;
+    if (size < 2 || size > 3) penalty += 10000;
   });
   return penalty;
 }
@@ -395,7 +395,7 @@ function relayInstructions() {
         <div class="race-card"><h4>Pit stop 2</h4><div class="driver-slot">6:00–7:00 • 1 minute</div></div>
         <div class="race-card"><h4>Stint 3</h4><div class="driver-slot">7:00–9:30 racing</div></div>
       </div>
-      <p class="muted small time-trial-note">Teams contain 2–4 students depending on attendance. Teams decide their driver order for the three 2:30 driving stints. The race ends at exactly 9:30.</p>
+      <p class="muted small time-trial-note">Teams contain 2 or 3 people only, depending on attendance. Teams decide their driver order for the three 2:30 driving stints. The race ends at exactly 9:30.</p>
     </div>`;
 }
 
@@ -495,7 +495,7 @@ function renderWeek5(race = parseRace()) {
       <div class="time-trial-section">
         <div class="time-trial-section-title">🌱 Seeding used</div>
         <p class="muted small time-trial-note">${(race.seedOrder || []).map((id, index) => `#${index + 1} ${esc(studentName(id))}`).join(' • ')}</p>
-        <p class="muted small time-trial-note">Every relay team has exactly the same number of people. The generator chooses equal teams of 2, 3 or 4 and balances them using the championship ranking. ${race.teacherFillIn ? 'Mr Lea has been added as a teacher fill-in to make the numbers divide evenly and cannot earn championship points.' : ''}</p>
+        <p class="muted small time-trial-note">Every relay team has exactly the same number of people. The generator chooses equal teams of 2 or 3 only and balances them using the championship ranking. ${race.teacherFillIn ? 'Mr Lea has been added as a teacher fill-in to make the numbers divide evenly and cannot earn championship points.' : ''}</p>
       </div>
 
       ${relayInstructions()}
@@ -622,7 +622,14 @@ async function generateWeek5(event) {
     latestData = stored;
 
     const existing = parseRace(stored);
-    const sameDrivers = existing?.type === FORMAT &&
+    const existingTeamsValid = existing?.type === FORMAT &&
+      Number(existing.teamSize) >= 2 &&
+      Number(existing.teamSize) <= 3 &&
+      (existing.relayRaces || []).every((relayRace) =>
+        (relayRace.teams || []).every((team) => team.members.length === Number(existing.teamSize))
+      );
+
+    const sameDrivers = existingTeamsValid &&
       [...(existing.present || [])].sort().join('|') === [...present].sort().join('|') &&
       Boolean(existing.teacherFillIn) === teacherSelected;
 
@@ -641,7 +648,7 @@ async function generateWeek5(event) {
     const participantCount = present.length + (teacherSelected ? 1 : 0);
     const teamPlan = relayTeamPlan(participantCount);
     if (!teamPlan) {
-      throw new Error('Could not split this attendance into equal relay teams of 2, 3 or 4.');
+      throw new Error('Could not split this attendance into equal relay teams of 2 or 3.');
     }
 
     const teams1 = generateBalancedTeams(seedOrder, 0, new Set(), participantCount, teacherSelected);
