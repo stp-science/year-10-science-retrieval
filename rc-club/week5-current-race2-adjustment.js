@@ -3,7 +3,7 @@ import { adminEmail } from './firebase-config.js';
 const FORMAT = 'week5-seeded-relay';
 const WEEK = 5;
 const TEACHER_ID = 'teacher-mr-lea';
-const PATCH_ID = '2026-09-04-race2-sam-betham-mr-lea';
+const PATCH_ID = '2026-09-04-race2-sam-betham-mr-lea-v2';
 
 const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
@@ -30,6 +30,27 @@ function teamNames(team, students) {
 function hasAll(team, requiredNames, students) {
   const names = new Set(teamNames(team, students));
   return requiredNames.every((name) => names.has(normalise(name)));
+}
+
+function championshipSeedOrder(ids, stored) {
+  const weeks = stored.weeks || [];
+  const students = stored.students || [];
+
+  const pointsBeforeWeek5 = (id) => weeks
+    .filter((week) => Number(week.number) !== WEEK)
+    .reduce((sum, week) => sum + Number(week.points?.[id] || 0), 0);
+
+  const winsBeforeWeek5 = (id) => weeks
+    .filter((week) => Number(week.number) !== WEEK)
+    .reduce((sum, week) => sum + (Number(week.places?.[id]) === 1 ? 1 : 0), 0);
+
+  const name = (id) => students.find((student) => student.id === id)?.name || '';
+
+  return [...new Set(ids)].sort((a, b) =>
+    pointsBeforeWeek5(b) - pointsBeforeWeek5(a) ||
+    winsBeforeWeek5(b) - winsBeforeWeek5(a) ||
+    name(a).localeCompare(name(b))
+  );
 }
 
 async function initialise() {
@@ -97,10 +118,11 @@ async function initialise() {
       team2.members.push(TEACHER_ID);
 
       race.present = [...new Set([...(race.present || []), samBetham.id])];
+      race.seedOrder = championshipSeedOrder(race.present, stored);
       race.teacherFillIn = true;
       race.rotationVersion = 99;
       race.manualRace2Patch = PATCH_ID;
-      race.manualRace2Note = 'Race 2 manually adjusted: Sam Betham added to Team 1 and Mr Lea added to Team 2.';
+      race.manualRace2Note = 'Race 2 manually adjusted: Sam Betham added to Team 1 and Mr Lea added to Team 2. Sam Betham retains his championship seed.';
       race.updatedAt = new Date().toISOString();
 
       await firestoreModule.setDoc(ref, {
@@ -108,7 +130,7 @@ async function initialise() {
         updatedAt: race.updatedAt
       }, { merge: true });
 
-      showMessage('Race 2 updated: Sam Betham added to Team 1 and Mr Lea added to Team 2.');
+      showMessage('Race 2 updated: Sam Betham now shows with his championship ranking; Mr Lea remains the no-points teacher fill-in.');
     } catch (error) {
       console.error('Could not apply the Race 2 adjustment:', error);
       showMessage('Could not apply the Race 2 team adjustment.', true);
