@@ -1,5 +1,6 @@
 import './week5-relay.js?v=20260903-1531';
 import './week5-rotation.js?v=20260904-1227';
+import './week5-current-race2-adjustment.js?v=20260904-1235';
 import './week4-head-to-head.js?v=20260903-0755';
 import { adminEmail } from './firebase-config.js';
 
