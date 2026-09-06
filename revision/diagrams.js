@@ -63,12 +63,13 @@ const BBC_VISUALS = {
   punnett: {
     images: [
       {
-        src: "https://bam.files.bbci.co.uk/bam/live/content/zj9ccj6/large",
-        alt: "BBC Bitesize genetic diagram showing a monohybrid cross"
+        src: "https://openlearninglibrary.mit.edu/assets/courseware/v1/5aa4bc104d7fadf2b4f9d08cab54ee4b/asset-v1%3AOCW%2BPre-7.01%2B1T2020%2Btype%40asset%2Bblock/s0.png",
+        alt: "Punnett square table showing parent alleles B and b and offspring genotypes BB, Bb, Bb and bb"
       }
     ],
-    caption: "Genetic diagram / monohybrid cross",
-    source: "https://www.bbc.co.uk/bitesize/topics/zm9nng8/articles/zc8fwsg"
+    caption: "Punnett square — parent alleles arranged in a 2 × 2 inheritance table",
+    source: "https://openlearninglibrary.mit.edu/courses/course-v1%3AOCW%2BPre-7.01%2B1T2020/jump_to/block-v1%3AOCW%2BPre-7.01%2B1T2020%2Btype%40vertical%2Bblock%40c126d3345cc8464b9b9e59a91fd03ea6",
+    credit: "MIT Open Learning Library"
   },
   variation: {
     images: [
