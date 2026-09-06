@@ -1,44 +1,233 @@
-function videoCard(id,title,provider,desc){return`<div class="video-card"><a class="video-thumb" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${id}" style="background-image:url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')" aria-label="Open ${title}"></a><div class="video-copy"><strong>${title}</strong><p>${provider}</p><p>${desc}</p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${id}">Watch video ↗</a></div></div>`;}
-function wrap(svg,caption){return`<div class="visual-wrap">${svg}<div class="visual-caption">${caption}</div></div>`;}
-function diagram(type){const C=modules[currentModule]?.colour||'#3a6';const base=`font-family="Arial, sans-serif"`;if(type==='particles')return wrap(`<svg viewBox="0 0 820 240" role="img" aria-label="Particle diagrams for element, compound and mixture"><rect width="820" height="240" rx="20" fill="#f7f9fc"/><g ${base} text-anchor="middle"><text x="140" y="34" font-size="20" font-weight="700">Element</text><text x="410" y="34" font-size="20" font-weight="700">Compound</text><text x="680" y="34" font-size="20" font-weight="700">Mixture</text></g><g fill="${C}">${dots(80,78,4,3,40,'same')}</g><g>${molecules(335,78,3,2,C,'#e87947')}</g><g>${dots(615,78,3,3,38,'mix',C,'#e87947')}</g></svg>`,'Particle diagrams help distinguish elements, compounds and mixtures.');
-if(type==='atom')return wrap(`<svg viewBox="0 0 760 300"><rect width="760" height="300" rx="20" fill="#f7f9fc"/><circle cx="270" cy="150" r="42" fill="#263a56"/><circle cx="250" cy="140" r="12" fill="#e65d5d"/><circle cx="287" cy="162" r="12" fill="#e65d5d"/><circle cx="285" cy="135" r="12" fill="#b6c3d0"/><circle cx="250" cy="166" r="12" fill="#b6c3d0"/><ellipse cx="270" cy="150" rx="130" ry="58" fill="none" stroke="#7693b6" stroke-width="3"/><ellipse cx="270" cy="150" rx="58" ry="130" fill="none" stroke="#7693b6" stroke-width="3"/><circle cx="400" cy="150" r="10" fill="${C}"/><circle cx="270" cy="20" r="10" fill="${C}"/><circle cx="140" cy="150" r="10" fill="${C}"/><g ${base} font-size="18" fill="#24354b"><text x="465" y="88" font-weight="700">Nucleus</text><text x="465" y="114">protons + neutrons</text><line x1="450" y1="105" x2="316" y2="145" stroke="#566b86" stroke-width="2"/><text x="465" y="190" font-weight="700">Electrons</text><text x="465" y="216">negative, in shells</text><line x1="450" y1="200" x2="402" y2="155" stroke="#566b86" stroke-width="2"/></g></svg>`,'Simplified atomic model.');
-if(type==='shells')return wrap(`<svg viewBox="0 0 760 300"><rect width="760" height="300" rx="20" fill="#f7f9fc"/><g transform="translate(280 150)"><circle r="30" fill="#263a56"/><circle r="62" fill="none" stroke="#8ca6c4" stroke-width="2"/><circle r="104" fill="none" stroke="#8ca6c4" stroke-width="2"/><circle r="140" fill="none" stroke="#8ca6c4" stroke-width="2"/>${electronRing(62,2,C)}${electronRing(104,8,C)}${electronRing(140,1,C)}</g><g ${base} fill="#24354b"><text x="480" y="100" font-size="24" font-weight="700">Sodium</text><text x="480" y="132" font-size="20">atomic number 11</text><text x="480" y="174" font-size="30" font-weight="800" fill="${C}">2, 8, 1</text><text x="480" y="212" font-size="17">1 outer-shell electron</text></g></svg>`,'Example electron configuration for sodium.');
-if(type==='periodic')return wrap(`<svg viewBox="0 0 900 310"><rect width="900" height="310" rx="20" fill="#f7f9fc"/><g ${base}><text x="46" y="38" font-size="20" font-weight="700">Simplified periodic table</text>${periodicBlocks()}<text x="85" y="292" font-size="16" fill="#43566e">Groups are vertical columns • periods are horizontal rows</text></g></svg>`,'Highlighted groups studied in this unit.');
-if(type==='ions')return wrap(`<svg viewBox="0 0 860 280"><rect width="860" height="280" rx="20" fill="#f7f9fc"/><g ${base} text-anchor="middle"><text x="170" y="38" font-size="20" font-weight="700">Na atom</text><text x="690" y="38" font-size="20" font-weight="700">Cl atom</text><text x="430" y="245" font-size="21" font-weight="700">Na⁺  attracts  Cl⁻</text></g><g transform="translate(170 135)"><circle r="20" fill="#263a56"/><circle r="58" fill="none" stroke="#91a8c2" stroke-width="2"/><circle r="88" fill="none" stroke="#91a8c2" stroke-width="2"/><circle r="116" fill="none" stroke="#91a8c2" stroke-width="2"/>${electronRing(58,2,C)}${electronRing(88,8,C)}${electronRing(116,1,C)}</g><g transform="translate(690 135)"><circle r="20" fill="#263a56"/><circle r="58" fill="none" stroke="#91a8c2" stroke-width="2"/><circle r="88" fill="none" stroke="#91a8c2" stroke-width="2"/><circle r="116" fill="none" stroke="#91a8c2" stroke-width="2"/>${electronRing(58,2,'#d35766')}${electronRing(88,8,'#d35766')}${electronRing(116,7,'#d35766')}</g><path d="M290 135 C360 82 500 82 565 135" fill="none" stroke="#e68a32" stroke-width="5" marker-end="url(#arr)"/><defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#e68a32"/></marker></defs><text x="430" y="84" ${base} text-anchor="middle" fill="#c46d20" font-weight="700">1 electron transferred</text></svg>`,'Electron transfer from sodium to chlorine.');
-if(type==='atomhistory')return wrap(`<svg viewBox="0 0 900 250"><rect width="900" height="250" rx="20" fill="#f7f9fc"/><line x1="90" y1="125" x2="820" y2="125" stroke="#9babc0" stroke-width="5"/>${['Dalton|solid sphere','Thomson|plum pudding','Rutherford|nucleus','Bohr|shells','Chadwick|neutron'].map((t,i)=>{let[a,b]=t.split('|'),x=100+i*175;return`<circle cx="${x}" cy="125" r="25" fill="${i===4?C:'#496987'}"/><text x="${x}" y="70" ${base} text-anchor="middle" font-size="17" font-weight="700">${a}</text><text x="${x}" y="184" ${base} text-anchor="middle" font-size="14" fill="#55687e">${b}</text>`}).join('')}</svg>`,'A simplified timeline of the changing atomic model.');
-if(type==='balance')return wrap(`<svg viewBox="0 0 820 220"><rect width="820" height="220" rx="20" fill="#f7f9fc"/><g ${base} text-anchor="middle"><text x="410" y="58" font-size="28" font-weight="800" fill="#24354b">2Mg + O₂ → 2MgO</text><g transform="translate(165 130)">${atomCircle(0,0,'Mg',C)}${atomCircle(55,0,'Mg',C)}</g><g transform="translate(315 130)">${atomCircle(0,0,'O','#d35766')}${atomCircle(42,0,'O','#d35766')}</g><g transform="translate(520 130)">${atomCircle(0,0,'Mg',C)}${atomCircle(40,0,'O','#d35766')}${atomCircle(105,0,'Mg',C)}${atomCircle(145,0,'O','#d35766')}</g><text x="410" y="195" font-size="16" fill="#5a6b7d">Same number of each atom on both sides</text></g></svg>`,'Balancing changes coefficients, not chemical formulae.');
-if(type==='forceintro')return wrap(`<svg viewBox="0 0 820 260"><rect width="820" height="260" rx="20" fill="#f7f9fc"/><rect x="310" y="110" width="200" height="70" rx="18" fill="#dbe7f3" stroke="#7592b2" stroke-width="3"/><text x="410" y="152" ${base} text-anchor="middle" font-size="21" font-weight="700">Object</text>${arrow(310,145,140,145,'push',C)}${arrow(510,145,680,145,'friction','#d35766')}${arrow(410,110,410,50,'normal','#2f8a65')}${arrow(410,180,410,235,'weight','#7c5dc7')}</svg>`,'Forces have both size and direction.');
-if(type==='freebody')return wrap(`<svg viewBox="0 0 820 300"><rect width="820" height="300" rx="20" fill="#f7f9fc"/><rect x="320" y="120" width="180" height="75" rx="18" fill="#d9e8f5"/><circle cx="355" cy="202" r="18" fill="#263a56"/><circle cx="465" cy="202" r="18" fill="#263a56"/>${arrow(320,155,130,155,'650 N resistive','#d35766')}${arrow(500,155,730,155,'900 N driving',C)}${arrow(410,120,410,45,'normal','#2f8a65')}${arrow(410,195,410,270,'weight','#7c5dc7')}<text x="410" y="35" ${base} text-anchor="middle" font-size="16" fill="#4a5e75">vertical forces balanced</text></svg>`,'Example free-body diagram for a car accelerating forwards.');
-if(type==='weight')return wrap(`<svg viewBox="0 0 820 250"><rect width="820" height="250" rx="20" fill="#f7f9fc"/><circle cx="250" cy="90" r="32" fill="#f1bd87"/><rect x="220" y="120" width="60" height="70" rx="18" fill="#6f92b8"/>${arrow(250,190,250,235,'weight W',C)}<g ${base}><text x="460" y="85" font-size="25" font-weight="800">W = m × g</text><text x="460" y="125" font-size="18">mass: kg</text><text x="460" y="154" font-size="18">g: N/kg</text><text x="460" y="183" font-size="18">weight: N</text></g></svg>`,'Mass and weight are different quantities.');
-if(type==='terminal')return wrap(`<svg viewBox="0 0 900 320"><rect width="900" height="320" rx="20" fill="#f7f9fc"/><g ${base}>${sky(130,145,45,100,'Start: W > drag')}${sky(355,145,80,100,'Speeds up: drag rises')}${sky(600,145,100,100,'Terminal: W = drag')}<path d="M185 145 H280" stroke="#9aabba" stroke-width="3" marker-end="url(#a2)"/><path d="M420 145 H520" stroke="#9aabba" stroke-width="3" marker-end="url(#a2)"/><defs><marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#9aabba"/></marker></defs></g></svg>`,'As speed increases, drag increases until it balances weight.');
-if(type==='newton')return wrap(`<svg viewBox="0 0 840 250"><rect width="840" height="250" rx="20" fill="#f7f9fc"/><rect x="130" y="105" width="170" height="70" rx="14" fill="#dbe7f3"/><circle cx="165" cy="180" r="17" fill="#263a56"/><circle cx="265" cy="180" r="17" fill="#263a56"/>${arrow(300,140,505,140,'F = 10 N',C)}<text x="215" y="145" ${base} text-anchor="middle" font-size="22" font-weight="800">4 kg</text><g ${base}><text x="570" y="92" font-size="26" font-weight="800">F = ma</text><text x="570" y="132" font-size="20">a = F ÷ m</text><text x="570" y="170" font-size="24" font-weight="800" fill="${C}">a = 2.5 m/s²</text></g></svg>`,'Newton’s second law links resultant force, mass and acceleration.');
-if(type==='density')return wrap(`<svg viewBox="0 0 850 280"><rect width="850" height="280" rx="20" fill="#f7f9fc"/><g ${base}><rect x="80" y="70" width="210" height="140" rx="14" fill="#eaf1f7" stroke="#8ca4bc" stroke-width="3"/>${dots(105,95,4,3,45,'same',C)}<text x="185" y="238" text-anchor="middle" font-size="18" font-weight="700">more mass / same volume</text><rect x="360" y="70" width="210" height="140" rx="14" fill="#eaf1f7" stroke="#8ca4bc" stroke-width="3"/>${dots(405,110,3,2,58,'same','#8ba0b8')}<text x="465" y="238" text-anchor="middle" font-size="18" font-weight="700">less dense</text><text x="670" y="110" font-size="25" font-weight="800">ρ = m/V</text><text x="670" y="150" font-size="18">density = mass ÷ volume</text></g></svg>`,'Density compares mass packed into a volume.');
-if(type==='distancegraph')return graphSVG('Distance (m)','Time (s)',[[80,230],[215,190],[330,150],[430,150],[610,65]],['constant speed','stationary','faster'],C,'Distance–time graph: gradient = speed.');
-if(type==='speedgraph')return graphSVG('Speed (m/s)','Time (s)',[[80,230],[250,105],[440,105],[610,200]],['accelerating','constant speed','decelerating'],C,'Speed–time graph: gradient = acceleration; area = distance.');
-if(type==='ph')return wrap(`<svg viewBox="0 0 900 260"><rect width="900" height="260" rx="20" fill="#f7f9fc"/><g ${base}>${Array.from({length:15},(_,i)=>`<rect x="70" y="95" width="50" height="65" fill="hsl(${Math.max(0,285-i*20)},70%,55%)" opacity=".92" transform="translate(${i*50} 0)"/><text x="${95+i*50}" y="185" text-anchor="middle" font-size="14">${i}</text>`).join('')}<text x="245" y="65" text-anchor="middle" font-size="22" font-weight="800" fill="#b83b4b">ACIDIC</text><text x="445" y="65" text-anchor="middle" font-size="22" font-weight="800" fill="#2e8a62">NEUTRAL</text><text x="665" y="65" text-anchor="middle" font-size="22" font-weight="800" fill="#554aa8">ALKALINE</text><text x="445" y="225" text-anchor="middle" font-size="17">pH 7 = neutral</text></g></svg>`,'Universal-indicator colours vary slightly by chart; use the supplied chart in an exam/practical.');
-if(type==='neutral')return wrap(`<svg viewBox="0 0 820 230"><rect width="820" height="230" rx="20" fill="#f7f9fc"/><g ${base} text-anchor="middle"><circle cx="180" cy="105" r="55" fill="#f6c1c8"/><text x="180" y="114" font-size="30" font-weight="800">H⁺</text><text x="305" y="113" font-size="32">+</text><circle cx="430" cy="105" r="55" fill="#c8ddf6"/><text x="430" y="114" font-size="29" font-weight="800">OH⁻</text><text x="545" y="113" font-size="35">→</text><circle cx="665" cy="105" r="58" fill="#d8efe5"/><text x="665" y="114" font-size="30" font-weight="800">H₂O</text><text x="410" y="202" font-size="18" fill="#56687b">hydrogen ions + hydroxide ions → water</text></g></svg>`,'The ionic equation for neutralisation.');
-if(type==='hydrogen')return gasTestSVG('Hydrogen','lit splint','squeaky pop','#e68a32');
-if(type==='co2')return gasTestSVG('Carbon dioxide','limewater','turns milky/cloudy','#8aa8c4');
-if(type==='concentration')return wrap(`<svg viewBox="0 0 840 270"><rect width="840" height="270" rx="20" fill="#f7f9fc"/><g ${base}><rect x="95" y="70" width="250" height="145" rx="18" fill="#eaf2fa" stroke="#91a6bd" stroke-width="3"/>${dots(125,100,3,2,70,'same','#d35766')}<text x="220" y="245" text-anchor="middle" font-size="20" font-weight="700">Dilute</text><rect x="495" y="70" width="250" height="145" rx="18" fill="#eaf2fa" stroke="#91a6bd" stroke-width="3"/>${dots(520,95,5,3,48,'same','#d35766')}<text x="620" y="245" text-anchor="middle" font-size="20" font-weight="700">Concentrated</text></g></svg>`,'More solute particles in the same volume means a higher concentration.');
-if(type==='strength')return wrap(`<svg viewBox="0 0 850 300"><rect width="850" height="300" rx="20" fill="#f7f9fc"/><g ${base}><text x="215" y="45" text-anchor="middle" font-size="22" font-weight="800">Strong acid</text><text x="635" y="45" text-anchor="middle" font-size="22" font-weight="800">Weak acid</text><rect x="70" y="70" width="290" height="160" rx="18" fill="#f8ebee"/>${ionsBox(105,100,5,3,'split')}<rect x="490" y="70" width="290" height="160" rx="18" fill="#f8ebee"/>${ionsBox(525,100,5,3,'partial')}<text x="215" y="270" text-anchor="middle" font-size="17">mostly/all ionised</text><text x="635" y="270" text-anchor="middle" font-size="17">partly ionised</text></g></svg>`,'Strength describes ionisation; concentration describes amount per volume.');
-if(type==='variation')return wrap(`<svg viewBox="0 0 860 270"><rect width="860" height="270" rx="20" fill="#f7f9fc"/><g ${base}><text x="215" y="45" text-anchor="middle" font-size="22" font-weight="800">Continuous</text>${[70,100,135,180,235,300].map((h,i)=>`<rect x="${90+i*45}" y="${220-h*.45}" width="28" height="${h*.45}" rx="6" fill="${C}" opacity="${.45+i*.08}"/>`).join('')}<text x="215" y="245" text-anchor="middle" font-size="16">many values across a range</text><text x="625" y="45" text-anchor="middle" font-size="22" font-weight="800">Discontinuous</text>${['A','B','AB','O'].map((t,i)=>`<circle cx="${520+i*72}" cy="135" r="28" fill="${i%2?C:'#d7e8df'}"/><text x="${520+i*72}" y="143" text-anchor="middle" font-size="18" font-weight="800">${t}</text>`).join('')}<text x="625" y="245" text-anchor="middle" font-size="16">distinct categories</text></g></svg>`,'Two common patterns of variation.');
-if(type==='dna')return wrap(`<svg viewBox="0 0 860 310"><rect width="860" height="310" rx="20" fill="#f7f9fc"/><g transform="translate(250 25)">${dnaHelix(C,'#d35766')}</g><g ${base}><text x="505" y="80" font-size="25" font-weight="800">DNA double helix</text><text x="505" y="120" font-size="19">nucleotides = sugar + phosphate + base</text><text x="505" y="170" font-size="24" font-weight="800" fill="${C}">A — T</text><text x="505" y="210" font-size="24" font-weight="800" fill="#d35766">C — G</text><text x="505" y="255" font-size="17">complementary base pairing</text></g></svg>`,'DNA stores information in the order of its bases.');
-if(type==='gene')return wrap(`<svg viewBox="0 0 860 280"><rect width="860" height="280" rx="20" fill="#f7f9fc"/><g ${base}><path d="M155 45 C80 75 95 210 155 235 C215 210 230 75 155 45 M155 45 C230 75 215 210 155 235" fill="none" stroke="${C}" stroke-width="16"/><rect x="135" y="118" width="40" height="55" rx="8" fill="#f2b85b"/><line x1="180" y1="145" x2="360" y2="145" stroke="#657a91" stroke-width="3"/><text x="390" y="120" font-size="23" font-weight="800">Chromosome</text><text x="390" y="154" font-size="18">long coiled DNA</text><text x="390" y="205" font-size="23" font-weight="800">Gene</text><text x="390" y="235" font-size="18">a section of DNA; alternative versions = alleles</text></g></svg>`,'Chromosomes carry many genes.');
-if(type==='punnett')return wrap(`<svg viewBox="0 0 760 320"><rect width="760" height="320" rx="20" fill="#f7f9fc"/><g ${base} text-anchor="middle"><text x="380" y="38" font-size="22" font-weight="800">Tt × Tt</text><text x="350" y="75" font-size="22">T</text><text x="470" y="75" font-size="22">t</text><text x="260" y="135" font-size="22">T</text><text x="260" y="235" font-size="22">t</text><rect x="300" y="90" width="220" height="200" fill="#fff" stroke="#7990a8" stroke-width="3"/><line x1="410" y1="90" x2="410" y2="290" stroke="#7990a8" stroke-width="3"/><line x1="300" y1="190" x2="520" y2="190" stroke="#7990a8" stroke-width="3"/><text x="355" y="145" font-size="28" font-weight="800" fill="${C}">TT</text><text x="465" y="145" font-size="28" font-weight="800" fill="${C}">Tt</text><text x="355" y="245" font-size="28" font-weight="800" fill="${C}">Tt</text><text x="465" y="245" font-size="28" font-weight="800" fill="#d35766">tt</text><text x="635" y="142" font-size="18">25% TT</text><text x="635" y="177" font-size="18">50% Tt</text><text x="635" y="212" font-size="18">25% tt</text></g></svg>`,'Punnett squares show probabilities, not guarantees.');
-if(type==='mutation')return wrap(`<svg viewBox="0 0 850 250"><rect width="850" height="250" rx="20" fill="#f7f9fc"/><g ${base} text-anchor="middle"><text x="250" y="55" font-size="20" font-weight="800">Original DNA</text><text x="250" y="105" font-size="28" letter-spacing="8">A T G C C A</text><path d="M385 115 H490" stroke="#8196aa" stroke-width="4" marker-end="url(#m3)"/><defs><marker id="m3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8196aa"/></marker></defs><text x="610" y="55" font-size="20" font-weight="800">Mutated DNA</text><text x="610" y="105" font-size="28" letter-spacing="8">A T G <tspan fill="#d35766" font-weight="900">T</tspan> C A</text><text x="430" y="190" font-size="18" fill="#51667e">a change in the DNA base sequence can create new variation</text></g></svg>`,'Mutations are changes in DNA.');
-if(type==='selection')return wrap(`<svg viewBox="0 0 900 300"><rect width="900" height="300" rx="20" fill="#f7f9fc"/><g ${base}>${stage(95,'1','Variation','light + dark')}${stage(295,'2','Selection pressure','birds eat visible insects')}${stage(505,'3','Survival + reproduction','dark insects survive more')}${stage(715,'4','Generations','dark trait becomes common')}<path d="M180 145 H235 M385 145 H445 M595 145 H655" stroke="#9aabba" stroke-width="4"/></g></svg>`,'Natural selection changes trait frequencies over generations.');
-if(type==='adaptation')return wrap(`<svg viewBox="0 0 900 270"><rect width="900" height="270" rx="20" fill="#f7f9fc"/><g ${base} text-anchor="middle"><circle cx="175" cy="120" r="62" fill="#dcefe7"/><text x="175" y="116" font-size="32">🪶</text><text x="175" y="205" font-size="20" font-weight="800">Structural</text><circle cx="450" cy="120" r="62" fill="#e9e3f5"/><text x="450" y="116" font-size="32">⚙️</text><text x="450" y="205" font-size="20" font-weight="800">Physiological</text><circle cx="725" cy="120" r="62" fill="#e4edf7"/><text x="725" y="116" font-size="32">🌙</text><text x="725" y="205" font-size="20" font-weight="800">Behavioural</text></g></svg>`,'Adaptations can be structural, physiological or behavioural.');
-return'';}
 
-function dots(x,y,cols,rows,gap,mode,C1='#6554c0',C2='#e87947'){let s='';for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){let col=mode==='mix'&&((r+c)%3===0)?C2:C1;s+=`<circle cx="${x+c*gap}" cy="${y+r*gap}" r="13" fill="${col}"/>`;}return s;}
-function molecules(x,y,cols,rows,C1,C2){let s='';for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){let xx=x+c*82,yy=y+r*70;s+=`<line x1="${xx}" y1="${yy}" x2="${xx+31}" y2="${yy}" stroke="#66798e" stroke-width="5"/><circle cx="${xx}" cy="${yy}" r="15" fill="${C1}"/><circle cx="${xx+31}" cy="${yy}" r="15" fill="${C2}"/>`;}return s;}
-function electronRing(r,n,col){let s='';for(let i=0;i<n;i++){let a=-Math.PI/2+i*2*Math.PI/n;s+=`<circle cx="${Math.cos(a)*r}" cy="${Math.sin(a)*r}" r="7" fill="${col}"/>`;}return s;}
-function periodicBlocks(){let s='';for(let r=0;r<4;r++){for(let c=0;c<8;c++){if(r===0&&c>0&&c<7)continue;let x=78+c*90,y=65+r*50;let col=c===0?'#f5b9bf':c===1?'#f2d69f':c===6?'#b9d9f3':c===7?'#c9e7d5':'#dfe7ef';s+=`<rect x="${x}" y="${y}" width="72" height="38" rx="6" fill="${col}"/><text x="${x+36}" y="${y+25}" text-anchor="middle" font-size="14" font-weight="700">${c===0?'G1':c===1?'G2':c===6?'G17':c===7?'G18':''}</text>`;}}return s;}
-function atomCircle(x,y,t,col){return`<circle cx="${x}" cy="${y}" r="24" fill="${col}"/><text x="${x}" y="${y+7}" font-size="15" fill="#fff" font-weight="800">${t}</text>`;}
-function arrow(x1,y1,x2,y2,label,col){let id='a'+Math.abs((x1+y1+x2+y2+label.length)%10000);return`<defs><marker id="${id}" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="${col}"/></marker></defs><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="5" marker-end="url(#${id})"/><text x="${(x1+x2)/2}" y="${(y1+y2)/2-10}" font-family="Arial" text-anchor="middle" font-size="15" font-weight="700" fill="${col}">${label}</text>`;}
-function sky(x,y,drag,weight,label){return`<circle cx="${x}" cy="${y-25}" r="17" fill="#f0b783"/><line x1="${x}" y1="${y-8}" x2="${x}" y2="${y+40}" stroke="#263a56" stroke-width="7"/><line x1="${x}" y1="${y+5}" x2="${x-25}" y2="${y+22}" stroke="#263a56" stroke-width="6"/><line x1="${x}" y1="${y+5}" x2="${x+25}" y2="${y+22}" stroke="#263a56" stroke-width="6"/>${arrow(x,y-45,x,y-45-drag,'drag','#2f78b7')}${arrow(x,y+45,x,y+45+weight,'weight','#7c5dc7')}<text x="${x}" y="290" text-anchor="middle" font-size="16" font-weight="700">${label}</text>`;}
-function graphSVG(yLabel,xLabel,pts,labels,col,caption){let p=pts.map(x=>x.join(',')).join(' ');return wrap(`<svg viewBox="0 0 760 320"><rect width="760" height="320" rx="20" fill="#f7f9fc"/><line x1="65" y1="250" x2="690" y2="250" stroke="#263a56" stroke-width="3"/><line x1="65" y1="250" x2="65" y2="45" stroke="#263a56" stroke-width="3"/><polyline points="${p}" fill="none" stroke="${col}" stroke-width="6" stroke-linejoin="round"/><text x="380" y="296" font-family="Arial" text-anchor="middle" font-size="17">${xLabel}</text><text x="22" y="155" font-family="Arial" text-anchor="middle" font-size="17" transform="rotate(-90 22 155)">${yLabel}</text>${labels.map((l,i)=>`<text x="${180+i*190}" y="35" font-family="Arial" text-anchor="middle" font-size="14" fill="#53687e">${l}</text>`).join('')}</svg>`,caption);}
-function gasTestSVG(gas,test,result,col){return wrap(`<svg viewBox="0 0 820 260"><rect width="820" height="260" rx="20" fill="#f7f9fc"/><g font-family="Arial" text-anchor="middle"><rect x="140" y="70" width="120" height="140" rx="20" fill="#e9f1f8" stroke="#7d96af" stroke-width="3"/><circle cx="180" cy="145" r="7" fill="${col}"/><circle cx="210" cy="120" r="6" fill="${col}"/><circle cx="225" cy="165" r="8" fill="${col}"/><text x="200" y="235" font-size="17">${gas}</text><path d="M275 140 H420" stroke="#8094aa" stroke-width="4"/><text x="520" y="100" font-size="22" font-weight="800">Test: ${test}</text><text x="520" y="150" font-size="20">Positive result:</text><text x="520" y="185" font-size="24" font-weight="800" fill="${col}">${result}</text></g></svg>`,`${gas} gas test.`);}
-function ionsBox(x,y,cols,rows,mode){let s='';for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){let xx=x+c*42,yy=y+r*42;let split=mode==='split'||((r+c)%3===0);if(split){s+=`<circle cx="${xx}" cy="${yy}" r="10" fill="#d35766"/><text x="${xx}" y="${yy+4}" text-anchor="middle" font-size="9" fill="#fff">H⁺</text>`;}else{s+=`<ellipse cx="${xx}" cy="${yy}" rx="16" ry="10" fill="#e0a8af"/>`;}}return s;}
-function dnaHelix(c1,c2){let s='';for(let i=0;i<11;i++){let y=15+i*23,x1=55+Math.sin(i*.75)*40,x2=145-Math.sin(i*.75)*40;s+=`<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#8296aa" stroke-width="4"/><circle cx="${x1}" cy="${y}" r="8" fill="${c1}"/><circle cx="${x2}" cy="${y}" r="8" fill="${c2}"/>`;}s+=`<path d="M55 15 C15 70 95 105 55 150 C15 195 95 230 55 265" fill="none" stroke="${c1}" stroke-width="7"/><path d="M145 15 C185 70 105 105 145 150 C185 195 105 230 145 265" fill="none" stroke="${c2}" stroke-width="7"/>`;return s;}
-function stage(x,n,title,desc){return`<circle cx="${x}" cy="145" r="55" fill="#e7f3ed" stroke="#6da589" stroke-width="3"/><text x="${x}" y="132" text-anchor="middle" font-size="26" font-weight="900">${n}</text><text x="${x}" y="158" text-anchor="middle" font-size="14" font-weight="800">${title}</text><text x="${x}" y="240" text-anchor="middle" font-size="13" fill="#55697f">${desc}</text>`;}
+const BBC_VISUALS = {
+  atom: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/zyvwsrd/large",
+        alt: "BBC Bitesize diagram of an atom showing the nucleus and electrons in shells"
+      }
+    ],
+    caption: "Atomic structure",
+    source: "https://www.bbc.co.uk/bitesize/guides/zwn8b82/revision/3"
+  },
+  shells: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/zyvwsrd/large",
+        alt: "BBC Bitesize atomic structure diagram showing electrons arranged around the nucleus"
+      }
+    ],
+    caption: "Electrons occupy shells around the nucleus",
+    source: "https://www.bbc.co.uk/bitesize/guides/zwn8b82/revision/3"
+  },
+  periodic: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/ztr2n39/large",
+        alt: "BBC Bitesize image relating to the development and arrangement of the periodic table"
+      }
+    ],
+    caption: "Periodic table development and arrangement",
+    source: "https://www.bbc.co.uk/bitesize/guides/zg923k7/revision/1"
+  },
+  ph: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/zc8r7p3/large",
+        alt: "BBC Bitesize pH scale showing universal indicator colours"
+      }
+    ],
+    caption: "pH scale and universal indicator colours",
+    source: "https://www.bbc.co.uk/bitesize/guides/zqd8b82/revision/1"
+  },
+  distancegraph: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/ztjh4qt/large",
+        alt: "BBC Bitesize distance-time graph"
+      }
+    ],
+    caption: "Distance–time graph",
+    source: "https://www.bbc.co.uk/bitesize/guides/zwc7pbk/revision/3"
+  },
+  speedgraph: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/z8gwsrd/large",
+        alt: "BBC Bitesize velocity-time graph"
+      }
+    ],
+    caption: "Velocity–time graph",
+    source: "https://www.bbc.co.uk/bitesize/guides/zwc7pbk/revision/4"
+  },
+  punnett: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/zj9ccj6/large",
+        alt: "BBC Bitesize genetic diagram showing a monohybrid cross"
+      }
+    ],
+    caption: "Genetic diagram / monohybrid cross",
+    source: "https://www.bbc.co.uk/bitesize/topics/zm9nng8/articles/zc8fwsg"
+  },
+  variation: {
+    images: [
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/zc6g8p3/large",
+        alt: "BBC Bitesize graph showing continuous variation"
+      },
+      {
+        src: "https://bam.files.bbci.co.uk/bam/live/content/zysk2hv/large",
+        alt: "BBC Bitesize graph showing discontinuous variation"
+      }
+    ],
+    caption: "Continuous and discontinuous variation",
+    source: "https://www.bbc.co.uk/bitesize/topics/zm9nng8/articles/z8h8nk7"
+  }
+};
+
+const SUPPORT_VIDEOS = {
+  shells: {
+    id: "kvTzdD1eGUQ",
+    title: "Electronic structure and electron shells",
+    provider: "Cognito",
+    desc: "Supports electron arrangement, outer-shell electrons and ion formation."
+  },
+  forceintro: {
+    id: "i5PtaCJJFjw",
+    title: "Newton's first and second laws",
+    provider: "Cognito",
+    desc: "Supports resultant force, balanced forces and acceleration."
+  },
+  newton: {
+    id: "i5PtaCJJFjw",
+    title: "Newton's first and second laws",
+    provider: "Cognito",
+    desc: "Matches the section on resultant force, mass and acceleration."
+  },
+  distancegraph: {
+    id: "RM02SnuJ0MY",
+    title: "Distance–time graphs",
+    provider: "Cognito",
+    desc: "Shows how to interpret gradients and calculate speed."
+  },
+  speedgraph: {
+    id: "b0VKlpetP9A",
+    title: "Velocity–time graphs",
+    provider: "Cognito",
+    desc: "Supports acceleration, constant speed and interpreting graph sections."
+  },
+  ph: {
+    id: "Yrf3Z_TQu_k",
+    title: "Acids, alkalis and the pH scale",
+    provider: "Cognito",
+    desc: "Supports pH, indicators, acids, alkalis and neutralisation."
+  },
+  neutralisation: {
+    id: "vcxlISVJ6Os",
+    title: "Neutralisation and reactions of acids",
+    provider: "Cognito",
+    desc: "Supports acid + base reactions and salt formation."
+  },
+  acidreactions: {
+    id: "vcxlISVJ6Os",
+    title: "Neutralisation and reactions of acids",
+    provider: "Cognito",
+    desc: "Supports reactions of acids with bases, metals and carbonates."
+  },
+  variation: {
+    id: "4PtOgToaKP8",
+    title: "Variation, natural selection and evolution",
+    provider: "Cognito",
+    desc: "Supports inherited variation, selection pressures and evolution."
+  },
+  selection: {
+    id: "4PtOgToaKP8",
+    title: "Variation, natural selection and evolution",
+    provider: "Cognito",
+    desc: "Matches the natural-selection sequence used in this section."
+  },
+  punnett: {
+    id: "BtPo9F-nkho",
+    title: "Punnett squares and genetic diagrams",
+    provider: "Cognito",
+    desc: "Supports predicting offspring genotypes and probabilities."
+  }
+};
+
+const VIDEO_ALIASES = {
+  "ihuCYM5hR_s": {
+    id: "GTpo1nAZqFE",
+    title: "Atomic structure, isotopes and electron shells",
+    provider: "Cognito",
+    desc: "Matches the atomic-structure content: protons, neutrons, electrons, atomic number and electron shells."
+  }
+};
+
+function esc(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function videoCard(id, title, provider, desc) {
+  const replacement = VIDEO_ALIASES[id];
+  if (replacement) {
+    ({ id, title, provider, desc } = replacement);
+  }
+  return `
+    <section class="video-card embedded-video" aria-label="${esc(title)}">
+      <div style="position:relative;width:100%;aspect-ratio:16/9;background:#0c1726;border-radius:14px;overflow:hidden;">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}"
+          title="${esc(title)}"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          style="position:absolute;inset:0;width:100%;height:100%;border:0;"
+        ></iframe>
+      </div>
+      <div class="video-copy">
+        <strong>${esc(title)}</strong>
+        <p><b>${esc(provider)}</b></p>
+        <p>${esc(desc)}</p>
+      </div>
+    </section>`;
+}
+
+function bbcVisualCard(item) {
+  const images = item.images.map(image => `
+    <img
+      loading="lazy"
+      src="${image.src}"
+      alt="${esc(image.alt)}"
+      style="display:block;width:100%;height:auto;max-height:440px;object-fit:contain;background:#fff;border-radius:12px;"
+    >`).join("");
+
+  return `
+    <figure class="visual-wrap bbc-visual" style="padding:14px;">
+      <div style="display:grid;grid-template-columns:repeat(${item.images.length > 1 ? 2 : 1},minmax(0,1fr));gap:12px;">
+        ${images}
+      </div>
+      <figcaption class="visual-caption" style="margin-top:10px;">
+        <strong>${esc(item.caption)}</strong>
+        <span> • BBC Bitesize GCSE</span>
+        <a href="${item.source}" target="_blank" rel="noopener" style="margin-left:8px;">View source ↗</a>
+      </figcaption>
+    </figure>`;
+}
+
+function diagram(type) {
+  const visual = BBC_VISUALS[type] ? bbcVisualCard(BBC_VISUALS[type]) : "";
+  const support = SUPPORT_VIDEOS[type];
+  const video = support
+    ? videoCard(support.id, support.title, support.provider, support.desc)
+    : "";
+
+  // If there is no suitable GCSE Bitesize visual for this section, show no
+  // substitute diagram rather than drawing our own.
+  return visual + video;
+}
