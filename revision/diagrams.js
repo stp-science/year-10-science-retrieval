@@ -1,4 +1,3 @@
-
 const BBC_VISUALS = {
   atom: {
     images: [
@@ -23,12 +22,13 @@ const BBC_VISUALS = {
   periodic: {
     images: [
       {
-        src: "https://bam.files.bbci.co.uk/bam/live/content/ztr2n39/large",
-        alt: "BBC Bitesize image relating to the development and arrangement of the periodic table"
+        src: "https://www.creative-chemistry.org.uk/wp-content/uploads/periodic-table-gcse.webp",
+        alt: "GCSE periodic table using modern IUPAC group numbers 1 to 18"
       }
     ],
-    caption: "Periodic table development and arrangement",
-    source: "https://www.bbc.co.uk/bitesize/guides/zg923k7/revision/1"
+    caption: "Periodic table — NZ / IUPAC group numbering 1–18",
+    source: "https://www.creative-chemistry.org.uk/gcse/periodic",
+    credit: "Creative Chemistry GCSE"
   },
   ph: {
     images: [
@@ -198,7 +198,7 @@ function videoCard(id, title, provider, desc) {
     </section>`;
 }
 
-function bbcVisualCard(item) {
+function sourceVisualCard(item) {
   const images = item.images.map(image => `
     <img
       loading="lazy"
@@ -214,20 +214,20 @@ function bbcVisualCard(item) {
       </div>
       <figcaption class="visual-caption" style="margin-top:10px;">
         <strong>${esc(item.caption)}</strong>
-        <span> • BBC Bitesize GCSE</span>
+        <span> • ${esc(item.credit || 'BBC Bitesize GCSE')}</span>
         <a href="${item.source}" target="_blank" rel="noopener" style="margin-left:8px;">View source ↗</a>
       </figcaption>
     </figure>`;
 }
 
 function diagram(type) {
-  const visual = BBC_VISUALS[type] ? bbcVisualCard(BBC_VISUALS[type]) : "";
+  const visual = BBC_VISUALS[type] ? sourceVisualCard(BBC_VISUALS[type]) : "";
   const support = SUPPORT_VIDEOS[type];
   const video = support
     ? videoCard(support.id, support.title, support.provider, support.desc)
     : "";
 
-  // If there is no suitable GCSE Bitesize visual for this section, show no
+  // If there is no suitable sourced visual for this section, show no
   // substitute diagram rather than drawing our own.
   return visual + video;
 }
