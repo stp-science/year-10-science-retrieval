@@ -22,13 +22,13 @@ const BBC_VISUALS = {
   periodic: {
     images: [
       {
-        src: "https://www.creative-chemistry.org.uk/wp-content/uploads/periodic-table-gcse.webp",
-        alt: "GCSE periodic table using modern IUPAC group numbers 1 to 18"
+        src: "https://upload.wikimedia.org/wikipedia/commons/9/9d/Periodic_Table_Chart.png",
+        alt: "Modern periodic table with groups numbered 1 to 18 across the top"
       }
     ],
     caption: "Periodic table — NZ / IUPAC group numbering 1–18",
-    source: "https://www.creative-chemistry.org.uk/gcse/periodic",
-    credit: "Creative Chemistry GCSE"
+    source: "https://commons.wikimedia.org/wiki/File:Periodic_Table_Chart.png",
+    credit: "Wikimedia Commons — modern 18-group table"
   },
   ph: {
     images: [
