@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive Year 10 Science revision for St Peter's School: atoms, forces, acids and genetics." />
+  <meta name="theme-color" content="#07284f" />
+  <title>Year 10 Science Revision | St Peter's School</title>
+  <link rel="preconnect" href="https://www.youtube-nocookie.com" />
+  <link rel="stylesheet" href="./styles.css?v=20260906a" />
+  <script src="./app.js?v=20260906a" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="back-link" href="../" aria-label="Back to Year 10 Science retrieval practice">←</a>
+    <div class="school-badge" aria-hidden="true">SP</div>
+    <div class="brand"><p>St Peter's School</p><h1>Year 10 Science Revision</h1></div>
+    <div class="xp-chip" aria-live="polite"><span aria-hidden="true">⚡</span><strong id="xp-total">0</strong> XP</div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Use dark theme">☾</button>
+  </div>
+</header>
+<main>
+  <section class="dashboard" aria-labelledby="dashboard-title">
+    <div>
+      <p class="eyebrow">Year 10 Science</p>
+      <h2 id="dashboard-title">Learn it. Check it. Apply it.</h2>
+      <p>Revise the exact St Peter's Year 10 course content, then answer from memory and tackle GCSE-style exam questions. Master each topic to unlock an arcade game.</p>
+      <div class="source-chips"><span>Course-aligned</span><span>GCSE-style practice</span><span>Progress saved on this device</span></div>
+    </div>
+    <div class="progress-card">
+      <div class="progress-label"><span>Topic mastery</span><strong>Game unlocks</strong></div>
+      <div id="dashboard-progress"></div>
+    </div>
+  </section>
+
+  <nav class="mode-tabs" aria-label="Revision modes">
+    <button class="mode-tab active" data-view="learn" type="button">Learn</button>
+    <button class="mode-tab" data-view="check" type="button">Quick Check</button>
+    <button class="mode-tab" data-view="exam" type="button">Exam Practice</button>
+    <button class="mode-tab" data-view="games" type="button">Revision Arcade <span id="games-badge">0/4</span></button>
+  </nav>
+
+  <div class="workspace">
+    <aside class="module-nav" aria-label="Year 10 Science topics">
+      <p class="nav-title">Course topics</p>
+      <div id="module-buttons"></div>
+      <div class="boundary-note">
+        <strong>Built from your course</strong>
+        <p>Knowledge is based on the uploaded St Peter's lesson resources. BBC Bitesize GCSE material is used selectively for reinforcement and further revision.</p>
+      </div>
+    </aside>
+    <section class="content-panel" id="content-panel" aria-live="polite"></section>
+  </div>
+</main>
+<footer><span>Recall first</span><span>•</span><span>Check the science</span><span>•</span><span>Return to difficult ideas</span></footer>
+</body>
+</html>
