@@ -97,10 +97,10 @@ button{font:inherit}
   function animateShot(made,done){
     const panel=document.getElementById('courtPanel'),w=panel.clientWidth,h=panel.clientHeight;
     const startX=42,startY=h-112;
-    const rimX=w-120,rimY=172;
+    const targetX=w-146,targetY=145;
     shotBall.style.transition='none';shotBall.style.left=startX+'px';shotBall.style.top=startY+'px';shotBall.style.bottom='auto';shotBall.style.opacity=1;shotBall.style.transform='translate(0,0) rotate(0) scale(1)';
     const duration=1150,start=performance.now();
-    function frame(now){const p=Math.min(1,(now-start)/duration),ease=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;let x,y;if(made){x=startX+(rimX-startX)*ease;y=startY+(rimY-startY)*ease-150*Math.sin(Math.PI*p);if(p>.78)y+=(p-.78)*180}else{x=startX+(rimX+35-startX)*ease;y=startY+(rimY-35-startY)*ease-130*Math.sin(Math.PI*p);if(p>.78){x+=(p-.78)*160;y+=(p-.78)*220}}shotBall.style.left=x+'px';shotBall.style.top=y+'px';shotBall.style.transform=`rotate(${p*760}deg) scale(${1-.18*p})`;if(p<1)requestAnimationFrame(frame);else{setTimeout(()=>{shotBall.style.opacity=0;done()},120)}}requestAnimationFrame(frame)
+    function frame(now){const p=Math.min(1,(now-start)/duration),ease=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;let x,y;if(made){x=startX+(targetX-startX)*ease;y=startY+(targetY-startY)*ease-150*Math.sin(Math.PI*p);if(p>.78)y+=(p-.78)*185}else{x=startX+(targetX+60-startX)*ease;y=startY+(targetY-38-startY)*ease-130*Math.sin(Math.PI*p);if(p>.78){x+=(p-.78)*170;y+=(p-.78)*225}}shotBall.style.left=x+'px';shotBall.style.top=y+'px';shotBall.style.transform=`rotate(${p*760}deg) scale(${1-.18*p})`;if(p<1)requestAnimationFrame(frame);else{setTimeout(()=>{shotBall.style.opacity=0;done()},120)}}requestAnimationFrame(frame)
   }
   function burst(){confetti.innerHTML='';const colors=['#ffd35a','#61d9ff','#53e08e','#ff6578','#f47b20','#ffffff'];for(let i=0;i<62;i++){const el=document.createElement('i');el.style.left=(30+Math.random()*65)+'%';el.style.background=colors[i%colors.length];el.style.setProperty('--dx',(Math.random()*280-140)+'px');el.style.animationDelay=(Math.random()*.25)+'s';el.style.animationDuration=(1.25+Math.random()*.9)+'s';confetti.appendChild(el)}setTimeout(()=>confetti.innerHTML='',2500)}
 
