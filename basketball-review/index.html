@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1830">
+<title>Basketball Review Shootout</title>
+<style>
+:root{--navy:#08162b;--navy2:#102645;--orange:#f47b20;--orange2:#ff9a3c;--cream:#fff4df;--cyan:#61d9ff;--green:#53e08e;--red:#ff6578;--ink:#f7fbff;--muted:#b9c7d8;--gold:#ffd35a}
+*{box-sizing:border-box}
+html,body{margin:0;min-width:320px;min-height:100%;background:#07111f;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+body{min-height:100vh;background:radial-gradient(circle at 50% -10%,#1d4978 0,#0b203c 31%,#07111f 72%)}
+button{font:inherit}
+.app{min-height:100vh;position:relative;overflow:hidden;padding-bottom:22px}
+.app:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 76%)}
+.topbar{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px clamp(16px,3vw,42px);border-bottom:1px solid rgba(255,255,255,.12);background:rgba(5,14,28,.74);backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:47px;height:47px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,var(--orange2),var(--orange));box-shadow:0 8px 25px rgba(244,123,32,.25);font-size:26px}.brand small{display:block;color:var(--cyan);font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.brand h1{font-size:clamp(1.06rem,2.2vw,1.48rem);margin:2px 0 0;letter-spacing:-.03em}.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.ctrl{min-height:40px;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:0 12px;color:#fff;background:#122a49;cursor:pointer;font-size:.78rem;font-weight:850;transition:.16s}.ctrl:hover{transform:translateY(-1px);background:#17375f}.ctrl.primary{background:var(--orange);border-color:var(--orange)}
+.hero{position:relative;z-index:2;text-align:center;padding:24px 14px 10px}.eyebrow{color:var(--gold);font-size:.7rem;letter-spacing:.17em;font-weight:950;text-transform:uppercase}.hero h2{margin:6px 0 6px;font-size:clamp(2rem,5vw,4rem);line-height:.95;letter-spacing:-.055em}.hero p{max-width:760px;margin:0 auto;color:var(--muted);font-weight:650;font-size:clamp(.88rem,1.4vw,1rem)}
+.scoreline{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px}.pill{padding:8px 13px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(15,39,70,.75);color:#d8e7f7;font-size:.78rem;font-weight:850}.pill b{color:#fff}.pill.live{border-color:rgba(97,217,255,.32);box-shadow:0 0 18px rgba(97,217,255,.08)}
+.game{position:relative;z-index:3;width:min(1230px,calc(100% - 24px));margin:10px auto 0;display:grid;grid-template-columns:minmax(0,1.22fr) minmax(330px,.78fr);gap:18px;align-items:stretch}
+.panel{position:relative;border:1px solid rgba(255,255,255,.12);border-radius:25px;background:linear-gradient(180deg,rgba(18,43,75,.95),rgba(8,24,45,.97));box-shadow:0 25px 70px rgba(0,0,0,.28);overflow:hidden}.balls-panel{padding:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-head h3{margin:0;font-size:1rem}.panel-head span{color:#9fb2c7;font-size:.74rem;font-weight:750}
+.ball-grid{display:grid;grid-template-columns:repeat(5,minmax(82px,1fr));gap:15px}.ball-btn{position:relative;min-height:126px;border:0;border-radius:20px;background:linear-gradient(180deg,#17385e,#0c2341);cursor:pointer;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 17px rgba(0,0,0,.2);transition:transform .15s ease,box-shadow .15s ease,opacity .2s ease}.ball-btn:not(:disabled):hover{transform:translateY(-5px) scale(1.02);box-shadow:0 16px 28px rgba(0,0,0,.3),0 0 0 2px rgba(97,217,255,.24)}.ball-btn:not(:disabled):active{transform:translateY(1px) scale(.98)}.ball-btn:focus-visible{outline:4px solid rgba(97,217,255,.4);outline-offset:3px}.ball-btn:disabled{cursor:default}.ball-btn.used{opacity:.34;filter:grayscale(.4)}.ball-btn.winner-used{opacity:1;background:linear-gradient(180deg,#4d431b,#30270a);box-shadow:0 0 0 2px rgba(255,211,90,.8),0 0 35px rgba(255,211,90,.24)}
+.basketball{position:relative;width:82px;height:82px;margin:auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 34% 27%,#ffad51 0 6%,#f7882e 22%,#dd651d 66%,#a8430b 100%);border:3px solid #5d2509;box-shadow:inset -8px -10px 15px rgba(88,28,0,.28),0 8px 15px rgba(0,0,0,.3)}.basketball:before,.basketball:after{content:"";position:absolute;inset:-3px;border:3px solid #4d210c;border-radius:50%}.basketball:before{clip-path:polygon(48% 0,56% 0,54% 100%,46% 100%)}.basketball:after{clip-path:polygon(0 46%,100% 29%,100% 36%,0 54%)}.seam-v{position:absolute;left:50%;top:0;width:42%;height:100%;border-left:3px solid #4d210c;border-radius:50%;transform:translateX(-50%)}.ball-number{position:relative;z-index:3;display:grid;place-items:center;width:37px;height:37px;border-radius:50%;background:rgba(9,18,31,.9);border:2px solid rgba(255,255,255,.86);font-weight:950;font-size:1.05rem;box-shadow:0 2px 8px rgba(0,0,0,.3)}.ball-label{display:block;margin-top:8px;color:#9eb5ca;font-size:.69rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.court-panel{min-height:470px;background:linear-gradient(180deg,#13355c 0 42%,#b56b35 42% 100%)}.arena{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,20,38,.05) 0 41%,transparent 41%),repeating-linear-gradient(90deg,rgba(80,40,15,.15) 0 2px,transparent 2px 46px);overflow:hidden}.crowd{position:absolute;top:0;left:0;right:0;height:43%;background:radial-gradient(circle at 8% 80%,#7dd7ff 0 2px,transparent 3px),radial-gradient(circle at 18% 65%,#f1c755 0 2px,transparent 3px),radial-gradient(circle at 28% 85%,#ff6a77 0 2px,transparent 3px),radial-gradient(circle at 44% 70%,#72e0a0 0 2px,transparent 3px),radial-gradient(circle at 64% 85%,#ffffff 0 2px,transparent 3px),radial-gradient(circle at 77% 63%,#f59f55 0 2px,transparent 3px),radial-gradient(circle at 91% 78%,#66d8ff 0 2px,transparent 3px);background-size:72px 42px;opacity:.6}.court-lines{position:absolute;left:0;right:0;bottom:0;height:58%;border-top:3px solid rgba(255,255,255,.82)}.court-lines:before{content:"";position:absolute;left:50%;top:0;width:170px;height:100%;transform:translateX(-50%);border-left:3px solid rgba(255,255,255,.78);border-right:3px solid rgba(255,255,255,.78)}.court-lines:after{content:"";position:absolute;left:50%;top:0;width:138px;height:138px;border:3px solid rgba(255,255,255,.78);border-radius:50%;transform:translate(-50%,-50%)}
+.backboard{position:absolute;right:66px;top:83px;width:150px;height:97px;border:7px solid #e8f0f8;border-radius:6px;background:rgba(223,240,252,.2);box-shadow:0 0 20px rgba(255,255,255,.12)}.backboard:after{content:"";position:absolute;left:42px;bottom:14px;width:58px;height:42px;border:4px solid #fff}.pole{position:absolute;right:46px;top:170px;width:14px;height:255px;background:linear-gradient(90deg,#8797a7,#d3dee8,#748596);box-shadow:0 4px 10px rgba(0,0,0,.35)}.rim{position:absolute;right:78px;top:165px;width:82px;height:15px;border:6px solid #ff5a25;border-radius:50%;z-index:8;box-shadow:0 4px 8px rgba(0,0,0,.3)}.net{position:absolute;right:89px;top:174px;width:60px;height:71px;z-index:7;clip-path:polygon(0 0,100% 0,78% 100%,22% 100%);background:repeating-linear-gradient(65deg,transparent 0 8px,rgba(255,255,255,.8) 9px 11px),repeating-linear-gradient(-65deg,transparent 0 8px,rgba(255,255,255,.72) 9px 11px)}
+.shot-ball{position:absolute;left:42px;bottom:58px;width:54px;height:54px;border-radius:50%;z-index:10;background:radial-gradient(circle at 34% 27%,#ffad51 0 6%,#f7882e 22%,#d95f1a 68%,#923706 100%);border:2px solid #4f1f08;box-shadow:0 6px 12px rgba(0,0,0,.3);opacity:0;pointer-events:none}.shot-ball:before{content:"";position:absolute;inset:-2px;border:2px solid #44200f;border-radius:50%;clip-path:polygon(47% 0,55% 0,54% 100%,46% 100%)}
+.message{position:absolute;left:18px;right:18px;bottom:18px;z-index:14;text-align:center;padding:12px 14px;border:1px solid rgba(255,255,255,.16);border-radius:15px;background:rgba(4,13,25,.78);backdrop-filter:blur(8px);font-size:.9rem;font-weight:900;box-shadow:0 10px 25px rgba(0,0,0,.2)}.message .sub{display:block;margin-top:3px;color:#a8bdd1;font-size:.72rem;font-weight:700}.message.made{border-color:rgba(83,224,142,.55);color:#8dffb8}.message.miss{border-color:rgba(255,101,120,.4);color:#ff9aaa}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:30}.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall 1.8s linear forwards}@keyframes fall{to{transform:translate3d(var(--dx),570px,0) rotate(720deg);opacity:.1}}
+.footer{text-align:center;color:#71879d;font-size:.69rem;font-weight:700;margin-top:13px;position:relative;z-index:3}
+@media(max-width:900px){.game{grid-template-columns:1fr}.court-panel{min-height:430px}.ball-grid{grid-template-columns:repeat(5,minmax(62px,1fr))}.ball-btn{min-height:112px}.basketball{width:70px;height:70px}}
+@media(max-width:590px){.topbar{align-items:flex-start}.brand h1{font-size:.95rem}.logo{width:40px;height:40px}.controls{gap:5px}.ctrl{padding:0 9px;font-size:.7rem}.hero{padding-top:18px}.ball-grid{grid-template-columns:repeat(2,1fr);gap:10px}.ball-btn{min-height:112px}.balls-panel{padding:14px}.panel-head{align-items:flex-start;flex-direction:column}.court-panel{min-height:390px}.backboard{right:41px;top:72px;transform:scale(.83);transform-origin:top right}.rim{right:52px;top:139px;transform:scale(.83);transform-origin:top right}.net{right:61px;top:147px;transform:scale(.83);transform-origin:top right}.pole{right:29px;top:145px;height:220px}.shot-ball{left:25px;bottom:60px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo">🏀</div><div><small>Classroom Review Game</small><h1>Basketball Shootout</h1></div></div>
+    <div class="controls"><button class="ctrl" id="musicBtn">♫ Music: On</button><button class="ctrl" id="soundBtn">🔊 SFX: On</button><button class="ctrl primary" id="resetBtn">New Round</button></div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Get it right • earn a shot</div>
+    <h2>Pick a ball. Take the shot.</h2>
+    <p>Only <strong>one</strong> basketball will score each round. Answer the teacher's question correctly, then choose your number.</p>
+    <div class="scoreline"><span class="pill live">Round <b id="roundNo">1</b></span><span class="pill">Shots taken <b id="shotsNo">0</b>/10</span><span class="pill">Winners found <b id="winsNo">0</b></span></div>
+  </section>
+
+  <main class="game">
+    <section class="panel balls-panel">
+      <div class="panel-head"><h3>Choose a basketball</h3><span>Used balls lock until the next round</span></div>
+      <div class="ball-grid" id="ballGrid"></div>
+    </section>
+
+    <section class="panel court-panel" id="courtPanel">
+      <div class="arena"><div class="crowd"></div><div class="court-lines"></div><div class="pole"></div><div class="backboard"></div><div class="net"></div><div class="rim"></div><div class="shot-ball" id="shotBall"></div><div class="confetti" id="confetti"></div></div>
+      <div class="message" id="message">Ready to shoot!<span class="sub">Choose a numbered basketball after a correct answer.</span></div>
+    </section>
+  </main>
+  <div class="footer">St Peter's Science • Basketball Review Shootout</div>
+</div>
+<script>
+(() => {
+  const grid=document.getElementById('ballGrid'), shotBall=document.getElementById('shotBall'), msg=document.getElementById('message'), shotsNo=document.getElementById('shotsNo'), roundNo=document.getElementById('roundNo'), winsNo=document.getElementById('winsNo'), confetti=document.getElementById('confetti'), musicBtn=document.getElementById('musicBtn'), soundBtn=document.getElementById('soundBtn'), resetBtn=document.getElementById('resetBtn');
+  let round=1, shots=0, wins=0, winner=0, previousWinner=0, locked=false, used=new Set(), musicOn=true, sfxOn=true;
+  let audioCtx=null, musicTimer=null, beatStep=0;
+
+  function ensureAudio(){
+    if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();}
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    if(musicOn && !musicTimer) startMusic();
+  }
+  function tone(freq,dur=.1,type='sine',vol=.08,delay=0){if(!sfxOn||!audioCtx)return;const t=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+dur+.02)}
+  function noise(dur=.08,vol=.035,delay=0){if(!sfxOn||!audioCtx)return;const len=Math.floor(audioCtx.sampleRate*dur),buf=audioCtx.createBuffer(1,len,audioCtx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;const src=audioCtx.createBufferSource(),g=audioCtx.createGain(),t=audioCtx.currentTime+delay;src.buffer=buf;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);src.connect(g).connect(audioCtx.destination);src.start(t)}
+  function swish(){noise(.19,.07);tone(880,.11,'triangle',.055,.03);tone(1174,.16,'triangle',.05,.11);tone(1568,.22,'triangle',.04,.21)}
+  function missSound(){tone(160,.13,'sawtooth',.05);tone(110,.19,'sawtooth',.04,.08)}
+  function bounceSound(){tone(92,.07,'sine',.12);noise(.045,.035)}
+
+  function musicHit(freq,dur,type,vol,when){if(!audioCtx||!musicOn)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(vol,when+.004);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g).connect(audioCtx.destination);o.start(when);o.stop(when+dur+.02)}
+  function musicNoise(dur,vol,when){if(!audioCtx||!musicOn)return;const len=Math.floor(audioCtx.sampleRate*dur),buf=audioCtx.createBuffer(1,len,audioCtx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);const src=audioCtx.createBufferSource(),g=audioCtx.createGain();src.buffer=buf;g.gain.value=vol;src.connect(g).connect(audioCtx.destination);src.start(when)}
+  function beat(){if(!audioCtx||!musicOn)return;const t=audioCtx.currentTime+.02,s=beatStep%16;if(s===0||s===8)musicHit(58,.16,'sine',.08,t);if(s===4||s===12){musicNoise(.085,.025,t);musicHit(180,.07,'triangle',.018,t)}if(s%2===0)musicNoise(.025,.008,t);const bass=[55,55,65.4,55,73.4,65.4,55,49];if(s%2===0)musicHit(bass[(s/2)%8],.18,'square',.017,t);if(s===2||s===6||s===10||s===14)musicHit(440,.035,'square',.006,t);beatStep++}
+  function startMusic(){if(!audioCtx||musicTimer||!musicOn)return;beat();musicTimer=setInterval(beat,125)}
+  function stopMusic(){clearInterval(musicTimer);musicTimer=null}
+
+  function pickWinner(){let n;do{n=1+Math.floor(Math.random()*10)}while(n===previousWinner);winner=n}
+  function renderBalls(){grid.innerHTML='';for(let i=1;i<=10;i++){const b=document.createElement('button');b.className='ball-btn';b.dataset.n=i;b.setAttribute('aria-label',`Basketball ${i}`);b.innerHTML=`<div class="basketball"><div class="seam-v"></div><span class="ball-number">${i}</span></div><span class="ball-label">Ball ${i}</span>`;b.addEventListener('click',()=>shoot(i,b));grid.appendChild(b)}}
+  function resetRound(auto=false){locked=false;shots=0;used.clear();pickWinner();roundNo.textContent=round;shotsNo.textContent=0;renderBalls();shotBall.style.transition='none';shotBall.style.opacity=0;shotBall.style.transform='translate(0,0) rotate(0deg) scale(1)';msg.className='message';msg.innerHTML=auto?'New round — the winning ball has moved!<span class="sub">All 10 basketballs are back in play.</span>':'Ready to shoot!<span class="sub">Choose a numbered basketball after a correct answer.</span>'}
+  function newRound(auto=false){previousWinner=winner;round++;resetRound(auto)}
+  function shoot(n,btn){
+    if(locked||used.has(n))return;ensureAudio();locked=true;used.add(n);shots++;shotsNo.textContent=shots;btn.disabled=true;btn.classList.add('used');bounceSound();
+    const made=n===winner;
+    msg.className='message';msg.innerHTML=`Ball ${n} is in the air...<span class="sub">Watch the shot!</span>`;
+    animateShot(made,()=>{
+      if(made){wins++;winsNo.textContent=wins;btn.classList.remove('used');btn.classList.add('winner-used');msg.className='message made';msg.innerHTML=`🏀 SWISH! Ball ${n} scores!<span class="sub">Winner found — setting up the next round...</span>`;swish();burst();setTimeout(()=>newRound(true),2800)}
+      else{msg.className='message miss';msg.innerHTML=`Ball ${n} misses!<span class="sub">Keep answering questions — another ball could be the winner.</span>`;missSound();setTimeout(()=>{locked=false;msg.className='message';msg.innerHTML=`Choose another basketball<span class="sub">${10-used.size} ball${10-used.size===1?'':'s'} remaining this round.</span>`},1050)}
+    })
+  }
+  function animateShot(made,done){
+    const panel=document.getElementById('courtPanel'),w=panel.clientWidth,h=panel.clientHeight;
+    const startX=42,startY=h-112;
+    const rimX=w-120,rimY=172;
+    shotBall.style.transition='none';shotBall.style.left=startX+'px';shotBall.style.top=startY+'px';shotBall.style.bottom='auto';shotBall.style.opacity=1;shotBall.style.transform='translate(0,0) rotate(0) scale(1)';
+    const duration=1150,start=performance.now();
+    function frame(now){const p=Math.min(1,(now-start)/duration),ease=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;let x,y;if(made){x=startX+(rimX-startX)*ease;y=startY+(rimY-startY)*ease-150*Math.sin(Math.PI*p);if(p>.78)y+=(p-.78)*180}else{x=startX+(rimX+35-startX)*ease;y=startY+(rimY-35-startY)*ease-130*Math.sin(Math.PI*p);if(p>.78){x+=(p-.78)*160;y+=(p-.78)*220}}shotBall.style.left=x+'px';shotBall.style.top=y+'px';shotBall.style.transform=`rotate(${p*760}deg) scale(${1-.18*p})`;if(p<1)requestAnimationFrame(frame);else{setTimeout(()=>{shotBall.style.opacity=0;done()},120)}}requestAnimationFrame(frame)
+  }
+  function burst(){confetti.innerHTML='';const colors=['#ffd35a','#61d9ff','#53e08e','#ff6578','#f47b20','#ffffff'];for(let i=0;i<62;i++){const el=document.createElement('i');el.style.left=(30+Math.random()*65)+'%';el.style.background=colors[i%colors.length];el.style.setProperty('--dx',(Math.random()*280-140)+'px');el.style.animationDelay=(Math.random()*.25)+'s';el.style.animationDuration=(1.25+Math.random()*.9)+'s';confetti.appendChild(el)}setTimeout(()=>confetti.innerHTML='',2500)}
+
+  musicBtn.addEventListener('click',()=>{ensureAudio();musicOn=!musicOn;if(musicOn){startMusic();musicBtn.textContent='♫ Music: On'}else{stopMusic();musicBtn.textContent='♫ Music: Off'}});
+  soundBtn.addEventListener('click',()=>{ensureAudio();sfxOn=!sfxOn;soundBtn.textContent=sfxOn?'🔊 SFX: On':'🔇 SFX: Off';if(sfxOn)tone(660,.08,'triangle',.04)});
+  resetBtn.addEventListener('click',()=>{ensureAudio();previousWinner=winner;round++;resetRound(false)});
+  document.addEventListener('pointerdown',()=>ensureAudio(),{once:true});
+  pickWinner();renderBalls();
+})();
+</script>
+</body>
+</html>
