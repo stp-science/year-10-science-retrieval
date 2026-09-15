@@ -1,3 +1,4 @@
+import './week6-quick-points.js?v=20260915-1348';
 import './week5-relay.js?v=20260903-1531';
 import './week5-rotation.js?v=20260904-1227';
 import './week5-current-race2-adjustment.js?v=20260904-1320';
