@@ -1,0 +1,1386 @@
+[
+  {
+    "id": "D1056",
+    "name": "Weet-Bix Original",
+    "group": "Grains",
+    "portion": 33,
+    "meals": [
+      "Breakfast"
+    ],
+    "unit": "g",
+    "sourceName": "Weet-Bix™, Sanitarium™, fortified vitamins B1, B2, B3 & folate & Fe",
+    "values": {
+      "energy": 1380,
+      "protein": 12.5,
+      "fibre": 10.7,
+      "calcium": 32,
+      "iron": 15.4,
+      "sugar": 1.7,
+      "carbs": 58.4,
+      "fat": 2.3
+    },
+    "servingDescription": "2 biscuits"
+  },
+  {
+    "id": "E1075",
+    "name": "Rolled oats (dry)",
+    "group": "Grains",
+    "portion": 50,
+    "meals": [
+      "Breakfast"
+    ],
+    "unit": "g",
+    "sourceName": "Oats, rolled, raw, New Zealand",
+    "values": {
+      "energy": 1510,
+      "protein": 12.2,
+      "fibre": 8.4,
+      "calcium": 56,
+      "iron": 3.7,
+      "sugar": 1,
+      "carbs": 56.7,
+      "fat": 7.2
+    },
+    "servingDescription": "1 dry-oat portion"
+  },
+  {
+    "id": "D1060",
+    "name": "Porridge, made with water",
+    "group": "Grains",
+    "portion": 250,
+    "meals": [
+      "Breakfast"
+    ],
+    "unit": "g",
+    "sourceName": "Porridge, oats, rolled, prepared with water, unsweetened, no salt added",
+    "values": {
+      "energy": 337,
+      "protein": 2.9,
+      "fibre": 2.3,
+      "calcium": 14,
+      "iron": 0.8,
+      "sugar": 0.2,
+      "carbs": 12.2,
+      "fat": 1.7
+    },
+    "servingDescription": "1 bowl"
+  },
+  {
+    "id": "A1163",
+    "name": "Wholegrain bread",
+    "group": "Grains",
+    "portion": 80,
+    "meals": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "unit": "g",
+    "sourceName": "Bread, wholemeal or wholegrain, sliced, as purchased",
+    "values": {
+      "energy": 906,
+      "protein": 9.7,
+      "fibre": 6.8,
+      "calcium": 115,
+      "iron": 1.8,
+      "sugar": 3.3,
+      "carbs": 34.8,
+      "fat": 2.6
+    },
+    "servingDescription": "2 slices"
+  },
+  {
+    "id": "A1161",
+    "name": "White bread",
+    "group": "Grains",
+    "portion": 80,
+    "meals": [
+      "Breakfast",
+      "Lunch"
+    ],
+    "unit": "g",
+    "sourceName": "Bread, white, sliced, as purchased",
+    "values": {
+      "energy": 1010,
+      "protein": 8.7,
+      "fibre": 4,
+      "calcium": 93,
+      "iron": 1,
+      "sugar": 4.1,
+      "carbs": 43.9,
+      "fat": 2.4
+    },
+    "servingDescription": "2 slices"
+  },
+  {
+    "id": "A1181",
+    "name": "Wholemeal wrap",
+    "group": "Grains",
+    "portion": 70,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Wrap, bread, wholemeal, as purchased",
+    "values": {
+      "energy": 1170,
+      "protein": 8.8,
+      "fibre": 4.9,
+      "calcium": 136,
+      "iron": 1.5,
+      "sugar": 4.8,
+      "carbs": 42.1,
+      "fat": 7.3
+    },
+    "servingDescription": "1 wrap"
+  },
+  {
+    "id": "E1080",
+    "name": "Brown rice, cooked",
+    "group": "Grains",
+    "portion": 200,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Rice, brown, assorted grains, cooked in unsalted water",
+    "values": {
+      "energy": 604,
+      "protein": 3.2,
+      "fibre": 1.2,
+      "calcium": 5,
+      "iron": 0.4,
+      "sugar": 0.5,
+      "carbs": 29.2,
+      "fat": 1.2
+    },
+    "servingDescription": "1 cooked-rice portion"
+  },
+  {
+    "id": "E1078",
+    "name": "White rice, cooked",
+    "group": "Grains",
+    "portion": 200,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Rice, white, assorted grains, cooked in unsalted water",
+    "values": {
+      "energy": 554,
+      "protein": 2.8,
+      "fibre": 0.6,
+      "calcium": 3,
+      "iron": 0,
+      "sugar": 0.1,
+      "carbs": 28.7,
+      "fat": 0.4
+    },
+    "servingDescription": "1 cooked-rice portion"
+  },
+  {
+    "id": "E1064",
+    "name": "Pasta, cooked",
+    "group": "Grains",
+    "portion": 200,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Pasta, white wheat flour, assorted shapes, regular, boiled, drained, no salt added",
+    "values": {
+      "energy": 566,
+      "protein": 5.0,
+      "fibre": 2.3,
+      "calcium": 10,
+      "iron": 0.5,
+      "sugar": 0,
+      "carbs": 25.4,
+      "fat": 0.8
+    },
+    "servingDescription": "1 cooked-pasta portion"
+  },
+  {
+    "id": "E1066",
+    "name": "Wholemeal pasta, cooked",
+    "group": "Grains",
+    "portion": 200,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Pasta, wholemeal wheat flour, assorted shapes, boiled, drained, no salt added",
+    "values": {
+      "energy": 572,
+      "protein": 6.3,
+      "fibre": 5.8,
+      "calcium": 18,
+      "iron": 1.3,
+      "sugar": 0,
+      "carbs": 21.8,
+      "fat": 1.3
+    },
+    "servingDescription": "1 cooked-pasta portion"
+  },
+  {
+    "id": "F1110",
+    "name": "Standard milk",
+    "group": "Dairy",
+    "portion": 250,
+    "meals": [
+      "Breakfast",
+      "Snacks",
+      "Drinks"
+    ],
+    "unit": "g",
+    "sourceName": "Milk, cow, standard, fluid, fresh",
+    "values": {
+      "energy": 254,
+      "protein": 3.5,
+      "fibre": 0,
+      "calcium": 115,
+      "iron": 0,
+      "sugar": 4.3,
+      "carbs": 4.3,
+      "fat": 3.3
+    },
+    "servingDescription": "1 glass"
+  },
+  {
+    "id": "F1114",
+    "name": "Trim milk",
+    "group": "Dairy",
+    "portion": 250,
+    "meals": [
+      "Breakfast",
+      "Snacks",
+      "Drinks"
+    ],
+    "unit": "g",
+    "sourceName": "Milk, cow, trim, fluid, fresh",
+    "values": {
+      "energy": 152,
+      "protein": 4.3,
+      "fibre": 0,
+      "calcium": 130,
+      "iron": 0,
+      "sugar": 4.3,
+      "carbs": 4.3,
+      "fat": 0.1
+    },
+    "servingDescription": "1 glass"
+  },
+  {
+    "id": "F84",
+    "name": "Plain low-fat yoghurt",
+    "group": "Dairy",
+    "portion": 150,
+    "meals": [
+      "Breakfast",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Yoghurt, plain, low fat, unsweetened",
+    "values": {
+      "energy": 171,
+      "protein": 4.8,
+      "fibre": 0.3,
+      "calcium": 160,
+      "iron": 0,
+      "sugar": 4.3,
+      "carbs": 4.4,
+      "fat": 0.3
+    },
+    "servingDescription": "1 yoghurt portion"
+  },
+  {
+    "id": "F1077",
+    "name": "Fruit yoghurt",
+    "group": "Dairy",
+    "portion": 150,
+    "meals": [
+      "Breakfast",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Yoghurt, Fresh'n Fruity™, assorted fruits, regular fat, fortified Ca, vitamins A & D",
+    "values": {
+      "energy": 390,
+      "protein": 4.2,
+      "fibre": 0.2,
+      "calcium": 189,
+      "iron": 0,
+      "sugar": 12.1,
+      "carbs": 13,
+      "fat": 2.6
+    },
+    "servingDescription": "1 yoghurt portion"
+  },
+  {
+    "id": "F1015",
+    "name": "Cheddar cheese",
+    "group": "Dairy",
+    "portion": 30,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Dinner",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Cheese, Cheddar Mild",
+    "values": {
+      "energy": 1750,
+      "protein": 24.2,
+      "fibre": 0,
+      "calcium": 780,
+      "iron": 0.1,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 36.2
+    },
+    "servingDescription": "1 cheese portion"
+  },
+  {
+    "id": "C30",
+    "name": "Calcium-fortified soy drink",
+    "group": "Dairy alternatives",
+    "portion": 250,
+    "meals": [
+      "Breakfast",
+      "Snacks",
+      "Drinks"
+    ],
+    "unit": "g",
+    "sourceName": "Soy milk, So Good™ Lite Soy Milk, Sanitarium™, fortified vitamins A, B1, B2, & B12, Ca, Mg & P",
+    "values": {
+      "energy": 177,
+      "protein": 2.9,
+      "fibre": 0.8,
+      "calcium": 114,
+      "iron": 0.5,
+      "sugar": 1.8,
+      "carbs": 3.7,
+      "fat": 1.6
+    },
+    "servingDescription": "1 glass"
+  },
+  {
+    "id": "G1021",
+    "name": "Boiled egg",
+    "group": "Protein foods",
+    "portion": 100,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Egg, chicken, whole, boiled",
+    "values": {
+      "energy": 546,
+      "protein": 14.6,
+      "fibre": 0,
+      "calcium": 46,
+      "iron": 1.4,
+      "sugar": 0.3,
+      "carbs": 0.3,
+      "fat": 7.9
+    },
+    "servingDescription": "2 eggs, edible portion"
+  },
+  {
+    "id": "M10040",
+    "name": "Chicken breast, roasted",
+    "group": "Protein foods",
+    "portion": 120,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Chicken, breast, lean, fresh, baked or roasted, no fat or salt added",
+    "values": {
+      "energy": 581,
+      "protein": 28.2,
+      "fibre": 0,
+      "calcium": 9,
+      "iron": 0.4,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 2.7
+    },
+    "servingDescription": "1 chicken portion"
+  },
+  {
+    "id": "M20",
+    "name": "Lean beef mince, cooked",
+    "group": "Protein foods",
+    "portion": 120,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Beef, mince, lean, stewed",
+    "values": {
+      "energy": 628,
+      "protein": 23.9,
+      "fibre": 0,
+      "calcium": 5,
+      "iron": 2.7,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 6
+    },
+    "servingDescription": "1 mince portion"
+  },
+  {
+    "id": "K1006",
+    "name": "Tuna in spring water, drained",
+    "group": "Protein foods",
+    "portion": 100,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Tuna, canned in spring water, plain, salt added, drained",
+    "values": {
+      "energy": 490,
+      "protein": 26.6,
+      "fibre": 0,
+      "calcium": 6,
+      "iron": 1.4,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 1
+    },
+    "servingDescription": "1 tuna portion"
+  },
+  {
+    "id": "K1018",
+    "name": "NZ salmon, baked",
+    "group": "Protein foods",
+    "portion": 120,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Salmon, king, fillet, skin & bones removed, fresh, baked without fat, no salt added, New Zealand",
+    "values": {
+      "energy": 1230,
+      "protein": 20.5,
+      "fibre": 0,
+      "calcium": 7,
+      "iron": 0.2,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 23.9
+    },
+    "servingDescription": "1 salmon portion"
+  },
+  {
+    "id": "X1153",
+    "name": "Firm tofu, cooked",
+    "group": "Protein foods",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Tofu, soy bean curd, regular, firm, simmered or pouched, no salt added",
+    "values": {
+      "energy": 539,
+      "protein": 14.2,
+      "fibre": 1,
+      "calcium": 186,
+      "iron": 1.8,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 7.8
+    },
+    "servingDescription": "1 tofu portion"
+  },
+  {
+    "id": "X54",
+    "name": "Lentils, cooked",
+    "group": "Protein foods",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Lentil, split, boiled, drained, no salt added",
+    "values": {
+      "energy": 441,
+      "protein": 7.6,
+      "fibre": 3.7,
+      "calcium": 13,
+      "iron": 2.4,
+      "sugar": 0.8,
+      "carbs": 15.5,
+      "fat": 0.5
+    },
+    "servingDescription": "1 cooked-lentil portion"
+  },
+  {
+    "id": "X1146",
+    "name": "Chickpeas, canned and drained",
+    "group": "Protein foods",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Chickpea, canned in brine, drained",
+    "values": {
+      "energy": 443,
+      "protein": 7.2,
+      "fibre": 5.5,
+      "calcium": 44,
+      "iron": 1.4,
+      "sugar": 0,
+      "carbs": 11.9,
+      "fat": 2
+    },
+    "servingDescription": "1 chickpea portion"
+  },
+  {
+    "id": "X1147",
+    "name": "Kidney beans, canned and drained",
+    "group": "Protein foods",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Red kidney bean, canned in brine, drained",
+    "values": {
+      "energy": 357,
+      "protein": 7.2,
+      "fibre": 6.2,
+      "calcium": 50,
+      "iron": 1.4,
+      "sugar": 1,
+      "carbs": 8.7,
+      "fat": 1
+    },
+    "servingDescription": "1 bean portion"
+  },
+  {
+    "id": "X1004",
+    "name": "Baked beans in tomato sauce",
+    "group": "Protein foods",
+    "portion": 150,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Baked beans, canned in tomato sauce",
+    "values": {
+      "energy": 352,
+      "protein": 5,
+      "fibre": 5.2,
+      "calcium": 37,
+      "iron": 1.2,
+      "sugar": 3.7,
+      "carbs": 12,
+      "fat": 0.6
+    },
+    "servingDescription": "1 baked-bean portion"
+  },
+  {
+    "id": "Q1020",
+    "name": "Peanut butter, no added sugar or salt",
+    "group": "Protein foods",
+    "portion": 20,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Peanut butter, smooth & crunchy, no sugar or salt added",
+    "values": {
+      "energy": 2610,
+      "protein": 22.4,
+      "fibre": 15.4,
+      "calcium": 54,
+      "iron": 1.6,
+      "sugar": 6.4,
+      "carbs": 10.8,
+      "fat": 52
+    },
+    "servingDescription": "1 spread portion"
+  },
+  {
+    "id": "Q1025",
+    "name": "Almonds",
+    "group": "Protein foods",
+    "portion": 30,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Almond, kernels, dried, raw, unblanched",
+    "values": {
+      "energy": 2490,
+      "protein": 20.1,
+      "fibre": 11.6,
+      "calcium": 270,
+      "iron": 3.8,
+      "sugar": 5.2,
+      "carbs": 5.7,
+      "fat": 53
+    },
+    "servingDescription": "1 handful"
+  },
+  {
+    "id": "L1153",
+    "name": "Apple, with skin",
+    "group": "Fruit",
+    "portion": 150,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Apple, flesh & skin, raw, combined varieties",
+    "values": {
+      "energy": 213,
+      "protein": 0.2,
+      "fibre": 2,
+      "calcium": 5,
+      "iron": 0.1,
+      "sugar": 10.4,
+      "carbs": 10.7,
+      "fat": 0.3
+    },
+    "servingDescription": "1 apple, edible portion"
+  },
+  {
+    "id": "L1101",
+    "name": "Banana, peeled",
+    "group": "Fruit",
+    "portion": 120,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Banana, yellow, ripened, raw",
+    "values": {
+      "energy": 397,
+      "protein": 1.0,
+      "fibre": 1.8,
+      "calcium": 5,
+      "iron": 0.2,
+      "sugar": 15.2,
+      "carbs": 20.8,
+      "fat": 0.3
+    },
+    "servingDescription": "1 banana, peeled"
+  },
+  {
+    "id": "L1182",
+    "name": "Orange, peeled",
+    "group": "Fruit",
+    "portion": 150,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Orange, peeled, seeded, fresh, raw",
+    "values": {
+      "energy": 173,
+      "protein": 1.1,
+      "fibre": 1.8,
+      "calcium": 30,
+      "iron": 0.1,
+      "sugar": 8.2,
+      "carbs": 8.2,
+      "fat": 0.1
+    },
+    "servingDescription": "1 orange, peeled"
+  },
+  {
+    "id": "L1267",
+    "name": "Green kiwifruit, peeled",
+    "group": "Fruit",
+    "portion": 80,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Kiwifruit, Zespri™ Green Kiwifruit, flesh & seeds, raw",
+    "values": {
+      "energy": 220,
+      "protein": 0.8,
+      "fibre": 2.3,
+      "calcium": 27,
+      "iron": 0.2,
+      "sugar": 9.7,
+      "carbs": 9.8,
+      "fat": 0.6
+    },
+    "servingDescription": "1 kiwifruit, peeled"
+  },
+  {
+    "id": "L1159",
+    "name": "Avocado flesh",
+    "group": "Vegetables",
+    "portion": 70,
+    "meals": [
+      "Breakfast",
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Avocado, 'Hass', New Zealand",
+    "values": {
+      "energy": 912,
+      "protein": 1.8,
+      "fibre": 5.1,
+      "calcium": 10,
+      "iron": 0.4,
+      "sugar": 0,
+      "carbs": 0.1,
+      "fat": 22.7
+    },
+    "servingDescription": "1 avocado portion"
+  },
+  {
+    "id": "X1022",
+    "name": "Broccoli, cooked",
+    "group": "Vegetables",
+    "portion": 100,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Broccoli, boiled, drained, no salt added",
+    "values": {
+      "energy": 127,
+      "protein": 3.0,
+      "fibre": 3.4,
+      "calcium": 32,
+      "iron": 0.6,
+      "sugar": 1.8,
+      "carbs": 1.8,
+      "fat": 0.5
+    },
+    "servingDescription": "1 vegetable portion"
+  },
+  {
+    "id": "X1114",
+    "name": "Carrot, raw",
+    "group": "Vegetables",
+    "portion": 100,
+    "meals": [
+      "Lunch",
+      "Snacks",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Carrot, flesh, fresh, raw",
+    "values": {
+      "energy": 156,
+      "protein": 0.6,
+      "fibre": 2.8,
+      "calcium": 24,
+      "iron": 0.1,
+      "sugar": 6.6,
+      "carbs": 6.8,
+      "fat": 0.2
+    },
+    "servingDescription": "1 carrot portion"
+  },
+  {
+    "id": "X1135",
+    "name": "Peas, cooked",
+    "group": "Vegetables",
+    "portion": 100,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Pea, green, frozen, boiled, drained, no salt added",
+    "values": {
+      "energy": 336,
+      "protein": 5.5,
+      "fibre": 6,
+      "calcium": 26,
+      "iron": 1.5,
+      "sugar": 5.2,
+      "carbs": 9.5,
+      "fat": 0.9
+    },
+    "servingDescription": "1 vegetable portion"
+  },
+  {
+    "id": "X1198",
+    "name": "Mixed vegetables, cooked",
+    "group": "Vegetables",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Mixed vegetables, beans, carrots, corn & peas, frozen, boiled, drained, no salt added",
+    "values": {
+      "energy": 207,
+      "protein": 2.4,
+      "fibre": 3.7,
+      "calcium": 33,
+      "iron": 0.6,
+      "sugar": 4.2,
+      "carbs": 7.2,
+      "fat": 0.4
+    },
+    "servingDescription": "1 mixed-vegetable portion"
+  },
+  {
+    "id": "X1010",
+    "name": "Kūmara, boiled",
+    "group": "Vegetables",
+    "portion": 200,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Kumara, flesh, boiled, drained, no salt added",
+    "values": {
+      "energy": 273,
+      "protein": 1.4,
+      "fibre": 2.1,
+      "calcium": 22,
+      "iron": 0.5,
+      "sugar": 4.5,
+      "carbs": 13.1,
+      "fat": 0.3
+    },
+    "servingDescription": "1 kūmara portion"
+  },
+  {
+    "id": "X1177",
+    "name": "Potato with skin, baked",
+    "group": "Vegetables",
+    "portion": 200,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Potato, flesh & skin, floury, baked without oil, no added salt",
+    "values": {
+      "energy": 416,
+      "protein": 3.3,
+      "fibre": 2.9,
+      "calcium": 11,
+      "iron": 1.8,
+      "sugar": 0,
+      "carbs": 19.3,
+      "fat": 0.2
+    },
+    "servingDescription": "1 potato portion"
+  },
+  {
+    "id": "X305",
+    "name": "Lettuce",
+    "group": "Vegetables",
+    "portion": 40,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Lettuce, hydroponic varieties, raw",
+    "values": {
+      "energy": 89,
+      "protein": 1.9,
+      "fibre": 1.7,
+      "calcium": 61,
+      "iron": 1.0,
+      "sugar": 1.7,
+      "carbs": 1.8,
+      "fat": 0.3
+    },
+    "servingDescription": "1 salad portion"
+  },
+  {
+    "id": "J10001",
+    "name": "Olive oil",
+    "group": "Fats",
+    "portion": 10,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "sourceName": "Oil, olive",
+    "values": {
+      "energy": 3700,
+      "protein": 0,
+      "fibre": 0,
+      "calcium": 0,
+      "iron": 0,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 99.9
+    },
+    "servingDescription": "1 oil portion"
+  },
+  {
+    "id": "U30",
+    "name": "Chocolate-chip muesli bar",
+    "group": "Treats & takeaway options",
+    "portion": 30,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Muesli bar, chocolate chip",
+    "values": {
+      "energy": 1660,
+      "protein": 6.9,
+      "fibre": 6.1,
+      "calcium": 64,
+      "iron": 2.1,
+      "sugar": 19,
+      "carbs": 66,
+      "fat": 10.1
+    },
+    "servingDescription": "1 bar",
+    "treat": true
+  },
+  {
+    "id": "W1029",
+    "name": "Milk chocolate",
+    "group": "Treats & takeaway options",
+    "portion": 25,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Milk chocolate, plain",
+    "values": {
+      "energy": 2290,
+      "protein": 8.8,
+      "fibre": 3.1,
+      "calcium": 250,
+      "iron": 1.3,
+      "sugar": 55.1,
+      "carbs": 55.9,
+      "fat": 31.5
+    },
+    "servingDescription": "1 chocolate portion",
+    "treat": true
+  },
+  {
+    "id": "A5",
+    "name": "Gingernut biscuits",
+    "group": "Treats & takeaway options",
+    "portion": 25,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "sourceName": "Biscuit, Gingernuts",
+    "values": {
+      "energy": 1750,
+      "protein": 5.0,
+      "fibre": 1.9,
+      "calcium": 64,
+      "iron": 1.7,
+      "sugar": 37.5,
+      "carbs": 77.7,
+      "fat": 9.0
+    },
+    "servingDescription": "1 biscuit portion",
+    "treat": true
+  },
+  {
+    "id": "C1116",
+    "name": "Lemon-flavoured soft drink",
+    "group": "Drinks",
+    "portion": 350,
+    "meals": [
+      "Drinks"
+    ],
+    "unit": "g",
+    "sourceName": "Soft drink, carbonated, lemon flavour, sugar-sweetened",
+    "values": {
+      "energy": 168,
+      "protein": 0,
+      "fibre": 0,
+      "calcium": 2,
+      "iron": 0,
+      "sugar": 9.9,
+      "carbs": 9.9,
+      "fat": 0
+    },
+    "servingDescription": "1 soft-drink portion",
+    "sugaryDrink": true
+  },
+  {
+    "id": "C1167",
+    "name": "Apple juice",
+    "group": "Drinks",
+    "portion": 250,
+    "meals": [
+      "Drinks"
+    ],
+    "unit": "g",
+    "sourceName": "Juice, apple, unsweetened, shelf-stable, fortified vitamin C",
+    "values": {
+      "energy": 164,
+      "protein": 0.1,
+      "fibre": 0,
+      "calcium": 3,
+      "iron": 0,
+      "sugar": 9.5,
+      "carbs": 9.5,
+      "fat": 0
+    },
+    "servingDescription": "1 glass",
+    "sugaryDrink": true
+  },
+  {
+    "id": "water",
+    "name": "Water",
+    "group": "Drinks",
+    "portion": 250,
+    "meals": [
+      "Drinks"
+    ],
+    "unit": "mL",
+    "sourceName": "Plain water",
+    "values": {
+      "energy": 0,
+      "protein": 0,
+      "fibre": 0,
+      "calcium": 0,
+      "iron": 0,
+      "sugar": 0,
+      "carbs": 0,
+      "fat": 0
+    },
+    "servingDescription": "1 glass"
+  },
+  {
+    "id": "H3",
+    "name": "Cheeseburger",
+    "group": "Treats & takeaway options",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "servingDescription": "1 burger",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Burger, cheeseburger",
+    "values": {
+      "energy": 1100,
+      "protein": 13.6,
+      "fibre": 1.2,
+      "calcium": 83,
+      "iron": 1.7,
+      "sugar": 4.1,
+      "carbs": 21.4,
+      "fat": 13.3
+    }
+  },
+  {
+    "id": "H6",
+    "name": "Hamburger",
+    "group": "Treats & takeaway options",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "servingDescription": "1 burger",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Burger, hamburger",
+    "values": {
+      "energy": 949,
+      "protein": 10.7,
+      "fibre": 1.1,
+      "calcium": 21,
+      "iron": 1.7,
+      "sugar": 3.9,
+      "carbs": 22.4,
+      "fat": 10.2
+    }
+  },
+  {
+    "id": "H1039",
+    "name": "Hot chips / fries",
+    "group": "Treats & takeaway options",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "servingDescription": "1 side portion",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Fries, potato, straight cut, Independent Shops",
+    "values": {
+      "energy": 950,
+      "protein": 4,
+      "fibre": 4.2,
+      "calcium": 9,
+      "iron": 0.8,
+      "sugar": 0.2,
+      "carbs": 26.7,
+      "fat": 10.7
+    }
+  },
+  {
+    "id": "H191",
+    "name": "Hawaiian pizza",
+    "group": "Treats & takeaway options",
+    "portion": 150,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "servingDescription": "2 small slices",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Pizza, Hawaiian, thick crust",
+    "values": {
+      "energy": 987,
+      "protein": 11.1,
+      "fibre": 2.9,
+      "calcium": 140,
+      "iron": 0.7,
+      "sugar": 4.5,
+      "carbs": 33.7,
+      "fat": 5.5
+    }
+  },
+  {
+    "id": "N58",
+    "name": "Chicken nuggets, baked",
+    "group": "Treats & takeaway options",
+    "portion": 100,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "servingDescription": "1 nugget portion",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Chicken, nugget, crumbed, baked",
+    "values": {
+      "energy": 1090,
+      "protein": 15.8,
+      "fibre": 2.8,
+      "calcium": 59,
+      "iron": 1.7,
+      "sugar": 0.8,
+      "carbs": 16,
+      "fat": 14.2
+    }
+  },
+  {
+    "id": "H1054",
+    "name": "Mince and cheese pie",
+    "group": "Treats & takeaway options",
+    "portion": 160,
+    "meals": [
+      "Lunch",
+      "Dinner"
+    ],
+    "unit": "g",
+    "servingDescription": "1 pie",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Pie, savoury, mince & cheese, individual size, ready to eat",
+    "values": {
+      "energy": 1020,
+      "protein": 7.8,
+      "fibre": 4.2,
+      "calcium": 43,
+      "iron": 0.8,
+      "sugar": 0.8,
+      "carbs": 19.1,
+      "fat": 14.2
+    }
+  },
+  {
+    "id": "A1143",
+    "name": "Chocolate-iced doughnut",
+    "group": "Treats & takeaway options",
+    "portion": 75,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "servingDescription": "1 doughnut",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Doughnut, chocolate iced",
+    "values": {
+      "energy": 1660,
+      "protein": 6.4,
+      "fibre": 1.6,
+      "calcium": 48,
+      "iron": 1.7,
+      "sugar": 18.3,
+      "carbs": 43.9,
+      "fat": 21.4
+    }
+  },
+  {
+    "id": "F111",
+    "name": "Hokey pokey ice cream",
+    "group": "Treats & takeaway options",
+    "portion": 80,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "servingDescription": "2 small scoops",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Ice cream, hokey pokey",
+    "values": {
+      "energy": 692,
+      "protein": 4.3,
+      "fibre": 0,
+      "calcium": 11,
+      "iron": 0,
+      "sugar": 22.3,
+      "carbs": 22.7,
+      "fat": 6.3
+    }
+  },
+  {
+    "id": "F28",
+    "name": "Vanilla ice cream",
+    "group": "Treats & takeaway options",
+    "portion": 80,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "servingDescription": "2 small scoops",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Ice cream, vanilla, standard",
+    "values": {
+      "energy": 796,
+      "protein": 3.3,
+      "fibre": 0,
+      "calcium": 121,
+      "iron": 0.0,
+      "sugar": 19.9,
+      "carbs": 19.9,
+      "fat": 10.8
+    }
+  },
+  {
+    "id": "U1012",
+    "name": "Potato crisps",
+    "group": "Treats & takeaway options",
+    "portion": 30,
+    "meals": [
+      "Snacks"
+    ],
+    "unit": "g",
+    "servingDescription": "1 crisp portion",
+    "treat": true,
+    "sugaryDrink": false,
+    "sourceName": "Potato chip or crisp, plain, salted, fried in assorted oils",
+    "values": {
+      "energy": 2020,
+      "protein": 6.8,
+      "fibre": 3.3,
+      "calcium": 17,
+      "iron": 1.7,
+      "sugar": 0,
+      "carbs": 44,
+      "fat": 30.6
+    }
+  },
+  {
+    "id": "C1112",
+    "name": "Cola, sugar-sweetened",
+    "group": "Drinks",
+    "portion": 330,
+    "meals": [
+      "Drinks"
+    ],
+    "unit": "g",
+    "servingDescription": "1 drink serving",
+    "treat": false,
+    "sugaryDrink": true,
+    "sourceName": "Soft drink, cola flavour, sugar-sweetened, caffeinated",
+    "values": {
+      "energy": 134,
+      "protein": 0,
+      "fibre": 0,
+      "calcium": 1,
+      "iron": 0,
+      "sugar": 7.9,
+      "carbs": 7.9,
+      "fat": 0
+    }
+  },
+  {
+    "id": "C1119",
+    "name": "Fruit-flavoured soft drink",
+    "group": "Drinks",
+    "portion": 330,
+    "meals": [
+      "Drinks"
+    ],
+    "unit": "g",
+    "servingDescription": "1 drink serving",
+    "treat": false,
+    "sugaryDrink": true,
+    "sourceName": "Soft drink, carbonated, assorted fruit flavours, sugar-sweetened",
+    "values": {
+      "energy": 167,
+      "protein": 0,
+      "fibre": 0,
+      "calcium": 1,
+      "iron": 0,
+      "sugar": 9.8,
+      "carbs": 9.8,
+      "fat": 0
+    }
+  }
+]
