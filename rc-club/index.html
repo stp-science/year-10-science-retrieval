@@ -5,9 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="St Peter's RC Club Winter Championship dashboard, race manager and results." />
   <title>St Peter's RC Club Winter Championship</title>
-  <link rel="stylesheet" href="./styles.css?v=20261015-compact" />
+  <link rel="stylesheet" href="./styles.css?v=20261015-compact2" />
   <link rel="stylesheet" href="./time-trial.css" />
   <link rel="stylesheet" href="./scoring-guide.css" />
+<style>
+/* Also cover an already-generated draw using the earlier table markup. */
+#raceDisplay .race-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#raceDisplay .race-card { min-width: 0; }
+#raceDisplay .table-wrap { min-width: 0; width: 100%; }
+#raceDisplay .standings-table { min-width: 0 !important; width: 100%; table-layout: fixed; }
+#raceDisplay .standings-table th, #raceDisplay .standings-table td { padding: 6px 3px; overflow-wrap: anywhere; }
+#raceDisplay .standings-table th { font-size: .7rem; letter-spacing: 0; }
+#raceDisplay .standings-table th:nth-last-child(2) { width: 54px; }
+#raceDisplay .standings-table th:last-child { width: 82px; }
+#raceDisplay .standings-table input.input { width: 100%; max-width: 76px; min-width: 0; padding: 5px 2px; font-size: .85rem; box-sizing: border-box; }
+@media (max-width: 800px) { #raceDisplay .race-grid { grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr)); } }
+</style>
 </head>
 <body>
   <header class="hero">
@@ -206,7 +219,7 @@
     <span>🏁 Who will take the chequered flag?</span>
   </footer>
 
-  <script type="module" src="./app.js?v=20261015-compact"></script>
+  <script type="module" src="./app.js?v=20261015-compact2"></script>
   <script type="module" src="./week-delete.js?v=20260915-1348"></script>
   <script type="module" src="./week3-trial.js?v=20260814-1258"></script>
   <script type="module" src="./add-zac-c.js?v=20260814-1258"></script>
