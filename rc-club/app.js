@@ -576,6 +576,12 @@ await saveData(`${driverName(winnerId)} advanced.`);
 function renderAll() {
 if (!data) return;
 ensureWeek10();
+for (const student of data.students) {
+if (String(student.name || '').trim().toLowerCase().replace(/\s+/g,' ').replace(/\.$/,'') === 'dylan e') {
+student.active = false;
+attendance.delete(student.id);
+}
+}
 const finale = data.weeks.find(w => Number(w.number) === 8);
 if (finale) { finale.date = '16th October 2026'; finale.details = 'Three qualifying races with up to four drivers each. Three winners and the fastest runner-up reach the final. Final points: 20, 16, 12, 10.'; }
 renderStandings();
