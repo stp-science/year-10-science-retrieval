@@ -418,7 +418,7 @@ const finalists = gpFinalists(race);
 const table = (group, results, key) => {
 const complete = gpComplete(group, results);
 const rows = complete ? gpRank(group, results).map(r => r.id) : group;
-return '<div class="table-wrap"><table class="standings-table"><thead><tr><th>Pos</th><th>Driver</th><th>Laps completed</th><th>Total time (seconds)</th></tr></thead><tbody>' + rows.map((id,i) =>
+return '<div class="table-wrap"><table class="standings-table race-result-table"><thead><tr><th>Pos</th><th>Driver</th><th>Laps completed</th><th>Total time (seconds)</th></tr></thead><tbody>' + rows.map((id,i) =>
 `<tr><td>${complete ? i+1 : '—'}</td><td>${esc(driverName(id))}</td><td>${isAdmin ? `<input class="input" type="number" min="0" step="1" data-gp-laps="${esc(id)}" data-gp-stage="${key}" value="${results?.[id]?.laps ?? ''}" aria-label="Laps for ${esc(driverName(id))}">` : results?.[id]?.laps ?? '—'}</td><td>${isAdmin ? `<input class="input" type="number" min="0.001" step="0.001" data-gp-time="${esc(id)}" value="${results?.[id]?.time ?? ''}" aria-label="Total time for ${esc(driverName(id))}">` : results?.[id]?.time ?? '—'}</td></tr>`).join('') + '</tbody></table></div>';
 };
 return `<p>Friday 16th October — three qualifying races, maximum four drivers per race. Each winner and the fastest runner-up qualify for the final.</p>
@@ -486,7 +486,7 @@ const rest = overall.map(r => r.id).filter(id => !first.includes(id));
 return [first,rest.slice(0,4),rest.slice(4)];
 }
 function w10Table(ids, results, stage, editable) {
-return '<div class="table-wrap"><table class="standings-table"><thead><tr><th>Driver</th><th>Laps</th><th>Total time (s)</th></tr></thead><tbody>' + ids.map(id =>
+return '<div class="table-wrap"><table class="standings-table race-result-table"><thead><tr><th>Driver</th><th>Laps</th><th>Total time (s)</th></tr></thead><tbody>' + ids.map(id =>
 `<tr><td>${esc(driverName(id))}</td><td>${editable ? `<input class="input" type="number" min="0" step="1" data-w10-laps="${esc(stage+'|'+id)}" value="${results?.[id]?.laps ?? ''}" aria-label="Laps for ${esc(driverName(id))}">` : results?.[id]?.laps ?? '—'}</td><td>${editable ? `<input class="input" type="number" min="0.001" step="0.001" data-w10-time="${esc(stage+'|'+id)}" value="${results?.[id]?.time ?? ''}" aria-label="Time for ${esc(driverName(id))}">` : results?.[id]?.time ?? '—'}</td></tr>`).join('')+'</tbody></table></div>';
 }
 function renderWeek10(race, editable = isAdmin) {
