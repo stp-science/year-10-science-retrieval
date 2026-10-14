@@ -375,3 +375,12 @@ footer {
   .result-entry-row { grid-template-columns: 1fr 110px; }
   footer { flex-direction: column; padding: 0 14px 25px; }
 }
+
+/* Compact race-entry tables; the championship standings retain their wide layout. */
+.race-result-table { min-width: 0; width: 100%; table-layout: fixed; }
+.race-result-table th, .race-result-table td { padding: 7px 4px; overflow-wrap: anywhere; }
+.race-result-table th { font-size: .7rem; letter-spacing: 0; }
+.race-result-table th:first-child, .race-result-table td:first-child { text-align: left; }
+.race-result-table th:nth-last-child(2), .race-result-table td:nth-last-child(2) { width: 60px; text-align: center; }
+.race-result-table th:last-child, .race-result-table td:last-child { width: 88px; text-align: center; }
+.race-result-table .input { width: 100%; min-width: 0; box-sizing: border-box; padding: 6px 3px; border-radius: 6px; font-size: .9rem; }
