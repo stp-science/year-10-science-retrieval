@@ -179,6 +179,11 @@ return `<article class="result-round"><div class="result-round-head"><div><h3>We
 
 let chips = '<span class="muted small">Results not entered yet.</span>';
 let note = '';
+if (week.grandPrixResults) {
+const saved = week.grandPrixResults;
+const groupTable = (ids, results) => '<div class="table-wrap"><table class="standings-table"><thead><tr><th>Driver</th><th>Laps</th><th>Total time (s)</th></tr></thead><tbody>' + gpRank(ids,results).map(r => `<tr><td>${esc(driverName(r.id))}</td><td>${r.laps ?? '—'}</td><td>${r.time ?? '—'}</td></tr>`).join('') + '</tbody></table></div>';
+note = saved.groups.map((g,i) => '<h4>Qualifying race ' + (i+1) + '</h4>' + groupTable(g,saved.qualifying)).join('') + '<h4>Final — double points</h4>' + groupTable(gpFinalists(saved),saved.finalResults);
+}
 
 if (placed.length) {
 chips = placed.map((entry) => `<span class="podium-chip">${medalFor(entry.place)} ${esc(driverName(entry.id))} • ${entry.points} pts</span>`).join('');
@@ -253,12 +258,12 @@ const maxPlace = Math.max(students.length, data.scoring.length);
 const positionOptions = (selected) => {
 let html = '<option value="">Not placed</option>';
 for (let place = 1; place <= maxPlace; place += 1) {
-const pts = data.scoring[place - 1] ?? 0;
+const pts = weekNumber === 8 ? ([20,16,12,10][place - 1] ?? 0) : (data.scoring[place - 1] ?? 0);
 html += `<option value="${place}" ${Number(selected) === place ? 'selected' : ''}>${place}${place === 1 ? 'st' : place === 2 ? 'nd' : place === 3 ? 'rd' : 'th'} — ${pts} pts</option>`;
 }
 return html;
 };
-els.scoringText.textContent = `Points: ${data.scoring.map((pts, index) => `${index + 1}${index === 0 ? 'st' : index === 1 ? 'nd' : index === 2 ? 'rd' : 'th'} ${pts}`).join(' • ')}`;
+els.scoringText.textContent = `Points: ${(weekNumber === 8 ? [20,16,12,10] : data.scoring).map((pts, index) => `${index + 1}${index === 0 ? 'st' : index === 1 ? 'nd' : index === 2 ? 'rd' : 'th'} ${pts}`).join(' • ')}`;
 els.resultEntryList.innerHTML = students.length ? students.map((student) => `
 <label class="result-entry-row"><strong>${esc(student.name)}</strong><select class="input" data-result-student="${esc(student.id)}">${positionOptions(week.places?.[student.id])}</select></label>`).join('')
 : '<div class="muted small">No active drivers.</div>';
@@ -386,6 +391,72 @@ const groups = Array.from({ length: count }, () => []);
 ordered.forEach((id, index) => groups[index % count].push(id));
 return groups;
 }
+
+function gpRank(group, results) {
+return group.map(id => ({ id, ...(results?.[id] || {}) }))
+.sort((a,b) => b.laps - a.laps || a.time - b.time);
+}
+function gpComplete(group, results) {
+return group.length > 0 && group.every(id => Number.isInteger(results?.[id]?.laps) && results[id].laps >= 0 && Number.isFinite(results[id].time) && results[id].time > 0);
+}
+function gpFinalists(race) {
+if (!race.groups.every(g => gpComplete(g, race.qualifying))) return [];
+const ranked = race.groups.map(g => gpRank(g, race.qualifying));
+if (ranked.some(g => g.length > 1 && g[0].laps === g[1].laps && g[0].time === g[1].time)) return [];
+const seconds = ranked.map(g => g[1]).filter(Boolean).sort((a,b) => b.laps-a.laps || a.time-b.time);
+if (seconds.length > 1 && seconds[0].laps === seconds[1].laps && seconds[0].time === seconds[1].time) return [];
+return [...ranked.map(g => g[0].id), seconds[0]?.id].filter(Boolean);
+}
+function renderGrandPrix(race) {
+const finalists = gpFinalists(race);
+const table = (group, results, key) => {
+const complete = gpComplete(group, results);
+const rows = complete ? gpRank(group, results).map(r => r.id) : group;
+return '<div class="table-wrap"><table class="standings-table"><thead><tr><th>Pos</th><th>Driver</th><th>Laps completed</th><th>Total time (seconds)</th></tr></thead><tbody>' + rows.map((id,i) =>
+`<tr><td>${complete ? i+1 : '—'}</td><td>${esc(driverName(id))}</td><td>${isAdmin ? `<input class="input" type="number" min="0" step="1" data-gp-laps="${esc(id)}" data-gp-stage="${key}" value="${results?.[id]?.laps ?? ''}" aria-label="Laps for ${esc(driverName(id))}">` : results?.[id]?.laps ?? '—'}</td><td>${isAdmin ? `<input class="input" type="number" min="0.001" step="0.001" data-gp-time="${esc(id)}" value="${results?.[id]?.time ?? ''}" aria-label="Total time for ${esc(driverName(id))}">` : results?.[id]?.time ?? '—'}</td></tr>`).join('') + '</tbody></table></div>';
+};
+return `<p>Friday 16th October — three qualifying races, maximum four drivers per race. Each winner and the fastest runner-up qualify for the final.</p>
+<p class="muted small">Use the same race distance or duration for all three qualifiers. Rank by most completed laps, then lowest total time for equal laps. Exact ties affecting qualification must be settled by a rerun; update the tied results before continuing. Qualifiers award no points.</p>
+<div class="race-grid">${race.groups.map((g,i) => `<div class="race-card"><h4>Qualifying race ${i+1}</h4>${table(g,race.qualifying,'qualifying')}${isAdmin ? `<button class="btn btn-primary" data-gp-save="${i}">Save qualifying race ${i+1}</button>` : ''}</div>`).join('')}</div>
+<div class="race-card"><h4>🏁 Grand Prix final — double points</h4><p>1st: 20 pts • 2nd: 16 pts • 3rd: 12 pts • 4th: 10 pts</p>
+${finalists.length === 4 ? table(finalists,race.finalResults,'finalResults') + (isAdmin ? '<button class="btn btn-primary" data-gp-save="final">Save final results</button> <button class="btn btn-primary" id="gpAward">Award double championship points</button>' : '') : '<p>Complete all three qualifying races and resolve any qualifying ties to reveal the four finalists.</p>'}
+${race.finalizedAt ? '<p>✓ Final championship points saved.</p>' : ''}</div>`;
+}
+function bindGrandPrix(race) {
+document.querySelectorAll('[data-gp-save]').forEach(button => button.addEventListener('click', async () => {
+const final = button.dataset.gpSave === 'final';
+const group = final ? gpFinalists(race) : race.groups[Number(button.dataset.gpSave)];
+const key = final ? 'finalResults' : 'qualifying';
+const entries = {};
+for (const id of group) {
+const lapInput = document.querySelector('[data-gp-laps="' + CSS.escape(id) + '"]');
+const timeInput = document.querySelector('[data-gp-time="' + CSS.escape(id) + '"]');
+const laps = Number(lapInput.value), time = Number(timeInput.value);
+if (!lapInput.value || !timeInput.value || !Number.isInteger(laps) || laps < 0 || !Number.isFinite(time) || time <= 0) return showToast('Enter whole laps (0 or more) and a positive total time for every driver in this race.', true);
+entries[id] = {laps,time};
+}
+const oldFinalists = gpFinalists(race).join('|');
+race[key] = {...race[key], ...entries};
+if (!final && oldFinalists !== gpFinalists(race).join('|')) { race.finalResults = {}; delete race.finalizedAt; }
+delete race.finalizedAt;
+await saveData('Race results saved.');
+}));
+$('gpAward')?.addEventListener('click', async () => {
+const finalists = gpFinalists(race);
+if (finalists.length !== 4 || !gpComplete(finalists,race.finalResults)) return showToast('Save complete results for all four finalists first.',true);
+const ranked = gpRank(finalists,race.finalResults);
+if (ranked.some((r,i) => i && r.laps === ranked[i-1].laps && r.time === ranked[i-1].time)) return showToast('Resolve tied final positions with a rerun before awarding points.',true);
+const week = data.weeks.find(w => Number(w.number) === Number(race.week));
+if (!week) return;
+if (!window.confirm('Save the final result and award 20, 16, 12 and 10 championship points?')) return;
+week.places = {}; week.points = {};
+ranked.forEach((r,i) => { week.places[r.id] = i+1; week.points[r.id] = [20,16,12,10][i]; });
+race.finalizedAt = new Date().toISOString();
+week.grandPrixResults = clone(race);
+await saveData('Grand Prix final and double championship points saved.');
+});
+}
+
 function renderRace() {
 const race = data.currentRace;
 els.emptyRace.classList.toggle('hidden', Boolean(race));
@@ -395,7 +466,9 @@ if (!race) return;
 const week = data.weeks.find((item) => item.number === Number(race.week));
 els.raceMeta.textContent = `${week ? `Week ${week.number} • ${week.event}` : ''}${race.createdAt ? ` • Drawn ${new Date(race.createdAt).toLocaleDateString()}` : ''}`;
 let content = '';
-if (race.type === 'knockout') {
+if (race.type === 'grand-prix') {
+content = renderGrandPrix(race);
+} else if (race.type === 'knockout') {
 content = renderKnockout(race);
 } else if (race.type === 'heats') {
 content = `<div class="race-grid">${race.groups.map((group, index) => `<div class="race-card"><h4>${group.length === 3 && Number(race.heatSize) === 2 ? `Heat ${index + 1} — 3-way race` : `Heat ${index + 1}`}</h4>${group.map((id) => `<div class="driver-slot">${esc(driverName(id))}</div>`).join('')}</div>`).join('')}</div>`;
@@ -403,6 +476,7 @@ content = `<div class="race-grid">${race.groups.map((group, index) => `<div clas
 content = `<div class="race-grid">${race.groups.map((group, index) => `<div class="race-card"><h4>Team ${index + 1}</h4>${group.map((id) => `<div class="driver-slot">${esc(driverName(id))}</div>`).join('')}</div>`).join('')}</div>`;
 }
 els.raceDisplay.innerHTML = `<div class="race-title"><h3>${esc(race.label)}</h3><span class="muted small">${race.present?.length || 0} drivers</span></div>${content}`;
+if (race.type === 'grand-prix' && isAdmin) bindGrandPrix(race);
 document.querySelectorAll('[data-knockout-winner]').forEach((button) => {
 button.addEventListener('click', async () => {
 const [roundIndexText, matchIndexText, winnerId] = button.dataset.knockoutWinner.split('|');
@@ -419,6 +493,8 @@ await saveData(`${driverName(winnerId)} advanced.`);
 }
 function renderAll() {
 if (!data) return;
+const finale = data.weeks.find(w => Number(w.number) === 8);
+if (finale) { finale.date = '16th October 2026'; finale.details = 'Three qualifying races with up to four drivers each. Three winners and the fastest runner-up reach the final. Final points: 20, 16, 12, 10.'; }
 renderStandings();
 renderCalendar();
 renderResults();
@@ -440,7 +516,14 @@ return;
 const format = els.raceFormat.value;
 const week = Number(els.raceWeek.value || 1);
 let race;
-if (format.startsWith('knockout')) {
+if (format === 'grand-prix') {
+if (present.length < 6 || present.length > 12) {
+showToast('Three qualifying races need 6–12 drivers, with 2–4 in each race.', true); return;
+}
+const groups = [[],[],[]];
+shuffle(present).forEach((id,i) => groups[i % 3].push(id));
+race = {type:'grand-prix', label:'Championship Grand Prix — 3 qualifiers + final', week, present, groups, qualifying:{}, finalResults:{}, createdAt:new Date().toISOString()};
+} else if (format.startsWith('knockout')) {
 const seeded = format === 'knockout-seeded';
 const knockout = createKnockout(present, seeded);
 race = {
@@ -503,7 +586,7 @@ delete week.points[id];
 delete week.places[id];
 } else {
 week.places[id] = place;
-week.points[id] = Number(data.scoring[place - 1] ?? 0);
+week.points[id] = Number(weekNumber === 8 ? ([20,16,12,10][place - 1] ?? 0) : (data.scoring[place - 1] ?? 0));
 }
 });
 await saveData(`Week ${weekNumber} results saved.`);
