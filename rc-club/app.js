@@ -60,6 +60,10 @@ return values.length > 0 && values.every((value) => value && !String(value).incl
 function showToast(message, error = false) {
 clearTimeout(toastTimer);
 els.toast.textContent = message;
+let notice = $('raceControlNotice');
+if (!notice) { notice = document.createElement('p'); notice.id = 'raceControlNotice'; notice.setAttribute('role','status'); els.generateRaceButton.after(notice); }
+notice.textContent = message;
+notice.classList.toggle('error',error);
 els.toast.classList.toggle('error', error);
 els.toast.classList.remove('hidden');
 toastTimer = setTimeout(() => els.toast.classList.add('hidden'), 3600);
@@ -248,6 +252,7 @@ const previousResult = els.resultWeek.value;
 els.raceWeek.innerHTML = options;
 els.resultWeek.innerHTML = options;
 if (previousRace) els.raceWeek.value = previousRace;
+if (els.raceFormat.value === 'week10-grand-prix') els.raceWeek.value = '10';
 if (previousResult) els.resultWeek.value = previousResult;
 }
 function renderResultEntry() {
@@ -486,7 +491,7 @@ return '<div class="table-wrap"><table class="standings-table"><thead><tr><th>Dr
 }
 function renderWeek10(race, editable = isAdmin) {
 const finals = w10Finals(race), best = w10Best(race);
-return `<p>Week 10: each driver completes two qualifying races in their heat, with a maximum of four cars racing together. Use the same distance or duration for every qualifier. Each driver's best result counts: most laps, then lowest total time.</p><p>Final 1: the best driver from each of the three heats plus the fastest runner-up. Final 2: the next four in the overall list. Final 3: the remaining drivers. Resolve exact qualifying ties with a rerun before finals are allocated.</p>
+return `<p>Week 10: each driver completes two qualifying races in their heat, with a maximum of four cars racing together. Heats are balanced using championship positions, spreading the leading drivers across the three heats. Use the same distance or duration for every qualifier. Each driver's best result counts: most laps, then lowest total time.</p><p>Final 1: the best driver from each of the three heats plus the fastest runner-up. Final 2: the next four in the overall list. Final 3: the remaining drivers. Resolve exact qualifying ties with a rerun before finals are allocated.</p>
 ${[0,1].map(round => `<h3>Qualifying round ${round+1}</h3><div class="race-grid">${race.groups.map((g,i) => `<div class="race-card"><h4>Heat ${i+1}</h4>${w10Table(g,race.qualifyingRounds[round],'q'+round,editable)}${editable ? `<button class="btn btn-primary" data-w10-save="q${round}|${i}">Save round ${round+1}, heat ${i+1}</button>` : ''}</div>`).join('')}</div>`).join('')}
 ${best ? '<h3>Overall qualifying order — best of two</h3>'+w10Table(gpRank(race.present,best).map(r=>r.id),best,'best',false) : '<p>Save both qualifying results for every driver to calculate the overall order.</p>'}
 ${finals.length ? finals.map((g,i) => `<div class="race-card"><h3>Final ${i+1}${i===0 ? ' — 20, 16, 12, 10 points' : i===1 ? ' — overall places 5–8' : ' — overall places 9–12'}</h3>${w10Table(g,race.finalResults,'f'+i,editable)}${editable && g.length ? `<button class="btn btn-primary" data-w10-save="f${i}|${i}">Save Final ${i+1}</button>` : ''}</div>`).join('') + (editable ? '<button class="btn btn-primary" id="w10Award">Finish Week 10 and award points</button>' : '') : '<p>Finals pending complete qualifiers and resolved ties.</p>'}
@@ -586,7 +591,8 @@ renderResultEntry();
 }
 }
 async function generateRace() {
-const present = [...attendance];
+const present = [...document.querySelectorAll('[data-attendance]:checked')].map(c => c.dataset.attendance);
+attendance = new Set(present);
 if (present.length < 2) {
 showToast('Select at least two students who are present.', true);
 return;
@@ -595,8 +601,16 @@ const format = els.raceFormat.value;
 const week = format === 'week10-grand-prix' ? 10 : Number(els.raceWeek.value || 1);
 let race;
 if (format === 'week10-grand-prix') {
-if (present.length < 9 || present.length > 12) return showToast('Three finals require 9–12 drivers, with a maximum of four per heat.',true);
-const groups=[[],[],[]];shuffle(present).forEach((id,i)=>groups[i%3].push(id));
+if (present.length < 6 || present.length > 12) return showToast('Select 6–12 drivers for three qualifying heats (maximum four per heat). Selected: ' + present.length + '.',true);
+const groups = generateHeats(present, 4, true);
+// Exactly three balanced heats, including when fewer than nine attend.
+if (groups.length !== 3) {
+groups.splice(0, groups.length, [], [], []);
+standings().filter(s => present.includes(s.id)).forEach((s,i) => {
+const row = Math.floor(i / 3), pos = i % 3;
+groups[row % 2 === 0 ? pos : 2-pos].push(s.id);
+});
+}
 race={type:'week10-grand-prix',label:'Week 10 Grand Prix — Two Qualifying Rounds / Three Finals',week:10,present,groups,qualifyingRounds:[{},{}],finalResults:{},createdAt:new Date().toISOString()};
 } else if (format === 'grand-prix') {
 if (present.length < 6 || present.length > 12) {
@@ -639,7 +653,7 @@ groups: generateTeams(present)
 }
 data.currentRace = race;
 const saved = await saveData('Race draw generated.');
-if (saved) setActiveTab('race-day');
+if (saved) { renderAll(); setActiveTab('race-day'); }
 }
 async function clearRace() {
 if (!data.currentRace) return;
@@ -785,10 +799,19 @@ els.signOutButton.addEventListener('click', async () => {
 if (firebaseReady && auth) await firebaseFns.signOut(auth);
 setActiveTab('championship');
 });
+els.raceWeek.addEventListener('change', () => {
+if (els.raceWeek.value === '10') { els.raceFormat.value = 'week10-grand-prix'; els.raceFormat.dispatchEvent(new Event('change')); }
+});
 els.raceFormat.addEventListener('change', () => {
+if (els.raceFormat.value === 'week10-grand-prix') { els.raceWeek.value = '10'; els.raceWeek.disabled = false; }
 els.heatSizeWrap.classList.toggle('hidden', !els.raceFormat.value.startsWith('heats'));
 });
-els.generateRaceButton.addEventListener('click', generateRace);
+els.generateRaceButton.addEventListener('click', async () => {
+els.generateRaceButton.disabled = true;
+try { await generateRace(); }
+catch (error) { console.error('Race generation failed:',error); showToast('Could not generate races: ' + (error.message || 'unknown error'),true); }
+finally { els.generateRaceButton.disabled = false; }
+});
 els.clearRaceButton.addEventListener('click', clearRace);
 els.adminClearRaceButton.addEventListener('click', clearRace);
 els.addStudentForm.addEventListener('submit', async (event) => {
