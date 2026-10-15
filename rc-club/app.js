@@ -573,9 +573,28 @@ await saveData(`${driverName(winnerId)} advanced.`);
 });
 });
 }
+function applyHeat2Swap() {
+const race = data.currentRace;
+if (race?.type !== 'week10-grand-prix' || Number(race.week) !== 10 ||
+    !String(race.createdAt || '').startsWith('2026-10-16') || race.finalizedAt ||
+    race.heat2RileyZacSwap === '20261016') return false;
+const normalise = value => String(value || '').trim().toLowerCase().replace(/\\s+/g,' ');
+const riley = data.students.find(s => normalise(s.name) === 'riley c');
+const zac = data.students.find(s => normalise(s.name) === 'zac c');
+if (!riley || !zac || !race.groups?.[1]?.includes(riley.id) ||
+    !race.groups?.[2]?.includes(zac.id)) return false;
+race.groups = race.groups.map(group => group.map(id => id === riley.id ? zac.id : id === zac.id ? riley.id : id));
+race.heat2RileyZacSwap = '20261016';
+return true;
+}
 function renderAll() {
 if (!data) return;
 ensureWeek10();
+applyHeat2Swap();
+if (isAdmin && data.currentRace?.heat2RileyZacSwap === '20261016' && !data.currentRace.heat2RileyZacSwapSaved) {
+data.currentRace.heat2RileyZacSwapSaved = true;
+void saveData('Heat 2 updated: Zac C swapped with Riley C.').then(saved => { if (!saved && data.currentRace) delete data.currentRace.heat2RileyZacSwapSaved; });
+}
 for (const student of data.students) {
 if (String(student.name || '').trim().toLowerCase().replace(/\s+/g,' ').replace(/\.$/,'') === 'dylan e') {
 student.active = false;
