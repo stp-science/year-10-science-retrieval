@@ -576,7 +576,7 @@ await saveData(`${driverName(winnerId)} advanced.`);
 function applyHeat2Swap() {
 const race = data.currentRace;
 if (race?.type !== 'week10-grand-prix' || Number(race.week) !== 10 ||
-    !String(race.createdAt || '').startsWith('2026-10-16') || race.finalizedAt ||
+    !(Date.parse(race.createdAt) >= Date.parse('2026-10-15T11:00:00Z') && Date.parse(race.createdAt) < Date.parse('2026-10-16T11:00:00Z')) || race.finalizedAt ||
     race.heat2RileyZacSwap === '20261016') return false;
 const normalise = value => String(value || '').trim().toLowerCase().replace(/\\s+/g,' ');
 const riley = data.students.find(s => normalise(s.name) === 'riley c');
