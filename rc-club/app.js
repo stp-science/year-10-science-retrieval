@@ -476,25 +476,40 @@ return best;
 function w10Finals(race) {
 const best = w10Best(race);
 if (!best) return [];
-const overall = gpRank(race.present,best);
-if (overall.some((r,i) => i && r.laps === overall[i-1].laps && r.time === overall[i-1].time)) return [];
-const heats = race.groups.map(g => gpRank(g,best));
-const winners = heats.map(g => g[0].id);
-const runner = heats.map(g => g[1]).filter(Boolean).sort((a,b) => b.laps-a.laps || a.time-b.time)[0].id;
-const first = [...winners,runner];
-const rest = overall.map(r => r.id).filter(id => !first.includes(id));
+const compare = (a,b) => {
+const first = best[b].laps-best[a].laps || best[a].time-best[b].time;
+if (first) return first;
+const other = id => [...race.qualifyingRounds.map(round => round[id])].sort((x,y) => y.laps-x.laps || x.time-y.time)[1];
+const x=other(a),y=other(b);
+return y.laps-x.laps || x.time-y.time;
+};
+const overall = [...race.present].sort(compare);
+const heats = race.groups.map(g => [...g].sort(compare));
+if (heats.some(g => g.length>1 && compare(g[0],g[1])===0)) return [];
+const winners = heats.map(g => g[0]);
+const runners = heats.map(g => g[1]).filter(Boolean).sort(compare);
+if (runners.length>1 && compare(runners[0],runners[1])===0) return [];
+const first = [...winners,runners[0]];
+const rest = overall.filter(id => !first.includes(id));
+if (rest.length>4 && compare(rest[3],rest[4])===0) return [];
 return [first,rest.slice(0,4),rest.slice(4)];
 }
 function w10Table(ids, results, stage, editable) {
 return '<div class="table-wrap"><table class="standings-table race-result-table"><thead><tr><th>Driver</th><th>Laps</th><th>Total time (s)</th></tr></thead><tbody>' + ids.map(id =>
 `<tr><td>${esc(driverName(id))}</td><td>${editable ? `<input class="input" type="number" min="0" step="1" data-w10-laps="${esc(stage+'|'+id)}" value="${results?.[id]?.laps ?? ''}" aria-label="Laps for ${esc(driverName(id))}">` : results?.[id]?.laps ?? '—'}</td><td>${editable ? `<input class="input" type="number" min="0.001" step="0.001" data-w10-time="${esc(stage+'|'+id)}" value="${results?.[id]?.time ?? ''}" aria-label="Time for ${esc(driverName(id))}">` : results?.[id]?.time ?? '—'}</td></tr>`).join('')+'</tbody></table></div>';
 }
+function w10FinalTable(ids,race,index,editable) {
+return '<div class="table-wrap"><table class="standings-table"><thead><tr><th>Driver</th><th>Finishing position</th></tr></thead><tbody>'+ids.map(id=>{
+const saved=race.finalPositions?.[id];
+return '<tr><td>'+esc(driverName(id))+'</td><td>'+(editable ? '<select class="input" data-w10-position="'+index+'|'+esc(id)+'" aria-label="Final '+(index+1)+' position for '+esc(driverName(id))+'"><option value="">Select position</option>'+ids.map((_,p)=>'<option value="'+(p+1)+'" '+(Number(saved)===p+1?'selected':'')+'>'+(p+1)+(p===0?' — Winner':'')+'</option>').join('')+'</select>' : (saved ?? '—'))+'</td></tr>';
+}).join('')+'</tbody></table></div>';
+}
 function renderWeek10(race, editable = isAdmin) {
 const finals = w10Finals(race), best = w10Best(race);
-return `<p>Week 10: each driver completes two qualifying races in their heat, with a maximum of four cars racing together. Heats are balanced using championship positions, spreading the leading drivers across the three heats. Use the same distance or duration for every qualifier. Each driver's best result counts: most laps, then lowest total time.</p><p>Final 1: the best driver from each of the three heats plus the fastest runner-up. Final 2: the next four in the overall list. Final 3: the remaining drivers. Resolve exact qualifying ties with a rerun before finals are allocated.</p>
+return `<p>Week 10: each driver completes two qualifying races in their heat, with a maximum of four cars racing together. Heats are balanced using championship positions, spreading the leading drivers across the three heats. Use the same distance or duration for every qualifier. Each driver's best result counts: most laps, then lowest total time.</p><p>Final 1: the best driver from each of the three heats plus the fastest runner-up. Final 2: the next four in the overall list. Final 3: the remaining drivers. Qualifying ties use the other qualifying run. Rerun only if a remaining tie affects who enters a final.</p>
 ${[0,1].map(round => `<h3>Qualifying round ${round+1}</h3><div class="race-grid">${race.groups.map((g,i) => `<div class="race-card"><h4>Heat ${i+1}</h4>${w10Table(g,race.qualifyingRounds[round],'q'+round,editable)}${editable ? `<button class="btn btn-primary" data-w10-save="q${round}|${i}">Save round ${round+1}, heat ${i+1}</button>` : ''}</div>`).join('')}</div>`).join('')}
 ${best ? '<h3>Overall qualifying order — best of two</h3>'+w10Table(gpRank(race.present,best).map(r=>r.id),best,'best',false) : '<p>Save both qualifying results for every driver to calculate the overall order.</p>'}
-${finals.length ? finals.map((g,i) => `<div class="race-card"><h3>Final ${i+1}${i===0 ? ' — 20, 16, 12, 10 points' : i===1 ? ' — overall places 5–8' : ' — overall places 9–12'}</h3>${w10Table(g,race.finalResults,'f'+i,editable)}${editable && g.length ? `<button class="btn btn-primary" data-w10-save="f${i}|${i}">Save Final ${i+1}</button>` : ''}</div>`).join('') + (editable ? '<button class="btn btn-primary" id="w10Award">Finish Week 10 and award points</button>' : '') : '<p>Finals pending complete qualifiers and resolved ties.</p>'}
+${finals.length ? finals.map((g,i) => `<div class="race-card"><h3>Final ${i+1}${i===0 ? ' — 20, 16, 12, 10 points' : i===1 ? ' — overall places 5–8' : ' — overall places 9–12'}</h3>${w10FinalTable(g,race,i,editable)}${editable && g.length ? `<button class="btn btn-primary" data-w10-save="f${i}|${i}">Save Final ${i+1}</button>` : ''}</div>`).join('') + (editable ? '<button class="btn btn-primary" id="w10Award">Finish Week 10 and award points</button>' : '') : '<p>Finals pending complete qualifiers and resolved ties.</p>'}
 ${race.finalizedAt ? '<p>✓ Week 10 results and championship points saved.</p>' : ''}`;
 }
 function bindWeek10(race) {
@@ -502,6 +517,19 @@ document.querySelectorAll('[data-w10-save]').forEach(button => button.addEventLi
 const [stage,index] = button.dataset.w10Save.split('|');
 const qualifying = stage[0] === 'q', round = Number(stage[1]);
 const ids = qualifying ? race.groups[Number(index)] : w10Finals(race)[Number(index)];
+if (!qualifying) {
+const positions = {};
+for (const id of ids) {
+const value = Number(document.querySelector('[data-w10-position="'+CSS.escape(index+'|'+id)+'"]').value);
+if (!Number.isInteger(value) || value<1 || value>ids.length) return showToast('Select a finishing position for every driver in this final.',true);
+positions[id]=value;
+}
+if (new Set(Object.values(positions)).size!==ids.length) return showToast('Each finishing position can only be used once per final.',true);
+race.finalPositions={...race.finalPositions,...positions};
+delete race.finalizedAt;
+await saveData('Final '+(Number(index)+1)+' finishing positions saved.');
+return;
+}
 const entries = {};
 for (const id of ids) {
 const selector = CSS.escape(stage+'|'+id);
@@ -514,16 +542,15 @@ entries[id] = {laps,time};
 const before = JSON.stringify(w10Finals(race));
 if (qualifying) {
 race.qualifyingRounds[round] = {...race.qualifyingRounds[round],...entries};
-if (before !== JSON.stringify(w10Finals(race))) race.finalResults = {};
+if (before !== JSON.stringify(w10Finals(race))) { race.finalResults = {}; race.finalPositions = {}; }
 } else race.finalResults = {...race.finalResults,...entries};
 delete race.finalizedAt;
 await saveData('Week 10 race results saved.');
 }));
 $('w10Award')?.addEventListener('click',async () => {
 const finals = w10Finals(race);
-if (finals.length !== 3 || !gpComplete(race.present,race.finalResults)) return showToast('Save all three final results first.',true);
-const ranks = finals.map(g => gpRank(g,race.finalResults));
-if (ranks.some(g => g.some((r,i) => i && r.laps===g[i-1].laps && r.time===g[i-1].time))) return showToast('Resolve tied final positions before awarding points.',true);
+if (finals.length !== 3 || !finals.every(g => g.every(id => Number.isInteger(race.finalPositions?.[id]) && race.finalPositions[id]>=1 && race.finalPositions[id]<=g.length) && new Set(g.map(id=>race.finalPositions[id])).size===g.length)) return showToast('Save all three final results first.',true);
+const ranks = finals.map(g => [...g].sort((a,b)=>race.finalPositions[a]-race.finalPositions[b]).map(id=>({id})));
 if (!window.confirm('Save all three finals? Final 1 earns 20, 16, 12, 10 points; Final 2 earns the usual 5th–8th points (4, 3, 2, 1); Final 3 earns 0 points.')) return;
 const week = data.weeks.find(w => Number(w.number)===10);
 week.places={};week.points={};
