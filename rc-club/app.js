@@ -616,27 +616,27 @@ return true;
 }
 function applyConfirmedFinalPodium() {
 const week=data.weeks.find(w=>Number(w.number)===10);
-if (!week || week.confirmedPodium20261016) return;
-const awards=[['Vinsen T',1,20],['Riley C',2,16],['Toby W',3,12]].map(([name,place,points])=>({student:data.students.find(s=>String(s.name).trim().toLowerCase()===name.toLowerCase()),place,points}));
+if (!week || week.confirmedPodium20261016v2) return;
+const awards=[['Vinsen T',1,20],['Riley C',2,16],['Toby W',3,12],['Ollie P',4,10]].map(([name,place,points])=>({student:data.students.find(s=>String(s.name).trim().toLowerCase()===name.toLowerCase()),place,points}));
 if (awards.some(a=>!a.student)) return;
 week.points=week.points||{}; week.places=week.places||{};
 for (const {student,place,points} of awards) {
 week.points[student.id]=points; week.places[student.id]=place;
-if (data.currentRace?.type==='week10-grand-prix' && Number(data.currentRace.week)===10) {
+if (data.currentRace?.type==='week10-grand-prix' && Number(data.currentRace.week)===10 && w10Finals(data.currentRace)[0]?.includes(student.id)) {
 data.currentRace.finalPositions={...data.currentRace.finalPositions,[student.id]:place};
 }
-if (week.week10Results) week.week10Results.finalPositions={...week.week10Results.finalPositions,[student.id]:place};
+if (week.week10Results && w10Finals(week.week10Results)[0]?.includes(student.id)) week.week10Results.finalPositions={...week.week10Results.finalPositions,[student.id]:place};
 }
-week.confirmedPodium20261016=true;
+week.confirmedPodium20261016v2=true;
 }
 function renderAll() {
 if (!data) return;
 ensureWeek10();
 applyConfirmedFinalPodium();
 const podiumWeek=data.weeks.find(w=>Number(w.number)===10);
-if (isAdmin && podiumWeek?.confirmedPodium20261016 && !podiumWeek.confirmedPodium20261016Saved) {
-podiumWeek.confirmedPodium20261016Saved=true;
-void saveData('Final podium points saved: Vinsen 20, Riley 16, Toby 12.').then(saved=>{if(!saved) delete podiumWeek.confirmedPodium20261016Saved;});
+if (isAdmin && podiumWeek?.confirmedPodium20261016v2 && !podiumWeek.confirmedPodium20261016v2Saved) {
+podiumWeek.confirmedPodium20261016v2Saved=true;
+void saveData('Final podium points saved: Vinsen 20, Riley 16, Toby 12, Ollie P 10.').then(saved=>{if(!saved) delete podiumWeek.confirmedPodium20261016v2Saved;});
 }
 applyHeat2Swap();
 if (isAdmin && data.currentRace?.heat2RileyZacSwap === '20261016' && !data.currentRace.heat2RileyZacSwapSaved) {
