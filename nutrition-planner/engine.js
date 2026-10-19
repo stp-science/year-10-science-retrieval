@@ -16,7 +16,7 @@ const drinkData=[
 const drinkHints={coke:'Find how many 100 mL portions are in 330 mL, then multiply by the label value.',fanta:'Find how many 100 mL portions are in 600 mL, then multiply by the label value.',apple:'Use the sugar per 100 mL and the 200 mL portion. “No added sugar” does not mean no sugar.',water:'Use the sugar value for plain water. An answer of zero is allowed.',volume:'Use the unrounded sugar total for the Coca-Cola can. Divide by Fanta’s sugar per 100 mL, then multiply by 100.',concentration:'Compare the per-100-mL figures for the three drinks other than water.',container:'Compare your calculated sugar amounts for the three chosen portions other than water.'};
 function drinkAnswers(){const out=Object.fromEntries(drinkData.map(d=>[d.id,d.sugar*d.volume/100]));return {...out,volume:out.coke/7.9*100,concentration:'fanta',container:'apple'};}
 function checkDrinks(d){return Object.entries(drinkAnswers()).map(([key,value])=>({key,valid:typeof value==='number'?validNumber(d[key])&&Math.abs(Number(d[key])-value)<0.06:d[key]===value}));}
-function aboveReferences(totals){return ['protein','fibre','calcium','iron'].filter(k=>totals[k]>targets[k].aim*1.5);}
+function aboveReferences(totals){return ['fibre','calcium','iron'].filter(k=>totals[k]>targets[k].aim*1.5);}
 function planIssues(rows,foods){
 const byId=new Map(foods.map(f=>[f.id,f]));let treats=0,sugaryDrinks=0;const groups=new Set(),meals=new Set();
 for(const r of rows){const f=byId.get(r.food);if(!f)continue;const servings=r.portion/f.portion;if(f.group==='Extras'||f.group==='Treats & takeaway options'||f.treat)treats+=servings;if(f.sugaryDrink||['C1116','C1167'].includes(f.id))sugaryDrinks+=servings;groups.add(f.group);meals.add(r.meal);}
