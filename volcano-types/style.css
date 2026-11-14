@@ -17,3 +17,5 @@ body[data-page="label"] .volcano-svg{max-width:680px;margin:auto}
 #label-feedback .feedback{margin:0}
 @media(max-width:600px){#label-list,#label-feedback{grid-template-columns:1fr}#label-list .lab-part{padding:12px}body[data-page="label"] .lab-layout{gap:16px}}
 @media print{#label-list{grid-template-columns:repeat(2,minmax(0,1fr))}#label-list .lab-part{break-inside:avoid}.lab-instructions{break-inside:avoid}body[data-page="label"] .volcano-svg{max-height:400px}}
+
+.type-cards{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:600px){.type-cards{grid-template-columns:1fr}}
