@@ -1,107 +1,110 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Vault | General Knowledge</title><style>
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#263d65,#080d1b 65%);color:#f4f7ff;font:600 17px system-ui;min-height:100vh}main{max-width:900px;margin:auto;padding:28px 20px}header{display:flex;justify-content:space-between;align-items:center;letter-spacing:3px;font-size:12px;color:#9daecb}h1{font-size:clamp(44px,9vw,92px);letter-spacing:-5px;margin:24px 0 0;color:#ffd57d;line-height:1;text-shadow:0 0 35px #b8863944}h2{font-size:clamp(24px,4vw,36px);margin:20px 0}p{line-height:1.6;color:#c4d0e5}.panel{border:1px solid #435675;background:#111d33e8;border-radius:22px;padding:28px;margin-top:24px;box-shadow:0 18px 60px #0006}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#17253e;border:1px solid #334a6a;padding:16px;border-radius:14px;text-align:center;color:#aebed5;font-size:12px;letter-spacing:1px}.stat strong{display:block;font-size:clamp(25px,5vw,45px);color:white;font-variant-numeric:tabular-nums}.stat:nth-child(2) strong{color:#83efbd}.stat:nth-child(3) strong{color:#ffd57d}button,input{font:inherit;border-radius:12px;padding:16px 20px;border:1px solid #4b607e}button{cursor:pointer;background:#243650;color:white;transition:.15s}button:hover:not(:disabled){transform:translateY(-2px);border-color:#ffd57d}button:focus-visible{outline:3px solid white}button:disabled{cursor:default;opacity:.7}.gold{background:#ffd57d;color:#182034;border:0;font-weight:900}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answers button{text-align:left;min-height:76px}.correct{background:#176748!important}.wrong{background:#962e42!important}.bar{height:7px;background:#26354c;border-radius:8px;margin-top:12px;overflow:hidden}.bar i{display:block;height:100%;background:#ffd57d;transition:width .2s}#message{min-height:30px;margin:16px 0;color:#ffd57d}.actions{display:flex;gap:12px;flex-wrap:wrap}.pill{font-size:12px;letter-spacing:2px;color:#ffd57d}input{background:#0b1425;color:white;width:min(100%,340px)}[hidden]{display:none!important}.danger{color:#ff7888!important}#resultScore{font-size:84px;color:#ffd57d;margin:0} @media(max-width:550px){.answers{grid-template-columns:1fr}.panel{padding:18px}.stat{padding:9px}h1{letter-spacing:-2px}}</style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#263d65,#080d1b 65%);color:#f4f7ff;font:600 17px system-ui;min-height:100vh}main{max-width:900px;margin:auto;padding:28px 20px}header{display:flex;justify-content:space-between;align-items:center;letter-spacing:3px;font-size:12px;color:#9daecb}h1{font-size:clamp(44px,9vw,92px);letter-spacing:-5px;margin:24px 0 0;color:#ffd57d;line-height:1;text-shadow:0 0 35px #b8863944}h2{font-size:clamp(24px,4vw,36px);margin:20px 0}p{line-height:1.6;color:#c4d0e5}.panel{border:1px solid #435675;background:#111d33e8;border-radius:22px;padding:28px;margin-top:24px;box-shadow:0 18px 60px #0006}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#17253e;border:1px solid #334a6a;padding:16px;border-radius:14px;text-align:center;color:#aebed5;font-size:12px;letter-spacing:1px}.stat strong{display:block;font-size:clamp(25px,5vw,45px);color:white;font-variant-numeric:tabular-nums}.stat:nth-child(2) strong{color:#83efbd}.stat:nth-child(3) strong{color:#ffd57d}button,input{font:inherit;border-radius:12px;padding:16px 20px;border:1px solid #4b607e}button{cursor:pointer;background:#243650;color:white;transition:.15s}button:hover:not(:disabled){transform:translateY(-2px);border-color:#ffd57d}button:focus-visible{outline:3px solid white}button:disabled{cursor:default;opacity:.7}.gold{background:#ffd57d;color:#182034;border:0;font-weight:900}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answers button{text-align:left;min-height:76px}.correct{background:#176748!important}.wrong{background:#962e42!important}.bar{height:7px;background:#26354c;border-radius:8px;margin-top:12px;overflow:hidden}.bar i{display:block;height:100%;background:#ffd57d;transition:width .2s}#message{min-height:30px;margin:16px 0;color:#ffd57d}.actions{display:flex;gap:12px;flex-wrap:wrap}.pill{font-size:12px;letter-spacing:2px;color:#ffd57d}input{background:#0b1425;color:white;width:min(100%,340px)}[hidden]{display:none!important}.danger{color:#ff7888!important}#resultScore{font-size:84px;color:#ffd57d;margin:0} @media(max-width:550px){.answers{grid-template-columns:1fr}.panel{padding:18px}.stat{padding:9px}h1{letter-spacing:-2px}} 
+body{background:#030610;background-image:repeating-linear-gradient(115deg,transparent 0 100px,#38c9ff0b 101px 103px,transparent 104px 200px),radial-gradient(ellipse at 50% -10%,#155688 0%,#10182e 36%,#030610 75%);overflow-x:hidden}
+main{max-width:1100px;position:relative;padding-top:20px}header{border-bottom:1px solid #39dfff55;padding-bottom:14px;color:#6deaff}header button{font-size:11px;padding:10px 14px;background:#091a2d}h1{text-align:center;font-weight:1000;font-style:italic;font-size:clamp(52px,10vw,108px);letter-spacing:-4px;color:#fff2a7;text-shadow:0 3px #9d5a15,0 6px #67390e,0 0 45px #ffad2a90}.pill{color:#6deaff;text-align:center;letter-spacing:4px;font-weight:900}.panel{position:relative;background:linear-gradient(160deg,#122943f5,#080f22f5);border:2px solid #2984b4;box-shadow:0 0 40px #00aaff25,inset 0 0 30px #00b7ff10,0 20px 60px #0009;border-radius:18px;padding:30px}.panel:before,.panel:after{content:'';position:absolute;top:-3px;width:44px;height:22px;border-top:4px solid #9cf5ff;pointer-events:none}.panel:before{left:-3px;border-left:4px solid #9cf5ff;border-radius:15px 0 0 0}.panel:after{right:-3px;border-right:4px solid #9cf5ff;border-radius:0 15px 0 0}.vault{margin:16px auto 0;width:150px;aspect-ratio:1;border-radius:50%;position:relative;border:9px ridge #b7c7d6;background:repeating-conic-gradient(#71879b 0deg 10deg,#23364a 10deg 35deg);box-shadow:0 0 0 5px #18273a,0 0 0 8px #4fcdf5,0 0 55px #37c9ff80,inset 0 0 22px #000;display:grid;place-items:center}.vault:before{content:'';position:absolute;inset:20px;border-radius:50%;background:radial-gradient(#6f8494,#29384c);border:4px ridge #bac9d4}.wheel{z-index:1;width:65px;height:65px;border:7px solid #e6bb65;border-radius:50%;background:linear-gradient(90deg,transparent 43%,#e6bb65 43% 57%,transparent 57%),linear-gradient(transparent 43%,#e6bb65 43% 57%,transparent 57%);box-shadow:0 0 10px #000;animation:turn 12s ease-in-out infinite alternate}@keyframes turn{to{transform:rotate(135deg)}}#home .panel{text-align:center;max-width:760px;margin:24px auto}#home h2{font-size:32px;margin-top:0}#home .gold{width:min(100%,340px)}.gold{background:linear-gradient(180deg,#fff4a3,#f9bc38 50%,#c97a0c);border:2px solid #fff0a6;color:#221203;box-shadow:0 5px #79480c,0 0 24px #f9bc3844;font-weight:1000;letter-spacing:1px}.gold:disabled{box-shadow:none}.stats{gap:16px;margin-top:25px}.stat{background:linear-gradient(#0b2035,#020c18);border:2px solid #2f92c1;border-radius:10px;box-shadow:inset 0 0 20px #1c8ebc22,0 0 20px #17bcff19;font-weight:900}.stat:nth-child(2){border-color:#40d59a}.stat:nth-child(3){border-color:#f1a735}.stat strong{font-size:clamp(32px,6vw,62px);text-shadow:0 0 20px currentColor;font-weight:1000}.answers button{background:linear-gradient(100deg,#0c4267,#10233f 75%);border:2px solid #399cca;border-radius:8px;box-shadow:0 4px #04101c,inset 0 0 14px #30b7e322;font-size:19px;font-weight:800;min-height:84px}.answers button:hover:not(:disabled){background:#14648a;box-shadow:0 0 22px #38d9ff77}.answers button.correct{border-color:#5bff9b;box-shadow:0 0 25px #30ff8a70}.answers button.wrong{border-color:#ff6d83;box-shadow:0 0 25px #ff294c70}.answers button:disabled{opacity:1}.bar{height:10px;box-shadow:0 0 12px #25bbff55}.bar i{background:linear-gradient(90deg,#0ba8ff,#75f5ff,#ffdb65)}#question{text-align:center;margin:20px 0 28px;font-size:clamp(24px,4vw,38px)}#message{text-align:center;font-size:19px;font-weight:900}.actions{justify-content:center}.actions button{min-width:200px}#next{background:linear-gradient(#1d608b,#113752);border:2px solid #6be8ff;font-weight:900}#streak{text-align:center;font-size:14px;color:#9ecde2}#end{text-align:center}#resultScore{font-size:clamp(80px,18vw,150px);font-weight:1000;text-shadow:0 0 55px #ffd57d99}.pulse{animation:pop .45s ease-out}@keyframes pop{0%{transform:scale(.92)}45%{transform:scale(1.09)}100%{transform:scale(1)}}.flash{animation:flash .4s}@keyframes flash{50%{box-shadow:0 0 90px #ff395d,inset 0 0 60px #ff395d55}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}@media(max-width:550px){main{padding:12px}.panel{padding:18px}.stats{gap:6px}.stat{font-size:10px}.vault{width:110px}.answers button{min-height:55px;font-size:16px}.actions button{min-width:0;flex:1}}
+</style>
 <main><header><span>STP • YEAR 10</span><button id="sound" aria-label="Toggle sound">♪ SOUND ON</button></header>
-<section id="home"><h1>THE VAULT</h1><p class="pill">GENERAL KNOWLEDGE • 5 MINUTE CHALLENGE</p><div class="panel"><h2>How much will you risk?</h2><p>Answer correctly to build your streak: 100, 200, 300 points and so on (up to 500 per answer). Bank your points to lock them away and reset the streak. Get one wrong and lose everything you haven't banked. Only banked points count when time runs out.</p><input id="player" maxlength="24" placeholder="Nickname (optional)" aria-label="Nickname"><p><button class="gold" id="start">ENTER THE VAULT →</button></p></div></section>
+<section id="home"><div class="vault" aria-hidden="true"><div class="wheel"></div></div><h1>THE VAULT</h1><p class="pill">GENERAL KNOWLEDGE • 5 MINUTE CHALLENGE</p><div class="panel"><h2>How much will you risk?</h2><p>Answer correctly to build your streak: 100, 200, 300 points and so on (up to 500 per answer). Bank your points to lock them away and reset the streak. Get one wrong and lose everything you haven't banked. Only banked points count when time runs out.</p><input id="player" maxlength="24" placeholder="Nickname (optional)" aria-label="Nickname"><p><button class="gold" id="start">ENTER THE VAULT →</button></p></div></section>
 <section id="game" hidden><h1 style="font-size:42px;letter-spacing:-2px">THE VAULT</h1><div class="stats"><div class="stat">TIME<strong id="time">5:00</strong></div><div class="stat">BANKED<strong id="banked">0</strong></div><div class="stat">AT RISK<strong id="risk">0</strong></div></div><div class="bar"><i id="progress" style="width:100%"></i></div><div class="panel"><div class="pill" id="category"></div><h2 id="question"></h2><div class="answers" id="answers"></div><div id="message" role="status"></div><div class="actions"><button class="gold" id="bank">BANK POINTS</button><button id="next" hidden>NEXT QUESTION →</button></div><p id="streak"></p></div></section>
 <section id="end" hidden><div class="panel"><div class="pill">VAULT SEALED • FINAL SCORE</div><h2 id="winner"></h2><div id="resultScore"></div><p id="summary"></p><p id="best"></p><button class="gold" id="again">PLAY AGAIN</button></div></section></main>
 <script>
-const raw=`Geography|What is the capital of Australia?|Canberra|Sydney|Melbourne|Perth
-NZ|What is the capital of New Zealand?|Wellington|Auckland|Hamilton|Dunedin
-Science|Which planet is closest to the Sun?|Mercury|Venus|Mars|Earth
-Sport|How many players start on a rugby union team?|15|13|11|7
-Food|What is the main ingredient in guacamole?|Avocado|Cucumber|Spinach|Peas
-Animals|Which mammal can truly fly?|Bat|Flying squirrel|Sugar glider|Penguin
-Gaming|What material do you need to make a Nether portal frame in Minecraft?|Obsidian|Diamond|Bedrock|Iron
-Geography|Which ocean is the largest?|Pacific|Atlantic|Indian|Arctic
-Science|What is the chemical symbol for gold?|Au|Ag|Go|Gd
-Movies|What is the name of the cowboy in Toy Story?|Woody|Buzz|Rex|Andy
-Sport|How many rings are on the Olympic flag?|5|4|6|7
-NZ|Which island is Lake Taupō on?|North Island|South Island|Stewart Island|Chatham Island
-Animals|What is a group of lions called?|Pride|Pack|Herd|Flock
-Music|How many strings does a standard guitar have?|6|4|5|8
-Geography|Which country contains the city of Kyoto?|Japan|China|South Korea|Vietnam
-Science|Which organ pumps blood around the body?|Heart|Lungs|Liver|Kidneys
-Food|Which country is traditionally associated with sushi?|Japan|Italy|Mexico|India
-Gaming|What colour is Pac-Man in the original arcade game?|Yellow|Blue|Red|Green
-History|Which civilisation built the pyramids at Giza?|Ancient Egyptians|Romans|Vikings|Aztecs
-Sport|Which sport uses a shuttlecock?|Badminton|Tennis|Squash|Cricket
-Science|Which gas makes up most of Earth's atmosphere?|Nitrogen|Oxygen|Carbon dioxide|Helium
-NZ|What is the Māori name for New Zealand?|Aotearoa|Rarotonga|Waitangi|Rotorua
-Geography|What is the largest continent by area?|Asia|Africa|Europe|Antarctica
-Animals|How many legs does a spider have?|8|6|10|12
-Movies|What is the name of the snowman in Frozen?|Olaf|Sven|Kristoff|Hans
-Food|What type of food is a pomegranate?|Fruit|Nut|Root|Grain
-History|Who was the first person to walk on the Moon?|Neil Armstrong|Buzz Aldrin|Yuri Gagarin|Michael Collins
-Science|What is the hardest naturally occurring mineral on the Mohs scale?|Diamond|Quartz|Gold|Granite
-Sport|How many points is a basketball free throw worth?|1|2|3|4
-Geography|Which country is shaped like a boot?|Italy|Greece|Spain|Portugal
-Animals|Which is the largest living animal?|Blue whale|Elephant|Giraffe|Whale shark
-Technology|What does USB stand for?|Universal Serial Bus|United System Base|Universal Screen Button|User Storage Box
-NZ|What bird appears on New Zealand's one-dollar coin?|Kiwi|Kākāpō|Kea|Tūī
-Science|Which planet is famous for its prominent rings?|Saturn|Mars|Mercury|Venus
-Food|What is tofu made from?|Soybeans|Potatoes|Rice|Wheat
+const raw=`Geography|Which country has the longest coastline?|Canada|Russia|Australia|Indonesia
+NZ|In which year was the Treaty of Waitangi first signed?|1840|1850|1860|1830
+Science|Which element is liquid at ordinary room temperature?|Mercury|Aluminium|Magnesium|Zinc
+Sport|Which country won the first men's Rugby World Cup in 1987?|New Zealand|Australia|France|England
+Food|Which country is traditionally associated with kimchi?|South Korea|Thailand|Japan|Vietnam
+Animals|Which mammal lays eggs?|Platypus|Wombat|Koala|Wallaby
+Gaming|Which company originally developed Minecraft?|Mojang|Valve|Ubisoft|Epic Games
+Geography|Which country borders both the Atlantic and Indian oceans at their conventional meeting point?|South Africa|Namibia|Kenya|Mozambique
+Science|What is the most abundant metal in Earth's crust?|Aluminium|Iron|Copper|Calcium
+Movies|Which fictional language is spoken by the Na'vi in Avatar?|Na'vi|Klingon|Dothraki|Elvish
+Sport|How many events are in a decathlon?|10|8|12|7
+NZ|Which strait separates the North and South Islands?|Cook Strait|Foveaux Strait|Bass Strait|Tasman Strait
+Animals|Which animal has fingerprints remarkably similar to humans?|Koala|Kangaroo|Sloth|Panda
+Music|Which band released Bohemian Rhapsody?|Queen|The Beatles|Pink Floyd|Fleetwood Mac
+Geography|Which country contains the ancient city of Petra?|Jordan|Egypt|Turkey|Lebanon
+Science|Which part of the brain primarily coordinates balance and movement?|Cerebellum|Hypothalamus|Medulla|Pituitary
+Food|Which type of pastry is used in traditional baklava?|Filo|Shortcrust|Choux|Brioche
+Gaming|Which game series features the region of Hyrule?|The Legend of Zelda|Final Fantasy|Halo|Animal Crossing
+History|Which empire built Machu Picchu?|Inca|Aztec|Roman|Maya
+Sport|In which sport is the Ryder Cup contested?|Golf|Tennis|Cricket|Polo
+Science|Which gas is the second most abundant in Earth's atmosphere?|Oxygen|Argon|Carbon dioxide|Hydrogen
+NZ|Which New Zealand bird is the world's heaviest parrot?|Kākāpō|Kea|Kākā|Kākāriki
+Geography|Which continent has the most countries?|Africa|Asia|Europe|South America
+Animals|What is the only living marsupial native to North America north of Mexico?|Virginia opossum|Wallaby|Wombat|Bandicoot
+Movies|Which film features the fictional nation of Wakanda?|Black Panther|Thor|Doctor Strange|Iron Man
+Food|Which country is commonly credited with originating tiramisu?|Italy|France|Austria|Switzerland
+History|In which year did the Berlin Wall fall?|1989|1991|1985|1995
+Science|Which particle has the smallest mass?|Electron|Proton|Neutron|Alpha particle
+Sport|What is the term for three wickets in three consecutive deliveries in cricket?|Hat-trick|Maiden|Century|Overthrow
+Geography|What is the capital of Türkiye?|Ankara|Istanbul|Izmir|Antalya
+Animals|Which is the largest species of shark?|Whale shark|Great white|Tiger shark|Hammerhead
+Technology|What does CPU stand for?|Central Processing Unit|Computer Power Utility|Core Program Unit|Central Protocol User
+NZ|Which explorer's expedition first circumnavigated New Zealand in 1769–70?|James Cook|Abel Tasman|Ferdinand Magellan|Francis Drake
+Science|Which planet has the shortest day?|Jupiter|Saturn|Mars|Mercury
+Food|What is tempeh traditionally made from?|Fermented soybeans|Fermented rice|Ground almonds|Wheat flour
 Sport|Which country hosted the 2016 Summer Olympics?|Brazil|Japan|China|Greece
-Geography|Which river runs through London?|Thames|Seine|Nile|Danube
-Animals|What is a baby kangaroo called?|Joey|Cub|Calf|Pup
-Gaming|Which Nintendo character wears a red cap with an M?|Mario|Luigi|Link|Kirby
-History|What was the name of the ship that sank in 1912 on its maiden voyage?|Titanic|Mayflower|Endeavour|Britannic
-Science|How many bones are typically in an adult human body?|206|106|306|406
+Geography|Which river flows through Budapest?|Danube|Rhine|Seine|Volga
+Animals|Which of these is not a true antelope?|Pronghorn|Impala|Kudu|Gemsbok
+Gaming|Which company created the original PlayStation?|Sony|Sega|Nintendo|Microsoft
+History|Which ship carried the Pilgrims to Plymouth in 1620?|Mayflower|Titanic|Endeavour|Santa Maria
+Science|How many chromosomes are typically in a human body cell?|46|23|48|44
 Food|Which spice is derived from the stigma of a crocus flower?|Saffron|Cinnamon|Paprika|Turmeric
 Geography|Which country has the city of Reykjavík as its capital?|Iceland|Norway|Finland|Denmark
-Sport|In tennis, what score is called love?|Zero|One|Fifteen|Thirty
+Sport|What surface is traditionally used at Wimbledon?|Grass|Clay|Carpet|Artificial turf
 Animals|Which animal has three hearts?|Octopus|Dolphin|Shark|Crocodile
 Technology|What does GPS stand for?|Global Positioning System|General Phone Service|Geographic Power Source|Global Picture Signal
-NZ|Which city is known as the Garden City?|Christchurch|Hamilton|Auckland|Napier
-Science|What is the smallest prime number?|2|1|0|3
-Movies|In Harry Potter, which school does Harry attend?|Hogwarts|Durmstrang|Beauxbatons|Nevermore
-Geography|Which desert is the largest hot desert?|Sahara|Gobi|Kalahari|Atacama
-Food|What is the main ingredient in hummus?|Chickpeas|Lentils|Peanuts|Rice
-Sport|How many legal balls are in a standard cricket over?|6|4|8|10
-Animals|Which bird is famous for its ability to hover and fly backwards?|Hummingbird|Ostrich|Penguin|Albatross
-Science|Which element has the symbol Fe?|Iron|Fluorine|Francium|Lead
-History|Which city was buried by Mount Vesuvius in AD 79?|Pompeii|Athens|Rome|Venice
-NZ|Which city is home to the Beehive?|Wellington|Dunedin|Hamilton|Auckland
-Gaming|In chess, which piece moves in an L shape?|Knight|Bishop|Rook|Queen
-Geography|Which country has the largest land area?|Russia|Canada|China|Australia
+NZ|Which city was New Zealand's capital immediately before Wellington?|Auckland|Dunedin|Hamilton|Christchurch
+Maths|What is the smallest prime number greater than 30?|31|33|35|37
+Movies|Which house in Harry Potter has a badger as its emblem?|Hufflepuff|Gryffindor|Slytherin|Ravenclaw
+Geography|Which is the largest desert on Earth by area?|Antarctic Desert|Sahara|Gobi|Arabian Desert
+Food|Which cheese is traditionally made from buffalo milk in Campania?|Mozzarella|Cheddar|Brie|Gouda
+Sport|Which country won the men's FIFA World Cup in 2010?|Spain|Germany|Brazil|Argentina
+Animals|Which bird has the largest wingspan of any living bird species?|Wandering albatross|Andean condor|Bald eagle|Emu
+Science|Which element has the symbol W?|Tungsten|Tin|Titanium|Zinc
+History|Which city was buried by Mount Vesuvius in AD 79?|Pompeii|Athens|Florence|Venice
+NZ|Which region is home to the Waitomo Glowworm Caves?|Waikato|Northland|Otago|Canterbury
+Gaming|In chess, what is the only move that moves two pieces of the same colour at once?|Castling|En passant|Promotion|Checkmate
+Geography|Which country is entirely surrounded by South Africa?|Lesotho|Eswatini|Botswana|Zimbabwe
 Science|Which colour of visible light has the longest wavelength?|Red|Blue|Violet|Green
-Music|Which instrument has black and white keys?|Piano|Violin|Trumpet|Drums
-Animals|Which is the fastest land animal?|Cheetah|Lion|Horse|Ostrich
-Food|Which fruit is dried to make raisins?|Grapes|Plums|Apples|Dates
+Music|Which composer wrote The Four Seasons?|Vivaldi|Mozart|Beethoven|Bach
+Animals|Which is the fastest bird in a hunting dive?|Peregrine falcon|Golden eagle|Ostrich|Albatross
+Food|What is the Japanese name for fermented soybean paste?|Miso|Wasabi|Mirin|Panko
 Geography|What is the capital of Canada?|Ottawa|Toronto|Vancouver|Montreal
-Sport|Which sport features the haka performed by the All Blacks?|Rugby union|Football|Basketball|Hockey
-Science|What is the closest star to Earth?|Sun|Sirius|Polaris|Alpha Centauri
+Sport|Which country is associated with the martial art taekwondo?|Korea|Japan|China|Thailand
+Science|Which planet has the highest average surface temperature?|Venus|Mercury|Mars|Jupiter
 Technology|What does HTML stand for?|HyperText Markup Language|High Tech Machine Logic|Home Tool Media Link|Hyper Transfer Mail List
-Animals|Which animal is a marsupial?|Koala|Panda|Polar bear|Otter
-NZ|Which mountain is New Zealand's highest?|Aoraki / Mount Cook|Mount Taranaki|Mount Ruapehu|Mount Ngauruhoe
+Animals|Which of these animals belongs to the same order as whales?|Hippopotamus|Seal|Shark|Manatee
+NZ|Which mountain is New Zealand's second highest by elevation?|Mount Tasman|Mount Ruapehu|Mount Aspiring|Mount Taranaki
 Food|Which country is associated with paella?|Spain|France|Germany|Greece
-Geography|Which continent contains the Amazon rainforest's largest portion?|South America|Africa|Asia|Europe
-Science|Which instrument measures temperature?|Thermometer|Barometer|Ammeter|Anemometer
+Geography|Which country contains the largest portion of the Amazon rainforest?|Brazil|Peru|Colombia|Bolivia
+Science|Which instrument measures atmospheric pressure?|Barometer|Thermometer|Ammeter|Anemometer
 Sport|Which sport awards the Stanley Cup?|Ice hockey|Basketball|Baseball|Golf
-Movies|What kind of animal is Simba?|Lion|Tiger|Leopard|Cheetah
+Movies|Which studio created the animated film Spirited Away?|Studio Ghibli|Pixar|DreamWorks|Illumination
 History|Which country gifted the Statue of Liberty to the United States?|France|Italy|Spain|Canada
 Science|What is the most abundant element in the universe?|Hydrogen|Oxygen|Carbon|Nitrogen
-Geography|Which city is the capital of South Korea?|Seoul|Tokyo|Beijing|Bangkok
-Animals|What is the largest living bird by mass?|Ostrich|Emu|Eagle|Albatross
-Food|What is the main ingredient in traditional popcorn?|Maize|Wheat|Rice|Barley
-Gaming|What shape are the blocks in classic Tetris made from?|Four squares|Three circles|Five triangles|Six hexagons
-NZ|Which river flows through Hamilton?|Waikato|Clutha|Avon|Waimakariri
-Science|What is the unit of electrical resistance?|Ohm|Volt|Watt|Ampere
+Geography|Which city is the capital of Kazakhstan?|Astana|Almaty|Tashkent|Bishkek
+Animals|Which living bird lays the largest eggs?|Ostrich|Emu|Kiwi|Cassowary
+Food|Which country is the origin of the dessert pavlova disputed with New Zealand?|Australia|France|Russia|England
+Gaming|What is the name for a four-square shape used in Tetris?|Tetromino|Pentomino|Domino|Hexomino
+NZ|Which river is the longest in New Zealand?|Waikato|Clutha|Whanganui|Waimakariri
+Science|Which SI unit measures frequency?|Hertz|Tesla|Pascal|Joule
 Geography|Which country is home to Machu Picchu?|Peru|Chile|Brazil|Colombia
 Sport|What is the maximum standard break in snooker?|147|100|180|120
-Animals|Which animal is known for building dams?|Beaver|Badger|Fox|Otter
+Animals|Which animal is most closely related to the giraffe?|Okapi|Zebra|Camel|Antelope
 Food|Which nut is used in traditional marzipan?|Almond|Cashew|Peanut|Walnut
 Science|Which planet has the Great Red Spot?|Jupiter|Saturn|Mars|Neptune
-Geography|Which sea separates Europe and North Africa?|Mediterranean|Caribbean|Baltic|Red Sea
-Music|Which family of instruments includes the trumpet?|Brass|Strings|Woodwind|Percussion
-History|What writing material was made from a plant in ancient Egypt?|Papyrus|Plastic|Silk|Rubber
-Science|What is the process by which plants make sugars using light?|Photosynthesis|Respiration|Digestion|Evaporation`.split('\n').map(l=>l.split('|'));
+Geography|Which strait connects the Mediterranean Sea to the Atlantic Ocean?|Gibraltar|Hormuz|Bering|Malacca
+Music|Which musical term means gradually getting louder?|Crescendo|Diminuendo|Staccato|Adagio
+History|Which ancient writing system used wedge-shaped marks?|Cuneiform|Hieroglyphics|Braille|Morse code
+Science|What is the boundary around a black hole beyond which light cannot escape?|Event horizon|Photon core|Solar wind|Singularity ring`.split('\n').map(l=>l.split('|'));
 const $=id=>document.getElementById(id), shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};let deck=[],idx=0,banked=0,risk=0,streak=0,right=0,total=0,deadline,timer,active=false,locked=false,muted=false,ctx,beat=0;
 function tone(freq,d=.12,vol=.055){if(muted||!ctx)return;let o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=freq;g.gain.setValueAtTime(vol,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+d)}
 $('sound').onclick=()=>{muted=!muted;$('sound').textContent=muted?'♪ SOUND OFF':'♪ SOUND ON'};
-function stats(){$('banked').textContent=banked;$('risk').textContent=risk;$('bank').disabled=!active||!risk;$('streak').textContent='Streak: '+streak+' • Next correct answer: '+Math.min(500,(streak+1)*100)+' points'}
-function tick(){let s=Math.max(0,Math.ceil((deadline-Date.now())/1000));$('time').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('time').classList.toggle('danger',s<=30);$('progress').style.width=s/3+'%';if(!s)finish();else if(beat++%2===0)tone([55,55,65.4,49][Math.floor(beat/2)%4],.25,.035)}
-function show(){if(!active)return;if(Date.now()>=deadline)return finish();if(idx>=deck.length)return finish();locked=false;$('next').hidden=true;$('message').textContent='';let [cat,q,...options]=deck[idx++];$('category').textContent=cat.toUpperCase()+' • QUESTION '+idx;$('question').textContent=q;$('answers').replaceChildren();shuffle(options).forEach((a,i)=>{let b=document.createElement('button');b.textContent='ABCD'[i]+'  •  '+a;b.onclick=()=>{if(!active||locked)return;if(Date.now()>=deadline)return finish();locked=true;total++;let good=a===options[0];if(good){streak++;let points=Math.min(500,streak*100);risk+=points;right++;$('message').textContent='Correct! +'+points+' at risk. Bank or keep going?';tone(660,.2)}else{$('message').textContent='Incorrect! '+risk+' unbanked points lost. Answer: '+options[0];risk=0;streak=0;b.classList.add('wrong');tone(110,.35)}[...$('answers').children].forEach(x=>{x.disabled=true;if(x.textContent.slice(6)===options[0])x.classList.add('correct')});if(good)b.classList.add('correct');$('next').hidden=false;stats()};$('answers').append(b)});stats()}
-$('bank').onclick=()=>{if(!active||Date.now()>=deadline)return finish();banked+=risk;risk=0;streak=0;$('message').textContent='🔒 Points secured in the vault!';tone(880,.35);stats()};$('next').onclick=show;
+function animate(id,cls){let e=$(id);e.classList.remove(cls);void e.offsetWidth;e.classList.add(cls)}function stats(){$('banked').textContent=banked;$('risk').textContent=risk;$('bank').disabled=!active||!risk;$('streak').textContent='Streak: '+streak+' • Next correct answer: '+Math.min(500,(streak+1)*100)+' points'}
+function tick(){let s=Math.max(0,Math.ceil((deadline-Date.now())/1000));$('time').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('time').classList.toggle('danger',s<=30);$('progress').style.width=s/3+'%';if(!s)finish();else {let n=beat++;tone([55,55,65.4,49,55,55,77.8,65.4][n%8],.34,.065);if(n%4===0){tone([110,130.8,98,116.5][Math.floor(n/4)%4],.7,.026);tone(220,.4,.012)}if(s<=30)tone(440,.09,.035)}}
+function show(){if(!active)return;if(Date.now()>=deadline)return finish();if(idx>=deck.length)return finish();locked=false;$('next').hidden=true;$('message').textContent='';let [cat,q,...options]=deck[idx++];$('category').textContent=cat.toUpperCase()+' • QUESTION '+idx;$('question').textContent=q;$('answers').replaceChildren();shuffle(options).forEach((a,i)=>{let b=document.createElement('button');b.textContent='ABCD'[i]+'  •  '+a;b.onclick=()=>{if(!active||locked)return;if(Date.now()>=deadline)return finish();locked=true;total++;let good=a===options[0];if(good){streak++;let points=Math.min(500,streak*100);risk+=points;right++;$('message').textContent='Correct! +'+points+' at risk. Bank or keep going?';tone(440,.12);tone(660,.25);animate('risk','pulse')}else{$('message').textContent='Incorrect! '+risk+' unbanked points lost. Answer: '+options[0];risk=0;streak=0;b.classList.add('wrong');tone(82,.45);animate('answers','flash')}[...$('answers').children].forEach(x=>{x.disabled=true;if(x.textContent.slice(6).trim()===options[0])x.classList.add('correct')});if(good)b.classList.add('correct');$('next').hidden=false;stats()};$('answers').append(b)});stats()}
+$('bank').onclick=()=>{if(!active||Date.now()>=deadline)return finish();banked+=risk;risk=0;streak=0;$('message').textContent='🔒 Points secured in the vault!';tone(523,.18);tone(784,.3);animate('banked','pulse');stats()};$('next').onclick=show;
 function finish(){if(!active)return;active=false;clearInterval(timer);$('game').hidden=true;$('end').hidden=false;$('winner').textContent=($('player').value.trim()||'Player')+' — your final score';$('resultScore').textContent=banked;$('summary').textContent=right+' correct out of '+total+' answered • '+risk+' unbanked points lost';try{let best=Math.max(banked,Number(localStorage.getItem('gkvaultbest')||0));localStorage.setItem('gkvaultbest',best);$('best').textContent='Best score on this device: '+best}catch(e){}tone(330,.5)}
 $('start').onclick=()=>{try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();ctx.resume()}catch(e){}deck=shuffle(raw);idx=banked=risk=streak=right=total=beat=0;active=true;deadline=Date.now()+300000;$('home').hidden=true;$('end').hidden=true;$('game').hidden=false;show();tick();timer=setInterval(tick,500)};$('again').onclick=()=>{$('end').hidden=true;$('home').hidden=false};document.addEventListener('keydown',e=>{if(!active||e.repeat)return;if('1234'.includes(e.key)&&!locked)$('answers').children[Number(e.key)-1]?.click();if(e.key.toLowerCase()==='b'&&!$('bank').disabled)$('bank').click();if(e.key==='Enter'&&locked&&e.target.tagName!=='BUTTON')$('next').click()});
 </script></html>
