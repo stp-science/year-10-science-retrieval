@@ -1,7 +1,7 @@
 // Browsers unlock audio on the first player gesture. Sound starts enabled.
 export function createShowAudio({Music=Audio,Context=globalThis.AudioContext??globalThis.webkitAudioContext}={}) {
  let enabled=true,active=false,context,risk=0,finalMinute=false;
- const music=new Music(new URL('./assets/vault-suspense.mp3',import.meta.url).href);
+ const music=new Music('https://stp-science.github.io/retrieval-starter-builder/science-vault/assets/vault-suspense.mp3');
  music.loop=true;music.preload='none';music.volume=.24;
  if(typeof document!=='undefined'){music.hidden=true;music.setAttribute('aria-hidden','true');document.body.append(music);}
  function intensity(){music.volume=.24+Math.min(risk/1000,1)*.1+(finalMinute?.04:0);music.playbackRate=finalMinute?1.13:1+Math.min(risk/1000,1)*.035;}
